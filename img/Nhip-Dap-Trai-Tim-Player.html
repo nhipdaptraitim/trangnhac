@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhịp Đập Trái Tim Music Player</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif}
+body{
+min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;
+background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.65)),url('img/BackGround.jpg') center/cover no-repeat fixed;
+color:#fff;
+}
+.player{
+width:900px;max-width:100%;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:20px;
+padding:20px;
+}
+.top{
+display:flex;
+gap:20px;
+align-items:center;
+}
+.album{
+width:260px;
+height:260px;
+border-radius:16px;
+overflow:hidden;
+flex-shrink:0;
+}
+.album img{width:100%;height:100%;object-fit:cover}
+.info{flex:1}
+.logo h1{font-size:28px;margin-bottom:6px}
+.logo p{opacity:.7;margin-bottom:20px}
+.song-info h2{margin-bottom:5px}
+.song-info p{opacity:.7}
+.time{display:flex;justify-content:space-between;margin:10px 0;font-size:13px;opacity:.8}
+#progress{
+width:100%;height:6px;appearance:none;background:rgba(255,255,255,.15);
+border-radius:20px;cursor:pointer;
+}
+#progress::-webkit-slider-thumb{
+appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;
+}
+.controls{
+display:flex;justify-content:center;gap:15px;margin-top:20px;
+}
+.controls button{
+width:55px;height:55px;border:none;border-radius:50%;
+background:rgba(255,255,255,.12);color:#fff;font-size:22px;cursor:pointer;
+}
+.controls .play-btn{width:70px;height:70px;font-size:30px}
+.playlist-wrap{margin-top:25px}
+.playlist-title{margin-bottom:12px;font-weight:700}
+.playlist{
+max-height:260px;overflow-y:auto;
+}
+.playlist-item{
+display:flex;justify-content:space-between;align-items:center;
+padding:12px;border-radius:12px;margin-bottom:8px;
+background:rgba(255,255,255,.06);cursor:pointer;
+}
+.playlist-item:hover{background:rgba(255,255,255,.12)}
+.playlist-item.active{background:rgba(255,255,255,.18)}
+.song-artist{font-size:12px;opacity:.7}
+.playlist::-webkit-scrollbar{width:8px}
+.playlist::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:20px}
+@media(max-width:768px){
+.top{flex-direction:column}
+.album{width:100%;height:auto;aspect-ratio:1}
+}
+</style>
+</head>
+<body>
+<div class="player">
+<div class="top">
+<div class="album"><img src="img/cover.jpg" id="cover"></div>
+<div class="info">
+<div class="logo">
+<h1>🎵 Nhịp Đập Trái Tim</h1>
+<p>8X - 9X Một Thời Để Nhớ</p>
+</div>
+<div class="song-info">
+<h2 id="title">Tên bài hát</h2>
+<p id="artist">Ca sĩ</p>
+</div>
+<div class="time">
+<span id="currentTime">0:00</span>
+<span id="duration">0:00</span>
+</div>
+<input type="range" id="progress" value="0">
+<div class="controls">
+<button id="prev"><i class="bi bi-skip-start-fill"></i></button>
+<button id="play" class="play-btn"><i id="playIcon" class="bi bi-play-fill"></i></button>
+<button id="next"><i class="bi bi-skip-end-fill"></i></button>
+</div>
+</div>
+</div>
+
+<div class="playlist-wrap">
+<div class="playlist-title">Danh sách phát</div>
+<div class="playlist" id="playlist"></div>
+</div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const songs=[
+{title:"A Year Ago",artist:"NEFFEX",src:"music/A Year Ago - NEFFEX.mp3"},
+{title:"As You Fade Away",artist:"NEFFEX",src:"music/As You Fade Away - NEFFEX.mp3"},
+{title:"Catch Me If I Fall",artist:"NEFFEX",src:"music/Catch Me If I Fall - NEFFEX.mp3"}
+];
+
+const audio=document.getElementById("audio");
+const titleEl=document.getElementById("title");
+const artistEl=document.getElementById("artist");
+const progress=document.getElementById("progress");
+const playlist=document.getElementById("playlist");
+const playIcon=document.getElementById("playIcon");
+let current=0;
+
+function fmt(t){const m=Math.floor(t/60)||0;const s=Math.floor(t%60)||0;return `${m}:${String(s).padStart(2,'0')}`;}
+function loadSong(i){
+current=i;
+titleEl.textContent=songs[i].title;
+artistEl.textContent=songs[i].artist;
+audio.src=songs[i].src;
+document.querySelectorAll('.playlist-item').forEach(x=>x.classList.remove('active'));
+const a=document.querySelector(`[data-index="${i}"]`);
+if(a)a.classList.add('active');
+}
+function playSong(){audio.play();playIcon.className='bi bi-pause-fill';}
+function pauseSong(){audio.pause();playIcon.className='bi bi-play-fill';}
+
+document.getElementById('play').onclick=()=>audio.paused?playSong():pauseSong();
+document.getElementById('next').onclick=()=>{loadSong((current+1)%songs.length);playSong();};
+document.getElementById('prev').onclick=()=>{loadSong((current-1+songs.length)%songs.length);playSong();};
+
+audio.addEventListener('loadedmetadata',()=>{
+progress.max=audio.duration;
+document.getElementById('duration').textContent=fmt(audio.duration);
+});
+audio.addEventListener('timeupdate',()=>{
+progress.value=audio.currentTime;
+document.getElementById('currentTime').textContent=fmt(audio.currentTime);
+});
+progress.addEventListener('input',()=>audio.currentTime=progress.value);
+audio.addEventListener('ended',()=>{loadSong((current+1)%songs.length);playSong();});
+
+songs.forEach((s,i)=>{
+const div=document.createElement('div');
+div.className='playlist-item';
+div.dataset.index=i;
+div.innerHTML=`<div><div>${s.title}</div><div class="song-artist">${s.artist}</div></div><i class="bi bi-music-note-beamed"></i>`;
+div.onclick=()=>{loadSong(i);playSong();};
+playlist.appendChild(div);
+});
+
+loadSong(0);
+</script>
+</body>
+</html>
