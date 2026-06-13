@@ -1,1 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhịp Đập Trái Tim--------8x.9x--------Một Thời Để Nhớ</title>
 
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",sans-serif;
+}
+
+body{
+ background:linear-gradient(
+        135deg,
+        #fff5fa,
+        #ffeaf4,
+        #ffd6e7,
+        #ffc1dd
+    );
+
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.player{
+width:630px;
+background:linear-gradient(
+        135deg,
+        #fff5fa,
+        #fff5fa,
+        #fff5fa,
+        #fff5fa
+    );
+border-radius:5px;
+padding:20px;
+}
+
+.top{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.album
+{
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #ff69b4;
+
+    box-shadow:
+    0 0 10px rgba(255,20,147,.4),
+    0 0 20px rgba(255,20,147,.3),
+    0 0 30px rgba(255,20,147,.2);
+}
+
+.album img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.album::after{
+content:"";
+position:absolute;
+width:26px;
+height:26px;
+background:#fff;
+    border:1px solid #ff69b4;
+
+    border-radius:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+
+    box-shadow:0 0 10px rgba(255,20,147,.4);
+}
+
+.album.rotate img{
+animation:spin 14s linear infinite;
+   box-shadow:
+    0 0 15px rgba(255,20,147,.5),
+    0 0 25px rgba(255,20,147,.4),
+    0 0 40px rgba(255,20,147,.3);
+}
+
+@keyframes spin{
+from{transform:rotate(0deg)}
+to{transform:rotate(360deg)}
+}
+
+.info{
+flex:1;
+}
+
+#title{
+font-size:24px;
+font-weight:700;
+color:#ff1493;
+}
+
+#artist{
+margin-top:6px;
+font-size:15px;
+color:#ff1493;
+font-weight:700;
+}
+
+.time{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+color:#ff2f7d;
+margin:10px 0;
+}
+#progress{
+    -webkit-appearance:none;
+    width:100%;
+    height:8px;
+    border-radius:20px;
+    background:#ffe4ef; /* nền hồng nhạt */
+    cursor:pointer;
+}
+
+#progress::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#ff4f9a;
+    cursor:pointer;
+   box-shadow:0 0 10px rgba(255,20,147,.4);
+}
+
+.volume-box{
+display:flex;
+align-items:center;
+justify-content:flex-end;
+gap:8px;
+margin-top:12px;
+}
+
+#volume{
+    -webkit-appearance:none;
+    appearance:none;
+    width:100px;
+    height:8px;
+    border-radius:20px;
+    background:#ffe4ef; /* nền hồng nhạt */
+    cursor:pointer;
+}
+.volume-icon{
+    color:#ff1493;
+    font-size:18px;
+    text-shadow:0 0 8px rgba(255,20,147,.4);
+}
+
+#volume::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:#ff4f9a;
+    cursor:pointer;
+    box-shadow:0 0 10px rgba(255,20,147,.4);
+    cursor:pointer;
+}
+
+.player-buttons{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+margin-top:16px;
+}
+.player-buttons button{
+ width:46px;
+height:46px;
+border:none;
+border-radius:50%;
+background:#ffc1dd;
+color:#ff1493;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+display:flex;
+justify-content:center;
+align-items:center;
+box-shadow:0 3px 8px rgba(255,105,180,.15);
+}
+
+.player-buttons button:hover{
+background:#ffc1dd;
+transform:translateY(-2px);
+}
+
+.player-buttons .play{
+width:60px;
+height:60px;
+font-size:24px;
+background:#ffc1dd;
+color:#ff1493;
+box-shadow:0 5px 15px rgba(255,105,180,.35);
+}
+
+button.active{
+background:#ff8fc1;
+color:#fff;
+}
+
+.playlist-wrap{
+margin-top:18px;
+}
+
+.playlist-title{
+font-weight:700;
+margin-bottom:10px;
+color:#ff1493;
+}
+
+.playlist{
+height:340px;
+overflow-y:auto;
+}
+
+.playlist::-webkit-scrollbar{
+width:6px;
+}
+
+.playlist::-webkit-scrollbar-thumb{
+background:#ff1493;
+border-radius:30px;
+}
+
+.playlist-item{
+padding:8px 6px;
+cursor:pointer;
+border-bottom:1px solid #eee;
+transition:.2s;
+}
+
+.playlist-item:hover{
+background:#f5f5f5;
+}
+
+.playlist-item.active{
+    background:#ffe4ef;
+    border-left:2px solid #ff69b4;
+}
+
+.song-line{
+display:flex;
+align-items:center;
+gap:6px;
+overflow:hidden;
+}
+
+.playing-icon{
+width:22px;
+height:22px;
+object-fit:contain;
+visibility:hidden;
+opacity:0;
+flex-shrink:0;
+}
+
+.playlist-item.playing .playing-icon{
+visibility:visible;
+opacity:1;
+}
+
+.song-name{
+color:#ff1493;
+font-size:14px;
+font-weight:700;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.song-artist{
+font-size:14px;
+color:#ff1493;
+font-weight:600;
+}
+
+.song-artist::before{
+content:" • ";
+}
+
+</style>
+</head>
+<body>
+
+<div class="player">
+
+<div class="top">
+
+<div class="album" id="album">
+<img id="coverImage" src="">
+</div>
+
+<div class="info">
+
+<div id="title"></div>
+<div id="artist"></div>
+
+<div class="time">
+<span id="currentTime">0:00</span>
+<span id="duration">0:00</span>
+</div>
+
+<input type="range" id="progress" value="0">
+
+<div class="volume-box">
+<i class="bi bi-volume-up-fill volume-icon"></i>
+<input type="range"
+id="volume"
+min="0"
+max="1"
+step="0.01"
+value="0.3">
+</div>
+
+<div class="player-buttons">
+
+<button id="shuffle">
+<i class="bi bi-shuffle"></i>
+</button>
+
+<button id="prev">
+<i class="bi bi-skip-start-fill"></i>
+</button>
+
+<button id="play" class="play">
+<i id="icon" class="bi bi-play-fill"></i>
+</button>
+
+<button id="next">
+<i class="bi bi-skip-end-fill"></i>
+</button>
+
+<button id="repeat">
+<i class="bi bi-repeat"></i>
+</button>
+
+</div>
+</div>
+</div>
+
+<div class="playlist-wrap">
+
+<div class="playlist-title">
+  <img width="40px" height"40px" src="img/1.gif" border="0" />Danh sách phát
+</div>
+
+<div class="playlist" id="playlist"></div>
+
+</div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const playlistMap = {
+
+  // Nhạc nền
+  "Nhạc Nền":"playlists/nhacnen.js",
+
+  // 8x-9x
+  "Mỹ Tâm":"ca si/my tam/mytam.js",
+  "Đan Trường":"ca si/dan truong/dantruong.js",
+  "Lam Trường":"ca si/lam truong/lamtruong.js",
+  "Đàm Vĩnh Hưng":"ca si/dam vinh hung/damvinhhung.js",
+  "Cẩm Ly":"ca si/camly/camly.js",
+  "Ưng Hoàng Phúc":"ca si/ung hoang phuc/unghoangphuc.js",
+  "Tuấn Hưng":"ca si/tuan hung/tuanhung.js",
+  "Quang Vinh":"ca si/quang vinh/quangvinh.js",
+  "Phương Thanh":"ca si/phuong thanh/phuongthanh.js",
+  "Hồ Quỳnh Hương":"ca si/ho quynh huong/hoquynhhuong.js",
+
+  "Lương Bích Hữu":"ca si/luong bich huu/luongbichhuu.js",
+  "Nhật Tinh Anh":"ca si/nhat tinh anh/nhattinhanh.js",
+  "Duy Mạnh":"ca si/duy manh/duymanh.js",
+  "Akira Phan":"ca si/akira phan/akiraphan.js",
+  "Khánh Phương":"ca si/khanh phuong/khanhphuong.js",
+  "Ngô Kiến Huy":"ca si/ngo kien huy/ngokienhuy.js",
+  "Tim":"ca si/tim/tim.js",
+  "Wanbi Tuấn Anh":"ca si/wanbi tuan anh/wanbituananh.js",
+  "Bảo Thy":"ca si/bao thy/baothy.js",
+  "Đông Nhi":"ca si/dong nhi/dongnhi.js",
+
+  "Châu Khải Phong":"ca si/chau khai phong/chaukhaiphong.js",
+  "Lý Hải":"ca si/ly hai/lyhai.js",
+  "Châu Gia Kiệt":"ca si/chau gia kiet/chaugiakiet.js",
+  "Lâm Chấn Khang":"ca si/lam chan khang/lamchankhang.js",
+
+  // V-Pop 2010+
+  "Sơn Tùng M-TP":"ca si/son tung mtp/sontungmtp.js",
+  "Noo Phước Thịnh":"ca si/noo phuoc thinh/noophuocthinh.js",
+  "Hoàng Thùy Linh":"ca si/hoang thuy linh/hoangthuylinh.js",
+  "Bích Phương":"ca si/bich phuong/bichphuong.js",
+  "Tóc Tiên":"ca si/toc tien/toctien.js",
+  "Soobin Hoàng Sơn":"ca si/soobin hoang son/soobinhoangson.js",
+  "Erik":"ca si/erik/erik.js",
+  "Đức Phúc":"ca si/duc phuc/ducphuc.js",
+  "Hòa Minzy":"ca si/hoa minzy/hoaminzy.js",
+  "Min":"ca si/min/min.js",
+  "Bảo Anh":"ca si/bao anh/baoanh.js",
+  "Vũ Cát Tường":"ca si/vu cat tuong/vucattuong.js",
+  "Trúc Nhân":"ca si/truc nhan/trucnhan.js",
+  "Miu Lê":"ca si/miu le/miule.js",
+  "Chi Dân":"ca si/chi dan/chidan.js",
+  "MONO":"ca si/mono/mono.js",
+  "HIEUTHUHAI":"ca si/hieuthuhai/hieuthuhai.js",
+  "Tlinh":"ca si/tlinh/tlinh.js",
+  "GREY D":"ca si/grey d/greyd.js",
+  "Wren Evans":"ca si/wren evans/wrenevans.js"
+
+};
+function loadPlaylistFile(file){
+
+    const oldScript =
+        document.getElementById("playlistLoader");
+
+    if(oldScript) oldScript.remove();
+
+    const script =
+        document.createElement("script");
+
+    script.id = "playlistLoader";
+
+    script.src = file + "?t=" + Date.now();
+
+    script.onload = ()=>{
+
+        songs = window.artistPlaylist || [];
+
+        current = 0;
+
+        renderPlaylist();
+
+        if(songs.length){
+
+            loadSong(0);
+
+        }
+
+    };
+
+    document.body.appendChild(script);
+
+}
+let songs = [];
+
+const audio=document.getElementById("audio");
+const album=document.getElementById("album");
+const coverImage=document.getElementById("coverImage");
+
+const title=document.getElementById("title");
+const artist=document.getElementById("artist");
+
+const currentTimeEl=document.getElementById("currentTime");
+const durationEl=document.getElementById("duration");
+
+const progress=document.getElementById("progress");
+const volume=document.getElementById("volume");
+
+const playBtn=document.getElementById("play");
+const nextBtn=document.getElementById("next");
+const prevBtn=document.getElementById("prev");
+
+const shuffleBtn=document.getElementById("shuffle");
+const repeatBtn=document.getElementById("repeat");
+
+const icon=document.getElementById("icon");
+const playlist=document.getElementById("playlist");
+
+let current=0;
+let shuffleMode=false;
+let repeatMode=false;
+
+function formatTime(sec){
+ return Math.floor(sec/60)+":"+
+ String(Math.floor(sec%60)).padStart(2,"0");
+}
+
+function renderPlaylist(){
+
+ playlist.innerHTML="";
+
+ songs.forEach((song,index)=>{
+
+   const item=document.createElement("div");
+
+   item.className="playlist-item";
+   item.dataset.index=index;
+
+   item.innerHTML=`
+   <div class="song-line">
+      <img class="playing-icon" src="img/songnhac1.gif">
+      <span class="song-name">${song.title}</span>
+      <span class="song-artist">${song.artist}</span>
+   </div>`;
+
+   item.onclick=()=>{
+      loadSong(index);
+      playSong();
+   };
+
+   playlist.appendChild(item);
+
+ });
+
+}
+
+function loadSong(index){
+
+ if(!songs[index]) return;
+
+ current=index;
+
+ title.textContent=songs[index].title;
+ artist.textContent=songs[index].artist;
+
+ audio.src=songs[index].src;
+ coverImage.src=songs[index].cover;
+
+ document.querySelectorAll(".playlist-item")
+ .forEach(item=>{
+   item.classList.remove("active","playing");
+ });
+
+ const active=document.querySelector(
+ `[data-index="${index}"]`
+ );
+
+ if(active) active.classList.add("active");
+}
+
+function playSong(){
+
+ audio.play();
+
+ icon.className="bi bi-pause-fill";
+
+ album.classList.add("rotate");
+
+ document.querySelectorAll(".playlist-item")
+ .forEach(item=>item.classList.remove("playing"));
+
+ document
+ .querySelector(`[data-index="${current}"]`)
+ ?.classList.add("playing");
+}
+
+function pauseSong(){
+
+ audio.pause();
+
+ icon.className="bi bi-play-fill";
+
+ album.classList.remove("rotate");
+
+ document.querySelectorAll(".playlist-item")
+ .forEach(item=>item.classList.remove("playing"));
+}
+
+playBtn.onclick=()=>{
+ audio.paused ? playSong() : pauseSong();
+};
+
+nextBtn.onclick=()=>{
+
+ if(shuffleMode){
+   current=Math.floor(Math.random()*songs.length);
+ }else{
+   current=(current+1)%songs.length;
+ }
+
+ loadSong(current);
+ playSong();
+};
+
+prevBtn.onclick=()=>{
+
+ current=(current-1+songs.length)%songs.length;
+
+ loadSong(current);
+ playSong();
+};
+
+shuffleBtn.onclick=(e)=>{
+ shuffleMode=!shuffleMode;
+ e.currentTarget.classList.toggle("active");
+};
+
+repeatBtn.onclick=(e)=>{
+ repeatMode=!repeatMode;
+ e.currentTarget.classList.toggle("active");
+};
+
+audio.addEventListener("loadedmetadata",()=>{
+
+ progress.max=audio.duration;
+
+ durationEl.textContent=
+ formatTime(audio.duration);
+
+});
+
+audio.addEventListener("timeupdate",()=>{
+
+ progress.value=audio.currentTime;
+
+ currentTimeEl.textContent=
+ formatTime(audio.currentTime);
+
+ updateRangeBackground(progress);
+
+});
+
+progress.addEventListener("input",()=>{
+
+ audio.currentTime=progress.value;
+
+ updateRangeBackground(progress);
+
+});
+
+volume.addEventListener("input",()=>{
+
+ audio.volume=volume.value;
+
+ updateRangeBackground(volume);
+
+});
+
+audio.addEventListener("ended",()=>{
+
+ if(repeatMode){
+
+   audio.currentTime=0;
+   playSong();
+
+   return;
+ }
+
+ nextBtn.click();
+
+});
+
+function updateRangeBackground(el){
+
+ const min=Number(el.min||0);
+ const max=Number(el.max||100);
+
+ const value=
+ ((el.value-min)/(max-min))*100;
+
+ el.style.background=
+ `linear-gradient(
+ to right,
+ #ff69b4 0%,
+ #ff69b4 ${value}%,
+ #ffe4ef ${value}%,
+ #ffe4ef 100%
+ )`;
+}
+
+audio.volume=0.3;
+
+updateRangeBackground(progress);
+updateRangeBackground(volume);
+
+loadPlaylistFile(
+    "playlists/nhacnen.js"
+);
+
+/* ===== iframe control ===== */
+
+window.playSongByIndex=function(index){
+
+ if(index<0 || index>=songs.length) return;
+
+ loadSong(index);
+ playSong();
+};
+
+function loadPlaylistFile(file){
+
+    window.artistPlaylist = [];
+
+    const oldScript =
+        document.getElementById("playlistLoader");
+
+    if(oldScript) oldScript.remove();
+
+    const script =
+        document.createElement("script");
+
+    script.id = "playlistLoader";
+
+    script.src = file + "?t=" + Date.now();
+
+    script.onload = ()=>{
+
+        songs = window.artistPlaylist || [];
+
+        current = 0;
+
+        renderPlaylist();
+
+        if(songs.length){
+            loadSong(0);
+            playSong();
+        }
+
+    };
+
+    document.body.appendChild(script);
+}
+
+window.playSongByIndex=function(index){
+
+    if(index<0 || index>=songs.length) return;
+
+    loadSong(index);
+    playSong();
+};
+
+function playTopSong(index){
+
+    const player =
+        document.getElementById("musicPlayer")
+        .contentWindow;
+
+    player.loadArtist("Top 100 Quý 2");
+
+    setTimeout(()=>{
+        player.playSongByIndex(index);
+    },500);
+}
+
+window.loadArtist=function(name){
+
+    console.log("Artist:",name);
+    console.log("File:",playlistMap[name]);
+
+    if(!playlistMap[name]){
+        alert("Playlist của " + name + " đang được cập nhật 💖");
+        return;
+    }
+
+    loadPlaylistFile(playlistMap[name]);
+};
+
+</script>
+
+</body>
+</html>
