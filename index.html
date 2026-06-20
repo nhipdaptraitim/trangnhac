@@ -54,20 +54,20 @@ URL:      http://wWw.AnhSaoXanh.Top
 
 .wrapper {
     display: flow-root;
-    width: 1067px;
+    width: 1352px;
     margin: 0 auto;
-	padding-left: 5px;
+	 padding-left: 5px;
     padding-right: 5px;
 
-    background: #ffeaf4 url('img/anh/bg_wrapper.jpg') center top repeat-y;
-    background-size: 1067px auto;
+    background: #ffffff url('img/anh/bg_wrapper.jpg') center top repeat-y;
+    background-size: 1360px auto;
     box-sizing: border-box;
 }
 
 .header {
 float:left;
 margin-left:20px;
-width: 1016px;
+width: 1300px;
 background: #fff;
 border: 1px solid #ff8fc2;
 }
@@ -78,20 +78,20 @@ margin-bottom: 0px;
 float:left;
 }
 .main-wrapper {
-width: 622px;
+width: 780px;
 float:left;
 min-height: 300px;
 margin-left: 10px;
 margin-right: 10px;
 }
 .right-sidebar-wrapper {
-width: 187px;
+width: 250px;
 float:right;
 min-height: 300px;
 margin-right:20px;
 }
 .left-sidebar-wrapper {
-width: 187px;
+width: 250px;
 float:left;
 min-height: 300px;
 margin-left:20px;
@@ -297,6 +297,44 @@ BORDER-BOTTOM: #ee8305 1px solid
     vertical-align:middle;
     background:url("img/cd.png") no-repeat center;
     background-size:contain;
+}
+#top30List{
+    height:260px;
+    overflow-y:auto;
+    font: bold 12px Tahoma, Verdana, Arial;
+    line-height:10px;
+    margin: 10px;
+}
+
+#top30List a{
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    color:#ff1493;
+    text-decoration:none;
+    font:bold 12px Tahoma,Verdana,Arial;
+    line-height:18px;
+}
+
+#top30List a:hover{
+    color:#ff69b4;
+    text-decoration:underline;
+}
+
+/* Thanh cuộn */
+#top30List::-webkit-scrollbar{
+    width:8px;
+}
+
+#top30List::-webkit-scrollbar-thumb{
+    background:#ff69b4;
+    border-radius:10px;
+}
+
+#top30List::-webkit-scrollbar-track{
+    background:#ffe4ec;
 }
 .smallfont {
 FONT: 10pt tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif
@@ -2181,6 +2219,64 @@ var numchars = 100;</script>
 <div class="content-sidebar">
 <div class="icon "><div class="trondo">
 <div id="top100List"></div>
+</div>
+  </div>
+</div>
+</div>
+<div class='clear'></div>
+</div><div class='widget HTML' data-version='1' id='HTML36'>
+<h2 class='title'>BXH V-POP TOP 30</h2>
+<div class='widget-content'>
+<div class="content-sidebar">
+<div class="artist-list">
+<div id="top30List" class="bxh-scroll"></div>
+<script>
+const Top30 = [
+"Sự Nghiệp Chướng",
+"Bắc Bling",
+"Đừng Làm Trái Tim Anh Đau",
+"Chúng Ta Của Tương Lai",
+"Từng Quen",
+"Fireboy",
+"Nấu Ăn Cho Em",
+"Mang Tiền Về Cho Mẹ",
+"Đi Giữa Trời Rực Rỡ",
+"Ngày Đẹp Trời Để Nói Chia Tay",
+"Anh Thôi Nhân Nhượng",
+"Mất Kết Nối",
+"Hào Quang",
+"Chịu Cách Mình Nói Thua",
+"Từng Là",
+"Thích Em Hơi Nhiều",
+"Có Hẹn Với Thanh Xuân",
+"Waiting For You",
+"Em Xinh",
+"Anh Đã Ổn Hơn",
+"Va Vào Giai Điệu Này",
+"Ánh Mắt Biết Cười",
+"Ngày Mai Người Ta Lấy Chồng",
+"Hoa Nở Không Màu",
+"Bước Qua Mùa Cô Đơn",
+"Lạ Lùng",
+"3107-4",
+"Tháng Tư Là Lời Nói Dối Của Em",
+"Nơi Này Có Anh",
+"Muộn Rồi Mà Sao Còn"
+];
+
+let html = "";
+
+Top30.forEach((song,index)=>{
+    html += `
+<a href="#"
+   title="${song}"
+   onclick="playTopSong(${index});return false;">
+   ♪&nbsp;&nbsp;${song}
+</a>`;
+});
+
+document.getElementById("top30List").innerHTML = html;
+</script>
 <script>
 function playTopSong(index){
 
@@ -2188,75 +2284,15 @@ function playTopSong(index){
         document.getElementById("musicPlayer")
         .contentWindow;
 
-    player.loadArtist("Top 100 Quý 2");
+    player.loadArtist("Top30");
 
     setTimeout(()=>{
         player.playSongByIndex(index);
-    },500);
+    },1000);
 }
 </script>
-</div>
-  </div>
-</div>
-</div>
-<div class='clear'></div>
-</div><div class='widget HTML' data-version='1' id='HTML36'>
-<h2 class='title'>Truyện cười online</h2>
-<div class='widget-content'>
-<div class="content-sidebar">
-<div class="icon "><div class="timhong">
-<b><font face="Tahoma" size="2">
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4381/Thay-doi.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Thay đổi</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4380/Cuoi-vo.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Cưới vợ</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4379/Duoc-vay-thi-hay-qua.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Được vậy thì hay quá</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4378/Chi-con-cach-nay.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chỉ còn cách này</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4377/Mau-cua-tinh-yeu.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Màu của tình yêu</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4376/Ong-chong-khon-kho.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Ông chồng khốn khổ</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4375/An-han.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Ân hận</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4374/Dien-thoai.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Điện thoại</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4373/Chang-lam-quai-gi-ca.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chẳng làm quái gì cả</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4372/Cach-giai-thich-tot-nhat.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Cách giải thích tốt nhất</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4371/Cac-ong-chong-nghi-gi-ve-vo.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chồng nghĩ gì về vợ</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4370/So-vo.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Sợ vợ</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4369/Oi,-lay-chua-toi!.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Ôi, lạy chúa tôi!</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4368/Nguoi-vo-ly-tuong.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Người vợ lý tưởng</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4367/Bom-nhau-voi-Giang-sinh.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Bợm nhậu vs Giáng sinh</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4366/Ba-dieu-uoc.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Ba điều ước</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4365/May-cho-no.html','800','620')" href="#WWW.AnhSaoXanh.TOP">May cho nó</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4364/Nhung-cong-dan-mau-muc.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Công dân mẫu mực</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4363/Chon-ai.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chọn ai</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4362/Bon-em-xin-chiu.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Bọn em xin chịu</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4361/Bi-quyet-giu-hanh-phuc-gia-dinh.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Giữ hạnh phúc gia đình</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4360/Chuyen-chong-con.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chuyện chồng con</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4359/Dai-hon.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Dai hơn</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4358/Co-biet-la-ai-khong.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Có biết là ai không</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4357/Loi-nguyen.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Lời nguyền</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4356/Tho-sua-ong-nuoc.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Thợ sửa ống nước</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4355/Ong-khoi-tac.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Ống khói tắc</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4354/De-de-hinh-dung.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Để dễ hình dung</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4353/Tuyet-doi-nghe-loi.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Tuyệt đối nghe lời</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4352/Ta-on.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Tạ ơn</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4351/Neu-la-dan-ong.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Nếu là đàn ông</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4350/But-chua-nha-khong-thieng.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Bụt nhà không thiêng</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4349/Kho-day-!.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Khó đấy !</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4348/Cho-phu-hop-voi-hoan-canh.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Cho hợp với hoàn cảnh</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4347/Chuyen-dan-ong.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chuyện đàn ông</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4346/Bao-nhieu-tuoi.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Bao nhiêu tuổi</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4345/Tai-sao.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Tại sao</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4344/Giac-mo-dep.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Giấc mơ đẹp</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4343/Dung-la-co-the-toi-te-hon.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Đúng là có thể tồi tệ hơn</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4342/Trung-so.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Trúng số</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4341/Khong-tin-duoc.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Không tin được</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4340/Chi-mot-lan.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chỉ một lần</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4339/Lai-cai-nhau.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Lại cãi nhau</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4338/Tam-trong-vac-dau-con-suong-hon.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Tắm trong vạc dầu</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4337/Tai-sao-chet.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Tại sao chết</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4336/Ly-do-nao.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Lý do nào</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4335/Chuyen-hen-ho.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Chuyện hẹn hò</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4334/Coi-chung....html','800','620')" href="#WWW.AnhSaoXanh.TOP">Coi chừng...</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4333/Vi-dau.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Vì đâu</a></span></div>
-<div><span><a onclick="anhsaoxanhpopup('https://web.archive.org/web/20120513190555/http://hot.buonqua.org/4332/Vui-Giang-sinh.html','800','620')" href="#WWW.AnhSaoXanh.TOP">Vui Giáng sinh</a></span></div>
-</font></b></div></div>
+
+</div></div>
 </div>
 </div>
 <div class='clear'></div>
@@ -2555,6 +2591,61 @@ _WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML21', 'right-sid
 _WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML6', 'footer', document.getElementById('HTML6'), {}, 'displayModeFull'));
 _WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML22', 'footer', document.getElementById('HTML22'), {}, 'displayModeFull'));
 </script>
+
+<script>
+
+function playTopSong(index){
+
+    const player =
+        document.getElementById("musicPlayer")
+        .contentWindow;
+
+    player.loadArtist("Top30");
+
+    setTimeout(()=>{
+        player.playSongByIndex(index);
+    },500);
+}
+
+function loadTop30(){
+
+    const script =
+        document.createElement("script");
+
+    script.src =
+        "nhacnen/BXH TOP30/Top30.js?t=" +
+        Date.now();
+
+    script.onload = ()=>{
+
+        const songs =
+            window.artistPlaylist || [];
+
+        let html = "";
+
+        songs.forEach((song,index)=>{
+
+            html += `
+            <div class="top-song"
+                 onclick="playTopSong(${index})">
+
+                ${String(index+1).padStart(2,"0")}.
+                ${song.title}
+
+            </div>`;
+        });
+
+        document.getElementById("Top30")
+                .innerHTML = html;
+    };
+
+    document.body.appendChild(script);
+}
+
+loadTop30();
 </body>
+
+
+       
 <!-- Kết thúc phần hiển thị trên web -->
 </HTML>
