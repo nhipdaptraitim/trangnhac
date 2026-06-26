@@ -537,8 +537,7 @@
 
  
     ]; 
-/* ================= SONGS ================= */
-
+/* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
 const visualizer = document.querySelector(".visualizer");
 
@@ -550,8 +549,9 @@ const progress = document.getElementById("progress");
 const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
+const songList = document.getElementById("songList");
 
-/* ================= AUDIO CONTEXT ================= */
+/* ================= AUDIO ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
 
@@ -560,18 +560,10 @@ analyser.fftSize = 256;
 
 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-/* ================= AUDIO GRAPH (FIX CHÍNH) ================= */
-let source = null;
-
-function initAudioGraph(){
-    if(source) return;
-
-    source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-
-    console.log("Audio graph connected");
-}
+/* ⚠️ CHỈ TẠO 1 SOURCE */
+const source = audioCtx.createMediaElementSource(audio);
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
 
 /* ================= VISUALIZER ================= */
 const bars = [];
@@ -584,63 +576,62 @@ for(let i=0;i<64;i++){
     bars.push(bar);
 }
 
-/* ================= ANIMATE (KHÔNG CHẾT) ================= */
 function animate(){
     requestAnimationFrame(animate);
 
     analyser.getByteFrequencyData(dataArray);
 
-    let hasSignal = false;
+    let sum = 0;
 
     for(let i=0;i<bars.length;i++){
         const v = dataArray[i] || 0;
+        sum += v;
 
-        if(v > 0) hasSignal = true;
-
-        const h = Math.max(4, (v / 255) * 55);
-        bars[i].style.height = h + "px";
+        bars[i].style.height = Math.max(3,(v/255)*50)+"px";
     }
 
-    // fallback nếu mất tín hiệu
-    if(!hasSignal){
+    if(sum === 0){
         for(let b of bars){
-            b.style.height = "5px";
+            b.style.height = "4px";
         }
     }
 }
-
 animate();
+
+/* ================= PLAYLIST (FIX MẤT LIST) ================= */
+function renderPlaylist(){
+
+    if(!songList){
+        console.log("songList not found!");
+        return;
+    }
+
+    songList.innerHTML = songs.map((s,i)=>
+        `<div class="song-item" onclick="playSong(${i})">
+            ${s.title}
+        </div>`
+    ).join("");
+}
 
 /* ================= PLAY SONG ================= */
 async function playSong(i){
+
     const s = songs[i];
 
     audio.src = s.file;
-
     titleEl.textContent = s.title;
     artistEl.textContent = s.artist;
     coverImage.src = s.cover;
-
-    initAudioGraph();
 
     if(audioCtx.state === "suspended"){
         await audioCtx.resume();
     }
 
-    try{
-        await audio.play();
-    }catch(e){
-        console.log("play error", e);
-    }
-
-    visualizer.style.opacity = "1";
-    visualizer.style.visibility = "visible";
+    await audio.play();
 }
 
-/* ================= PLAY BUTTON ================= */
+/* ================= CONTROLS ================= */
 playBtn.onclick = async () => {
-
-    initAudioGraph();
 
     if(audioCtx.state === "suspended"){
         await audioCtx.resume();
@@ -651,14 +642,9 @@ playBtn.onclick = async () => {
         return;
     }
 
-    if(audio.paused){
-        audio.play();
-    }else{
-        audio.pause();
-    }
+    audio.paused ? audio.play() : audio.pause();
 };
 
-/* ================= NEXT / PREV ================= */
 window.nextSong = () => {
     currentSong = (currentSong + 1) % songs.length;
     playSong(currentSong);
@@ -672,19 +658,17 @@ window.prevSong = () => {
 /* ================= TIME ================= */
 function formatTime(s){
     if(isNaN(s)) return "00:00";
-    let m = Math.floor(s/60);
-    let sec = Math.floor(s%60);
-    return m + ":" + String(sec).padStart(2,"0");
+    return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
 }
-
-audio.addEventListener("loadedmetadata", () => {
-    progress.max = audio.duration;
-    durationEl.textContent = formatTime(audio.duration);
-});
 
 audio.addEventListener("timeupdate", () => {
     progress.value = audio.currentTime;
     currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+audio.addEventListener("loadedmetadata", () => {
+    progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
 });
 
 progress.addEventListener("input", () => {
@@ -695,16 +679,12 @@ volume.addEventListener("input", () => {
     audio.volume = volume.value / 100;
 });
 
-/* ================= AUTO UNLOCK AUDIO ================= */
-document.addEventListener("click", async () => {
-    if(audioCtx.state !== "running"){
-        await audioCtx.resume();
-    }
-});
-
 /* ================= INIT ================= */
 audio.volume = 1;
-renderPlaylist();
+
+window.addEventListener("DOMContentLoaded", () => {
+    renderPlaylist();
+});
    </script> 
    </body> 
    </html>
