@@ -1,0 +1,584 @@
+<!DOCTYPE html> <html lang="vi"> <head> <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Nhịp Đập Trái Tim</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+ 
+    <style> 
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; } 
+    body{ min-height:100vh; 
+        overflow:hidden; 
+        display:flex; 
+        justify-content:center; 
+        align-items:flex-end;
+        padding-bottom:30px; 
+        background:url("nen.png") center center/cover no-repeat;
+        user-select: none;
+        -webkit-user-select: none;
+     }
+ 
+
+     /* ===== MAIN ===== */ 
+     .main-wrapper{
+
+    width:90vw;
+    max-width:1100px;
+    min-width:860px;
+   overflow:visible;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    z-index:2;
+    position:relative;
+    overflow:visible !important;
+}
+      /* ===== PANEL CHUNG ===== */ 
+      .playlist-panel, 
+      .player-panel, 
+      .bottom-nav{ 
+        background:rgba(255,255,255,.05); 
+        backdrop-filter: blur(2px); 
+        border:1px solid #fff; 
+        box-shadow: 0 0 10px #f4e8ee, 0 0 25px rgba(242, 224, 233, 0.7); 
+        border-radius:10px; } 
+      .playlist-panel,
+      .player-panel{
+         position:relative;
+        overflow:visible !important;
+}
+      /* ===== PLAYLIST ===== */ 
+      .playlist-panel{
+        height:220px;
+        padding:10px;
+        background:none !important;
+        backdrop-filter:none !important;
+        border:1px solid #fff;
+        margin-bottom:-70px;
+        overflow:hidden;
+		position: relative;
+       
+    } 
+        
+      .playlist-header{ display:flex; 
+        justify-content:center; 
+        align-items:center; gap:10px; 
+        color:#fff ; font-size:24px; 
+        font-weight:bold; margin-bottom:18px; } 
+      .song-grid{
+       display:grid;
+        grid-template-columns: repeat(4,minmax(0,1fr));
+        gap:1px;
+        width:100%;
+        height: 115px;
+        overflow-y: auto;  
+    }
+    .song-grid::-webkit-scrollbar{
+    width: 5px;
+   }
+   .song-grid::-webkit-scrollbar-thumb{
+    background:#ffd6e9;
+
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(255,105,180,.6);
+}
+.song-grid::-webkit-scrollbar-track{
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+.song-grid::-webkit-scrollbar-thumb:hover{
+    background: #ff3d9a;
+    box-shadow: 0 0 12px #ff69b4;
+}
+      .song-grid a{ display:block; 
+        padding:4px 10px; 
+        text-decoration:none; 
+        color:#fff ; 
+        border-radius:5px; 
+        transition:.3s;
+        min-width:0;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+     } 
+      .song-grid a:hover{ 
+        background: rgba(232, 164, 198, 0.15); 
+        transform: translateY(-2px); 
+        box-shadow: 0 0 10px rgba(207, 187, 197, 0.5); }
+       /* BÀI ĐANG PHÁT */ 
+      .song-grid a.playing{ border: 1px solid #fff; 
+        background: rgba(255,105,180,.12); 
+        color:#fff; 
+        box-shadow: 0 0 10px #f4e8ee, 0 0 25px rgba(242, 224, 233, 0.7); } 
+       .player-bottom{ 
+        width:50px;
+        
+        }
+
+  /* =====LO XO ===== */ 
+
+.spiral-wrapper{
+
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-top:20px;
+    margin-bottom:-45px;
+
+    z-index:999;
+}
+
+.spiral-divider{
+
+    width:540px;
+    height:80px;
+
+    object-fit:contain;
+}     
+      /* ===== PLAYER ===== */ 
+      .player-panel{
+
+    height:420px;
+    padding-top:30px;
+    background:transparent;
+
+    backdrop-filter:none;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:20px;
+
+    padding:30px 40px;
+
+   
+} 
+      /* ===== ALBUM ===== */ 
+      .album-section{display:flex; justify-content:center; align-items:center; position:relative; } 
+     .album-cover{
+    width:230px;
+    height:230px;
+   
+
+    position:relative;
+
+    border-radius:50%;
+    border:1px solid #fff;
+
+    overflow:hidden;
+
+    z-index:2;
+
+    animation:spin 25s linear infinite;
+    animation-play-state:paused;
+
+    box-shadow:
+        0 0 20px rgba(255,105,180,.6),
+        0 0 40px rgba(255,105,180,.3);
+}
+
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.album-cover::after{
+
+    content:"";
+
+    position:absolute;
+    
+
+    width:22px;
+    height:22px;
+
+    border-radius:50%;
+    border:1px solid #ff69b4;
+
+    background:#fff;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+}
+      .album-cover img{ width:100%; height:100%; object-fit:cover; } 
+     
+      /* ===== INFO ===== */ 
+      .player-info{ flex:1;
+	  text-align:center; 
+	  position:relative;
+	  } 
+      #title{
+
+    color:#fff;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+    padding-top:20px;
+}
+   #artist{
+
+    color:#fff;
+
+    margin-top:12px;
+
+    font-size:18px;
+}
+       /* ===== PROGRESS ===== */ 
+    .progress-wrapper{ margin-top:20px; } 
+    #progress{ 
+        width:78%;
+        margin:15px auto 0;
+        accent-color:#ffd6e9;
+        cursor:pointer;
+        appearance:none;
+       -webkit-appearance:none;
+        height:4px;
+        border-radius:10px;
+        background:#fff; /* màu nền thanh */
+}
+     
+       .time-box{ margin-top:8px; 
+        width:78%;
+        margin:15px auto 0;
+        display:flex; 
+        justify-content:space-between; 
+        color:#ffeaf4; }
+        /* ===== CONTROLS ===== */ 
+        .controls{ 
+        margin-top:15px; 
+        display:flex; 
+        justify-content:center; 
+        align-items:center; 
+        gap:15px; }  
+
+.controls button{
+
+    width:60px;
+    height:60px;
+
+    border:1px solid #fff ;
+
+    border-radius:50%;
+
+    background:transparent;
+    box-shadow:
+        0 0 15px rgb(243, 241, 242);
+
+    color:#ffeaf4;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+.controls button:hover{
+
+    border-color:#ff69b4;
+
+    color:#fff;
+
+    box-shadow:
+        0 0 8px #ff8fc2;
+
+    transform:scale(1.05);
+}
+
+  .play-btn{
+
+    width:85px!important;
+    height:85px!important;
+
+    border:1px solid #fff !important;
+
+    border-radius:50%!important;
+
+    background:rgba(243, 240, 243, 0)!important;
+
+    box-shadow:
+        0 0 15px rgb(243, 241, 242);
+
+    font-size:30px!important;
+}
+
+        /* ===== LYRICS ===== */ 
+ .lyrics-line{ 
+    margin-top:20px;
+    margin:20px auto 0;
+    width:78%; 
+    color:#fff;
+    text-shadow: 0 0 3px #f4e8ee, 0 0 25px rgba(255, 255, 255, 0.7); 
+    font-size:20px; 
+}
+         /* ===== VISUALIZER ===== */ 
+.visualizer{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:2px;
+
+    width:100%;   /* QUAN TRỌNG */
+    height:45px;  /* QUAN TRỌNG */
+    margin-top:5px;
+    transition:opacity .4s ease;
+	min-height:40px;
+    opacity:1 !important;
+    visibility:visible !important;
+}
+
+	.bar{
+    width:8px;
+    height:5px;
+    max-height:44px;
+    border-radius:0px;
+    background:linear-gradient(to top,#f8d9e9,#ffd6e9, #fff);
+    transition:height .04s linear;
+    box-shadow: 0 0 15px rgb(236, 27, 132);
+}
+
+@keyframes equalizer{
+
+    0%,100%{
+        height:4px;
+    }
+
+    50%{
+        height:25px;
+    }
+}
+          /* ===== TAB DƯỚI ===== */ 
+          .bottom-nav{ height:75px; display:flex; justify-content:space-between; align-items:center; padding:0 25px; } 
+          .bottom-nav button{ background:none; border:none; color:#ffeaf4; font-size:22px; cursor:pointer; } 
+          .bottom-nav button:hover{ color:#ff69b4; } 
+          .center-avatar{ width:50px; height:50px; border-radius:50%; overflow:hidden; border: 2px solid #ff69b4; } 
+          .center-avatar img{ width:100%; height:100%; } 
+          .volume-box{ display:flex; align-items:center; gap:10px; color:#ffeaf4; } 
+          #volume{ width:160px; 
+          accent-color:#f8d9e9;
+        
+          appearance:none;
+         -webkit-appearance:none;
+          height:4px;
+          border-radius:10px;
+          background:#fff; /* màu nền thanh */ }
+         /* ===== COUPLE ===== */ 
+         .couple{ position:absolute; right:20px; bottom:20px; z-index:1; } 
+         .couple img{ height:340px; }</style> 
+</head> <body> <div class="background-effects"> <div class="moon"></div> 
+    <div id="stars"></div> <div id="petals"></div> <div id="butterflies"></div> </div>
+     <div class="main-wrapper"> 
+        <!-- TOP PLAYLIST --> 
+         <div class="playlist-panel"> 
+            <div class="playlist-header"> 
+                <i class="fa-solid fa-music"></i> <span>TOP 30</span> </div> 
+                <div id="songList" class="song-grid"> </div> 
+            <div class="player-bottom"></div></div>
+                <!-- ẢNH LÒ XO -->
+<div class="spiral-wrapper">
+    <img src="img/loxo.png"  class="spiral-divider"> <img src="img/loxo.png"  class="spiral-divider">
+</div>
+             
+      <!-- PLAYER --> 
+     <div class="player-panel"> 
+        <div class="album-section"> 
+            <div class="album-cover"> 
+                <img id="coverImage" src="ca si/nhạc buồn tâm trạng/phu.jpg"> </div> 
+                </div>
+    <div class="player-info"> 
+        <h1 id="title"> Chưa phát nhạc </h1> 
+        <h2 id="artist"> --- </h2>
+         <div class="progress-wrapper"> 
+        <input type="range" id="progress" value="0"> 
+    </div> <div class="time-box"> <span id="currentTime"> 00:00 </span> 
+        <span id="duration"> 00:00 </span> </div> 
+        <div class="controls"> 
+            <button id="shuffleBtn"> 
+                <i class="fa-solid fa-shuffle"></i> </button> 
+            <button onclick="prevSong()"> <i class="fa-solid fa-backward-step"></i></button>
+            <button id="playBtn" class="play-btn"> <i class="fa-solid fa-play"></i></button> 
+            <button onclick="nextSong()"> <i class="fa-solid fa-forward-step"></i></button>
+            <button id="repeatBtn"> <i class="fa-solid fa-repeat"></i> </button> </div> 
+            <div class="lyrics-line"><marquee behavior="alternate"><marquee width="250"><font color="#fff">Chào Mừng Các Bạn Đã Ghé Thăm Websail Nhịp Đập Trái Tim.Vn  *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨ ≽^•⩊•^≼  Hoàng Quý Phú  ≽^•⩊•^≼*´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨  Chúc Các Bạn Có Phút Nghỉ Ngơi Vui Vẻ Và Hạnh Phúc</font> </marquee></marquee></div> 
+            <div class="visualizer"> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+        </div> </div> </div> 
+        <!-- NAVIGATION BAR --> 
+         <div class="bottom-nav"> 
+            <button> <i class="fa-solid fa-house"></i> </button> 
+            <button> <i class="fa-regular fa-heart"></i> </button> 
+            <button> <i class="fa-solid fa-music"></i> </button> 
+            <div class="center-avatar"> <img src="img/123.jpg"> </div> 
+            <button> <i class="fa-solid fa-gear"></i> </button> 
+            <div class="volume-box"> <i class="fa-solid fa-volume-high"></i> 
+                <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
+                 <!-- COUPLE --> 
+                 <audio id="audio"></audio> 
+    <script>  
+
+/* ================= STATE ================= */
+let currentSong = 0;
+let source = null;
+
+/* ================= ELEMENTS ================= */
+const audio = document.getElementById("audio");
+const visualizer = document.querySelector(".visualizer");
+
+const titleEl = document.getElementById("title");
+const artistEl = document.getElementById("artist");
+const coverImage = document.getElementById("coverImage");
+const playBtn = document.getElementById("playBtn");
+const progress = document.getElementById("progress");
+const volume = document.getElementById("volume");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+
+/* ================= AUDIO CONTEXT ================= */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+const analyser = audioCtx.createAnalyser();
+analyser.fftSize = 256;
+const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+/* ================= AUDIO GRAPH (SAFE) ================= */
+function initAudioGraph(){
+    if(source) return;
+
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+}
+
+/* ================= VISUALIZER (USE EXISTING DOM) ================= */
+const bars = document.querySelectorAll(".visualizer .bar");
+
+/* ================= ANIMATION (ROBUST) ================= */
+function animate(){
+    requestAnimationFrame(animate);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    if(audio.paused){
+        bars.forEach(b=>{
+            b.style.height = "4px";
+            b.style.opacity = "0.3";
+        });
+        return;
+    }
+
+    bars.forEach((b,i)=>{
+        const v = dataArray[i] || 0;
+        const h = Math.max(4,(v/255)*55);
+        b.style.height = h + "px";
+        b.style.opacity = "1";
+    });
+}
+animate();
+
+/* ================= ICON SYNC ================= */
+function updateIcon(){
+    playBtn.innerHTML = audio.paused
+        ? '<i class="fa-solid fa-play"></i>'
+        : '<i class="fa-solid fa-pause"></i>';
+}
+
+audio.addEventListener("play", updateIcon);
+audio.addEventListener("pause", updateIcon);
+
+/* ================= PLAY SONG ================= */
+async function playSong(i){
+    currentSong = i;
+
+    const s = songs[i];
+
+    audio.src = s.file;
+    titleEl.textContent = s.title;
+    artistEl.textContent = s.artist;
+    coverImage.src = s.cover;
+
+    initAudioGraph();
+
+    try{
+        if(audioCtx.state === "suspended"){
+            await audioCtx.resume();
+        }
+
+        await audio.play();
+    }catch(e){
+        console.log("play error:", e);
+    }
+}
+
+/* ================= PLAY BUTTON ================= */
+playBtn.onclick = async ()=>{
+    initAudioGraph();
+
+    if(!audio.src){
+        await playSong(0);
+        return;
+    }
+
+    try{
+        if(audio.paused){
+            await audio.play();
+        }else{
+            audio.pause();
+        }
+    }catch(e){
+        console.log(e);
+    }
+};
+
+/* ================= NEXT / PREV ================= */
+window.nextSong = ()=> playSong((currentSong+1)%songs.length);
+window.prevSong = ()=> playSong((currentSong-1+songs.length)%songs.length);
+
+/* ================= TIME ================= */
+function formatTime(s){
+    if(isNaN(s)) return "00:00";
+    let m = Math.floor(s/60);
+    let sec = Math.floor(s%60);
+    return m+":"+String(sec).padStart(2,"0");
+}
+
+audio.addEventListener("loadedmetadata",()=>{
+    progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate",()=>{
+    progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+progress.addEventListener("input",()=>{
+    audio.currentTime = progress.value;
+});
+
+volume.addEventListener("input",()=>{
+    audio.volume = volume.value/100;
+});
+
+/* ================= INIT ================= */
+audio.volume = 1;
+renderPlaylist();
+</script>
+   </body> 
+   </html>
