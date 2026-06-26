@@ -332,10 +332,10 @@
     width:100%;   /* QUAN TRỌNG */
     height:45px;  /* QUAN TRỌNG */
     margin-top:5px;
-
-    opacity:0;
-    visibility:hidden;
     transition:opacity .4s ease;
+	min-height:40px;
+    opacity:1 !important;
+    visibility:visible !important;
 }
 
 	.bar{
@@ -430,7 +430,8 @@
                 <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
                  <!-- COUPLE --> 
                  <audio id="audio"></audio> 
-    <script> /* ========================== PLAYLIST DATA ========================== */ 
+    <script> 
+		/* ========================== PLAYLIST DATA ========================== */ 
     const songs =
      [ 
     { 
@@ -536,6 +537,10 @@
 
  
     ]; 
+
+/* ================= SONGS ================= */
+const songs = [ /* giữ nguyên list của bạn */ ];
+
 /* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
 const visualizer = document.querySelector(".visualizer");
@@ -549,34 +554,74 @@ const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
-/* ================= AUDIO CONTEXT (FIX CHÍNH) ================= */
+/* ================= AUDIO ENGINE (FIX CỐT LÕI) ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
 
 const analyser = audioCtx.createAnalyser();
 analyser.fftSize = 256;
 
+const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+/* ⚠️ QUAN TRỌNG: chỉ tạo 1 source duy nhất */
 const source = audioCtx.createMediaElementSource(audio);
 source.connect(analyser);
 analyser.connect(audioCtx.destination);
 
-const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
 /* ================= STATE ================= */
 let currentSong = 0;
 
-/* ================= PLAYLIST ================= */
-function renderPlaylist(){
-    const list = document.getElementById("songList");
+/* ================= VISUALIZER ================= */
+const bars = [];
+visualizer.innerHTML = "";
 
-    list.innerHTML = songs.map((s,i)=>
-        `<div onclick="playSong(${i})">🎵 ${s.title}</div>`
-    ).join("");
+// tạo bars
+for(let i=0;i<64;i++){
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    visualizer.appendChild(bar);
+    bars.push(bar);
 }
 
-/* ================= LOAD SONG ================= */
-function playSong(i){
+/* ================= ANIMATION LOOP (FIX TRIỆT ĐỂ) ================= */
+function animate(){
+    requestAnimationFrame(animate);
+
+    // nếu chưa play thì reset nhẹ UI
+    if(audio.paused){
+        for(let b of bars){
+            b.style.height = "4px";
+        }
+        return;
+    }
+
+    analyser.getByteFrequencyData(dataArray);
+
+    let active = false;
+
+    for(let i=0;i<bars.length;i++){
+        const v = dataArray[i] || 0;
+
+        if(v > 0) active = true;
+
+        const h = Math.max(4,(v/255)*50);
+        bars[i].style.height = h + "px";
+    }
+
+    // nếu mất signal → reset (fix chết visualizer)
+    if(!active){
+        for(let b of bars){
+            b.style.height = "4px";
+        }
+    }
+}
+
+animate();
+
+/* ================= PLAY SONG (FIX CORE) ================= */
+async function playSong(i){
     currentSong = i;
+
     const s = songs[i];
 
     audio.src = s.file;
@@ -584,17 +629,20 @@ function playSong(i){
     titleEl.textContent = s.title;
     artistEl.textContent = s.artist;
 
+    // 🔥 FIX QUAN TRỌNG NHẤT
+    if(audioCtx.state === "suspended"){
+        await audioCtx.resume();
+    }
+
     audio.play();
 
-    // SHOW VISUALIZER
     visualizer.style.opacity = "1";
     visualizer.style.visibility = "visible";
 }
 
-/* ================= PLAY / PAUSE ================= */
+/* ================= PLAY BUTTON ================= */
 playBtn.onclick = async () => {
 
-    // FIX CHROME AUDIO LOCK
     if(audioCtx.state === "suspended"){
         await audioCtx.resume();
     }
@@ -612,50 +660,23 @@ playBtn.onclick = async () => {
 };
 
 /* ================= NEXT / PREV ================= */
-window.nextSong = function(){
+window.nextSong = () => {
     currentSong = (currentSong + 1) % songs.length;
     playSong(currentSong);
-}
+};
 
-window.prevSong = function(){
+window.prevSong = () => {
     currentSong = (currentSong - 1 + songs.length) % songs.length;
     playSong(currentSong);
-}
-
-/* ================= VISUALIZER ================= */
-visualizer.innerHTML = "";
-
-const bars = [];
-
-for(let i=0;i<64;i++){
-    const bar = document.createElement("div");
-    bar.className = "bar";
-    visualizer.appendChild(bar);
-    bars.push(bar);
-}
-
-function animate(){
-    requestAnimationFrame(animate);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    for(let i=0;i<bars.length;i++){
-        const value = dataArray[i] || 0;
-        const h = Math.max(4, (value / 255) * 45);
-        bars[i].style.height = h + "px";
-    }
-}
-animate();
+};
 
 /* ================= AUDIO EVENTS ================= */
-audio.addEventListener("play", ()=>{
+audio.addEventListener("play", () => {
     playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
 });
 
-audio.addEventListener("pause", ()=>{
+audio.addEventListener("pause", () => {
     playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-
-    visualizer.style.opacity = "0.2";
 });
 
 /* ================= TIME ================= */
@@ -666,27 +687,27 @@ function formatTime(s){
     return m + ":" + String(sec).padStart(2,"0");
 }
 
-audio.addEventListener("loadedmetadata", ()=>{
+audio.addEventListener("loadedmetadata", () => {
     progress.max = audio.duration;
     durationEl.textContent = formatTime(audio.duration);
 });
 
-audio.addEventListener("timeupdate", ()=>{
+audio.addEventListener("timeupdate", () => {
     progress.value = audio.currentTime;
     currentTimeEl.textContent = formatTime(audio.currentTime);
 });
 
-progress.addEventListener("input", ()=>{
+progress.addEventListener("input", () => {
     audio.currentTime = progress.value;
 });
 
-volume.addEventListener("input", ()=>{
+volume.addEventListener("input", () => {
     audio.volume = volume.value / 100;
 });
 
 /* ================= INIT ================= */
-renderPlaylist();
 audio.volume = 1;
+renderPlaylist();
    </script> 
    </body> 
    </html>
