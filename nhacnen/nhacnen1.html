@@ -537,6 +537,22 @@
 
  
     ]; 
+/* ================= SONGS ================= */
+const songs = [
+    {
+        title:"Chỉ Cần Em Bên Anh Thôi",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3"
+    },
+    {
+        title:"Có Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Có Em.mp3"
+    }
+];
+
 /* ================= STATE ================= */
 let currentSong = 0;
 
@@ -553,7 +569,7 @@ const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
-/* ================= AUDIO ENGINE ================= */
+/* ================= AUDIO ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
 
@@ -562,33 +578,27 @@ analyser.fftSize = 256;
 
 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-/* chỉ tạo 1 lần */
 let source = null;
 
 function initAudioGraph(){
     if(source) return;
-
-    try{
-        source = audioCtx.createMediaElementSource(audio);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-    }catch(e){
-        console.log("audio graph error:", e);
-    }
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
 }
 
 /* ================= VISUALIZER ================= */
 const bars = [];
 visualizer.innerHTML = "";
 
-for(let i = 0; i < 64; i++){
+for(let i=0;i<64;i++){
     const bar = document.createElement("div");
     bar.className = "bar";
     visualizer.appendChild(bar);
     bars.push(bar);
 }
 
-/* ================= ANIMATE (FIX CỐT LÕI) ================= */
+/* ================= FIXED ANIMATION ================= */
 function animate(){
     requestAnimationFrame(animate);
 
@@ -602,27 +612,25 @@ function animate(){
         return;
     }
 
-    for(let i = 0; i < bars.length; i++){
+    for(let i=0;i<bars.length;i++){
         const v = dataArray[i] || 0;
-        const h = Math.max(4, (v / 255) * 55);
-
-        bars[i].style.height = h + "px";
+        bars[i].style.height = Math.max(4,(v/255)*55) + "px";
         bars[i].style.opacity = "1";
     }
 }
 animate();
 
 /* ================= PLAY ICON SYNC ================= */
-function updatePlayIcon(){
+function updateIcon(){
     playBtn.innerHTML = audio.paused
         ? '<i class="fa-solid fa-play"></i>'
         : '<i class="fa-solid fa-pause"></i>';
 }
 
-audio.addEventListener("play", updatePlayIcon);
-audio.addEventListener("pause", updatePlayIcon);
+audio.addEventListener("play", updateIcon);
+audio.addEventListener("pause", updateIcon);
 
-/* ================= PLAY SONG ================= */
+/* ================= LOAD SONG ================= */
 async function playSong(i){
     currentSong = i;
 
@@ -639,14 +647,18 @@ async function playSong(i){
         await audioCtx.resume();
     }
 
-    await audio.play();
+    try{
+        await audio.play();
+    }catch(e){
+        console.log(e);
+    }
 
-    visualizer.style.opacity = "1";
-    visualizer.style.visibility = "visible";
+    highlightPlaylist();
 }
 
-/* ================= PLAY BUTTON ================= */
+/* ================= BUTTON ================= */
 playBtn.onclick = async () => {
+
     initAudioGraph();
 
     if(audioCtx.state === "suspended"){
@@ -658,13 +670,8 @@ playBtn.onclick = async () => {
         return;
     }
 
-    if(audio.paused){
-        await audio.play();
-    }else{
-        audio.pause();
-    }
-
-    updatePlayIcon();
+    if(audio.paused) await audio.play();
+    else audio.pause();
 };
 
 /* ================= NEXT / PREV ================= */
@@ -678,13 +685,21 @@ window.prevSong = () => {
     playSong(currentSong);
 };
 
-/* ================= PLAYLIST ================= */
+/* ================= PLAYLIST FIX ================= */
 function renderPlaylist(){
     const el = document.getElementById("songList");
 
     el.innerHTML = songs.map((s,i)=>
-        `<div onclick="playSong(${i})">${s.title}</div>`
+        `<a id="song-${i}" onclick="playSong(${i})">${s.title}</a>`
     ).join("");
+}
+
+function highlightPlaylist(){
+    document.querySelectorAll("#songList a")
+        .forEach(e => e.classList.remove("playing"));
+
+    const active = document.getElementById(`song-${currentSong}`);
+    if(active) active.classList.add("playing");
 }
 
 /* ================= TIME ================= */
@@ -716,6 +731,6 @@ volume.addEventListener("input", () => {
 /* ================= INIT ================= */
 audio.volume = 1;
 renderPlaylist();
-   </script> 
+</script>
    </body> 
    </html>
