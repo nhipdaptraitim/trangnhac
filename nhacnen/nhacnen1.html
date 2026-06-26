@@ -536,8 +536,6 @@
 
  
     ]; 
-    /* ========================== ELEMENTS ========================== */ 
-
 
 /* ================= AUDIO ================= */
 const audio = document.getElementById("audio");
@@ -550,8 +548,7 @@ const source = audioCtx.createMediaElementSource(audio);
 source.connect(analyser);
 analyser.connect(audioCtx.destination);
 
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
+const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
 /* ================= ELEMENTS ================= */
 const visualizer = document.querySelector(".visualizer");
@@ -564,14 +561,15 @@ const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
-/* ================= PLAYLIST ================= */
+/* ================= STATE ================= */
 let currentSong = 0;
 
+/* ================= PLAYLIST ================= */
 function renderPlaylist(){
     const list = document.getElementById("songList");
 
     list.innerHTML = songs.map((s,i)=>
-        `<div onclick="playSong(${i})"> ${s.title}</div>`
+        `<div onclick="playSong(${i})">🎵 ${s.title}</div>`
     ).join("");
 }
 
@@ -587,8 +585,10 @@ function playSong(i){
     artistEl.textContent = song.artist;
 
     audio.play();
-    document.querySelector(".visualizer").style.opacity = "1";
-    document.querySelector(".visualizer").style.visibility = "visible";
+
+    // SHOW VISUALIZER
+    visualizer.style.opacity = "1";
+    visualizer.style.visibility = "visible";
 }
 
 /* ================= PLAY / PAUSE ================= */
@@ -605,12 +605,12 @@ playBtn.onclick = async () => {
 };
 
 /* ================= NEXT / PREV ================= */
-function nextSong(){
+window.nextSong = function(){
     currentSong = (currentSong + 1) % songs.length;
     playSong(currentSong);
 }
 
-function prevSong(){
+window.prevSong = function(){
     currentSong = (currentSong - 1 + songs.length) % songs.length;
     playSong(currentSong);
 }
@@ -620,7 +620,7 @@ visualizer.innerHTML = "";
 
 const bars = [];
 
-for(let i = 0; i < 64; i++){
+for(let i=0;i<64;i++){
     const bar = document.createElement("div");
     bar.className = "bar";
     visualizer.appendChild(bar);
@@ -632,24 +632,43 @@ function animate(){
 
     analyser.getByteFrequencyData(dataArray);
 
-    for(let i = 0; i < bars.length; i++){
-        const value = dataArray[i] || 0;
-        const h = Math.max(4, (value / 255) * 40);
+    for(let i=0;i<bars.length;i++){
+        const value = dataArray[i];
+        const h = Math.max(4, (value / 255) * 45);
         bars[i].style.height = h + "px";
     }
 }
 
 animate();
 
-/* ================= EVENTS ================= */
+/* ================= AUDIO EVENTS ================= */
+audio.addEventListener("play", async () => {
+    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+});
+
+audio.addEventListener("pause", () => {
+    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+
+    visualizer.style.opacity = "0";
+    visualizer.style.visibility = "hidden";
+});
+
+/* ================= TIME ================= */
+function formatTime(s){
+    if(isNaN(s)) return "00:00";
+    let m = Math.floor(s/60);
+    let sec = Math.floor(s%60);
+    return m + ":" + String(sec).padStart(2,"0");
+}
+
 audio.addEventListener("loadedmetadata", () => {
-    durationEl.textContent = formatTime(audio.duration);
     progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
 });
 
 audio.addEventListener("timeupdate", () => {
-    currentTimeEl.textContent = formatTime(audio.currentTime);
     progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
 });
 
 progress.addEventListener("input", () => {
@@ -660,19 +679,9 @@ volume.addEventListener("input", () => {
     audio.volume = volume.value / 100;
 });
 
-/* ================= TIME FORMAT ================= */
-function formatTime(s){
-    if(isNaN(s)) return "00:00";
-    let m = Math.floor(s/60);
-    let sec = Math.floor(s%60);
-    return m + ":" + String(sec).padStart(2,"0");
-}
-
 /* ================= INIT ================= */
 renderPlaylist();
 audio.volume = 1;
-
-
    </script> 
    </body> 
    </html>
