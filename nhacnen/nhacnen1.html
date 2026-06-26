@@ -537,9 +537,10 @@
 
  
     ]; 
-
 /* ================= SONGS ================= */
-const songs = [ /* giữ nguyên list của bạn */ ];
+const songs = [
+    // GIỮ NGUYÊN LIST CỦA BẠN
+];
 
 /* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
@@ -554,7 +555,7 @@ const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
-/* ================= AUDIO ENGINE (FIX CỐT LÕI) ================= */
+/* ================= AUDIO CONTEXT ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
 
@@ -563,19 +564,23 @@ analyser.fftSize = 256;
 
 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-/* ⚠️ QUAN TRỌNG: chỉ tạo 1 source duy nhất */
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
-analyser.connect(audioCtx.destination);
+/* ================= AUDIO GRAPH (FIX CHÍNH) ================= */
+let source = null;
 
-/* ================= STATE ================= */
-let currentSong = 0;
+function initAudioGraph(){
+    if(source) return;
+
+    source = audioCtx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    console.log("Audio graph connected");
+}
 
 /* ================= VISUALIZER ================= */
 const bars = [];
 visualizer.innerHTML = "";
 
-// tạo bars
 for(let i=0;i<64;i++){
     const bar = document.createElement("div");
     bar.className = "bar";
@@ -583,58 +588,54 @@ for(let i=0;i<64;i++){
     bars.push(bar);
 }
 
-/* ================= ANIMATION LOOP (FIX TRIỆT ĐỂ) ================= */
+/* ================= ANIMATE (KHÔNG CHẾT) ================= */
 function animate(){
     requestAnimationFrame(animate);
 
-    // nếu chưa play thì reset nhẹ UI
-    if(audio.paused){
-        for(let b of bars){
-            b.style.height = "4px";
-        }
-        return;
-    }
-
     analyser.getByteFrequencyData(dataArray);
 
-    let active = false;
+    let hasSignal = false;
 
     for(let i=0;i<bars.length;i++){
         const v = dataArray[i] || 0;
 
-        if(v > 0) active = true;
+        if(v > 0) hasSignal = true;
 
-        const h = Math.max(4,(v/255)*50);
+        const h = Math.max(4, (v / 255) * 55);
         bars[i].style.height = h + "px";
     }
 
-    // nếu mất signal → reset (fix chết visualizer)
-    if(!active){
+    // fallback nếu mất tín hiệu
+    if(!hasSignal){
         for(let b of bars){
-            b.style.height = "4px";
+            b.style.height = "5px";
         }
     }
 }
 
 animate();
 
-/* ================= PLAY SONG (FIX CORE) ================= */
+/* ================= PLAY SONG ================= */
 async function playSong(i){
-    currentSong = i;
-
     const s = songs[i];
 
     audio.src = s.file;
-    coverImage.src = s.cover;
+
     titleEl.textContent = s.title;
     artistEl.textContent = s.artist;
+    coverImage.src = s.cover;
 
-    // 🔥 FIX QUAN TRỌNG NHẤT
+    initAudioGraph();
+
     if(audioCtx.state === "suspended"){
         await audioCtx.resume();
     }
 
-    audio.play();
+    try{
+        await audio.play();
+    }catch(e){
+        console.log("play error", e);
+    }
 
     visualizer.style.opacity = "1";
     visualizer.style.visibility = "visible";
@@ -642,6 +643,8 @@ async function playSong(i){
 
 /* ================= PLAY BUTTON ================= */
 playBtn.onclick = async () => {
+
+    initAudioGraph();
 
     if(audioCtx.state === "suspended"){
         await audioCtx.resume();
@@ -670,15 +673,6 @@ window.prevSong = () => {
     playSong(currentSong);
 };
 
-/* ================= AUDIO EVENTS ================= */
-audio.addEventListener("play", () => {
-    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-});
-
-audio.addEventListener("pause", () => {
-    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-});
-
 /* ================= TIME ================= */
 function formatTime(s){
     if(isNaN(s)) return "00:00";
@@ -703,6 +697,13 @@ progress.addEventListener("input", () => {
 
 volume.addEventListener("input", () => {
     audio.volume = volume.value / 100;
+});
+
+/* ================= AUTO UNLOCK AUDIO ================= */
+document.addEventListener("click", async () => {
+    if(audioCtx.state !== "running"){
+        await audioCtx.resume();
+    }
 });
 
 /* ================= INIT ================= */
