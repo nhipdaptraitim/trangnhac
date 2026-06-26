@@ -430,131 +430,142 @@
                 <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
                  <!-- COUPLE --> 
                  <audio id="audio"></audio> 
-    <script>  
-		  <script> 
-		/* ========================== PLAYLIST DATA ========================== */ 
-    const songs =
-     [ 
-    { 
-        title:"Chỉ Cần Em Bên Anh Thôi", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3" }, 
-    { 
-        title:"Có Em",
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Có Em.mp3" }, 
-    { 
-        title:"Dấu Mưa Trong Tim",
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Dấu Mưa Trong Tim.mp3" }, 
-    { 
-        title:"Hình Như Là Em", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Hình Như Là Em.mp3" }, 
-    { 
-        title:"Kiếp Người Mong Manh", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Kiếp Người Mong Manh.mp3" }, 
-    { 
-        title:"Lạc Mất Nhau", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Lạc Mất Nhau.mp3" }, 
-    { 
-        title:"Một Triệu Lý Do Nhớ Em",
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Một-Triệu-Lý-Do-Nhớ-Em.mp3" },
-    { 
-        title:"Người Ở Lại Sau Chia Tay", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Người Ở Lại Sau Chia Tay.mp3" },
-    { 
-        title:"Nhớ Người Không Tên", 
-        artist:"Nhạc Chọn Lọc", 
-        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Nhớ Người Không Tên.mp3" },
-    { 
-        title:"Vẫn Chờ Em", 
+  <script>
+/* ================= SONGS (DUY NHẤT - KHÔNG DUPLICATE) ================= */
+const songs = [
+    {
+        title:"Chỉ Cần Em Bên Anh Thôi",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Vẫn Chờ Em.mp3" },
-    { 
+        file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3"
+    },
+    {
+        title:"Có Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Có Em.mp3"
+    },
+    {
+        title:"Dấu Mưa Trong Tim",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Dấu Mưa Trong Tim.mp3"
+    },
+    {
+        title:"Hình Như Là Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Hình Như Là Em.mp3"
+    },
+    {
+        title:"Kiếp Người Mong Manh",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Kiếp Người Mong Manh.mp3"
+    },
+    {
+        title:"Lạc Mất Nhau",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Lạc Mất Nhau.mp3"
+    },
+    {
+        title:"Một Triệu Lý Do Nhớ Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Một-Triệu-Lý-Do-Nhớ-Em.mp3"
+    },
+    {
+        title:"Người Ở Lại Sau Chia Tay",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Người Ở Lại Sau Chia Tay.mp3"
+    },
+    {
+        title:"Nhớ Người Không Tên",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Nhớ Người Không Tên.mp3"
+    },
+    {
+        title:"Vẫn Chờ Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Vẫn Chờ Em.mp3"
+    },
+    {
         title:"Xin Lỗi Người Em Từng Thương",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Xin Lỗi  Người Em Từng Thương.mp3" },
-    { 
+        file:"ca si/nhạc buồn tâm trạng/Xin Lỗi  Người Em Từng Thương.mp3"
+    },
+    {
         title:"Đường Chân Trời",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Đường-Chân-Trời.mp3" },
-    { 
+        file:"ca si/nhạc buồn tâm trạng/Đường-Chân-Trời.mp3"
+    },
+    {
         title:"Nếu Em Muốn Rời Xa",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Nếu Em Muốn Rời Xa.mp3" },
-    { 
-        title:"Hạng Phúc Chính Là Em",
+        file:"ca si/nhạc buồn tâm trạng/Nếu Em Muốn Rời Xa.mp3"
+    },
+    {
+        title:"Hạnh Phúc Chính Là Em",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Hạng Phúc Chính Là Em.mp3" },
-    { 
-        title:"Dấu-Yêu", 
+        file:"ca si/nhạc buồn tâm trạng/Hạnh Phúc Chính Là Em.mp3"
+    },
+    {
+        title:"Dấu Yêu",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Dấu-Yêu.mp3" },
-    { 
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Yêu.mp3"
+    },
+    {
         title:"Dấu Chân Tình Buồn",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Dấu-Chân-Tình-Buồn.mp3" },
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Chân-Tình-Buồn.mp3"
+    },
     {
         title:"Đau",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/ĐAU.mp3" }, 
+        file:"ca si/nhạc buồn tâm trạng/ĐAU.mp3"
+    },
     {
-        title:"Sợ Yêu", 
+        title:"Sợ Yêu",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Sợ Yêu.mp3" }, 
+        file:"ca si/nhạc buồn tâm trạng/Sợ Yêu.mp3"
+    },
     {
-        title:"Tha Thứ Lỗi Lầm", 
+        title:"Tha Thứ Lỗi Lầm",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Tha Thứ Lỗi Lầm.mp3" }, 
+        file:"ca si/nhạc buồn tâm trạng/Tha Thứ Lỗi Lầm.mp3"
+    },
     {
-        title:"Một Thời Đã Xa", 
+        title:"Một Thời Đã Xa",
         artist:"Nhạc Chọn Lọc",
         cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
-        file:"ca si/nhạc buồn tâm trạng/Một Thời Đã Xa.mp3" },
-
- 
-    ]; 
+        file:"ca si/nhạc buồn tâm trạng/Một Thời Đã Xa.mp3"
+    }
+];
 
 /* ================= STATE ================= */
 let currentSong = 0;
-let source = null;
 
 /* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
 const visualizer = document.querySelector(".visualizer");
-
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const coverImage = document.getElementById("coverImage");
 const playBtn = document.getElementById("playBtn");
-const progress = document.getElementById("progress");
-const volume = document.getElementById("volume");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
+const songList = document.getElementById("songList");
 
 /* ================= AUDIO CONTEXT ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -562,21 +573,30 @@ const audioCtx = new AudioCtx();
 
 const analyser = audioCtx.createAnalyser();
 analyser.fftSize = 256;
+
 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-/* ================= AUDIO GRAPH (SAFE) ================= */
+let source = null;
+
 function initAudioGraph(){
     if(source) return;
-
     source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
 }
 
-/* ================= VISUALIZER (USE EXISTING DOM) ================= */
-const bars = document.querySelectorAll(".visualizer .bar");
+/* ================= VISUALIZER ================= */
+const bars = [];
+visualizer.innerHTML = "";
 
-/* ================= ANIMATION (ROBUST) ================= */
+for(let i=0;i<64;i++){
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    visualizer.appendChild(bar);
+    bars.push(bar);
+}
+
+/* ================= ANIMATE ================= */
 function animate(){
     requestAnimationFrame(animate);
 
@@ -590,16 +610,15 @@ function animate(){
         return;
     }
 
-    bars.forEach((b,i)=>{
+    for(let i=0;i<bars.length;i++){
         const v = dataArray[i] || 0;
-        const h = Math.max(4,(v/255)*55);
-        b.style.height = h + "px";
-        b.style.opacity = "1";
-    });
+        bars[i].style.height = Math.max(4,(v/255)*55)+"px";
+        bars[i].style.opacity = "1";
+    }
 }
 animate();
 
-/* ================= ICON SYNC ================= */
+/* ================= PLAY ICON ================= */
 function updateIcon(){
     playBtn.innerHTML = audio.paused
         ? '<i class="fa-solid fa-play"></i>'
@@ -609,8 +628,8 @@ function updateIcon(){
 audio.addEventListener("play", updateIcon);
 audio.addEventListener("pause", updateIcon);
 
-/* ================= PLAY SONG ================= */
-async function playSong(i){
+/* ================= LOAD SONG ================= */
+function loadSong(i){
     currentSong = i;
 
     const s = songs[i];
@@ -620,72 +639,54 @@ async function playSong(i){
     artistEl.textContent = s.artist;
     coverImage.src = s.cover;
 
-    initAudioGraph();
+    highlightPlaylist();
 
-    try{
-        if(audioCtx.state === "suspended"){
-            await audioCtx.resume();
-        }
-
-        await audio.play();
-    }catch(e){
-        console.log("play error:", e);
+    if(audioCtx.state === "suspended"){
+        audioCtx.resume();
     }
+
+    audio.play().catch(()=>{});
 }
 
 /* ================= PLAY BUTTON ================= */
-playBtn.onclick = async ()=>{
+playBtn.onclick = () => {
+
     initAudioGraph();
 
     if(!audio.src){
-        await playSong(0);
+        loadSong(0);
         return;
     }
 
-    try{
-        if(audio.paused){
-            await audio.play();
-        }else{
-            audio.pause();
-        }
-    }catch(e){
-        console.log(e);
+    if(audio.paused){
+        audio.play();
+    }else{
+        audio.pause();
     }
 };
 
 /* ================= NEXT / PREV ================= */
-window.nextSong = ()=> playSong((currentSong+1)%songs.length);
-window.prevSong = ()=> playSong((currentSong-1+songs.length)%songs.length);
+window.nextSong = () => loadSong((currentSong+1)%songs.length);
+window.prevSong = () => loadSong((currentSong-1+songs.length)%songs.length);
 
-/* ================= TIME ================= */
-function formatTime(s){
-    if(isNaN(s)) return "00:00";
-    let m = Math.floor(s/60);
-    let sec = Math.floor(s%60);
-    return m+":"+String(sec).padStart(2,"0");
+/* ================= PLAYLIST ================= */
+function renderPlaylist(){
+    songList.innerHTML = songs.map((s,i)=>
+        `<a id="song-${i}" onclick="loadSong(${i})">${s.title}</a>`
+    ).join("");
 }
 
-audio.addEventListener("loadedmetadata",()=>{
-    progress.max = audio.duration;
-    durationEl.textContent = formatTime(audio.duration);
-});
+function highlightPlaylist(){
+    document.querySelectorAll("#songList a")
+        .forEach(e=>e.classList.remove("playing"));
 
-audio.addEventListener("timeupdate",()=>{
-    progress.value = audio.currentTime;
-    currentTimeEl.textContent = formatTime(audio.currentTime);
-});
-
-progress.addEventListener("input",()=>{
-    audio.currentTime = progress.value;
-});
-
-volume.addEventListener("input",()=>{
-    audio.volume = volume.value/100;
-});
+    const active = document.getElementById(`song-${currentSong}`);
+    if(active) active.classList.add("playing");
+}
 
 /* ================= INIT ================= */
-audio.volume = 1;
 renderPlaylist();
+loadSong(0);
 </script>
    </body> 
    </html>
