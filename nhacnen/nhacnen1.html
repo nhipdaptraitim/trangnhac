@@ -1169,15 +1169,15 @@ function animateVisualizer() {
 
     analyser.getByteFrequencyData(dataArray);
 
-    bars.forEach((bar, index) => {
+   bars.forEach((bar, index) => {
 
-        const value = dataArray[index] || 0;
+    const value = dataArray[index] || 0;
 
-        const h = Math.min(35, Math.max(5, value * 0.3));
+    const h = Math.min(45, Math.max(6, value * 0.35));
 
-        bar.style.height = h + "px";
+    bar.style.height = h + "px";
 
-    });
+});
 
 }
 
