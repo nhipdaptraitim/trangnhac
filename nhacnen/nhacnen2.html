@@ -430,7 +430,7 @@
                 <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
                  <!-- COUPLE --> 
                  <audio id="audio"></audio> 
-  <script>
+   <script>
 /* ================= SONGS (DUY NHẤT - KHÔNG DUPLICATE) ================= */
 const songs = [
     {
@@ -687,6 +687,10 @@ function highlightPlaylist(){
 /* ================= INIT ================= */
 renderPlaylist();
 loadSong(0);
+audio.addEventListener("ended", () => {
+    currentSong = (currentSong + 1) % songs.length;
+    loadSong(currentSong);
+});
 </script>
    </body> 
    </html>
