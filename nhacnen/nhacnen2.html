@@ -683,7 +683,22 @@ function highlightPlaylist(){
     const active = document.getElementById(`song-${currentSong}`);
     if(active) active.classList.add("playing");
 }
+audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
 
+    progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+	   audio.addEventListener("loadedmetadata", () => {
+    progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
+});
+	   audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+
+    progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+});
 /* ================= INIT ================= */
 renderPlaylist();
 loadSong(0);
