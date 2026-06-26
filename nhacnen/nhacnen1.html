@@ -592,78 +592,80 @@
      shuffleBtn.addEventListener( "click", ()=>{ isShuffle = !isShuffle; shuffleBtn.style.color = isShuffle ? "#ff69b4" : ""; } );
       /* ========================== SONG END ========================== */ 
     audio.addEventListener( "ended", ()=>{ if(isRepeat){ audio.currentTime = 0; audio.play(); return; } nextSong(); } ); 
-    /* ========================== VISUALIZER ========================== */ 
+    document.addEventListener("DOMContentLoaded", () => {
 
-const visualizer = document.querySelector(".visualizer");
+    /* ========================== VISUALIZER ========================== */
 
-visualizer.innerHTML = "";
+    const visualizer = document.querySelector(".visualizer");
 
-// tạo bars
-for (let i = 0; i < 64; i++) {
-    const bar = document.createElement("div");
-    bar.className = "bar";
-    visualizer.appendChild(bar);
-}
+    if (!visualizer) return;
 
-const bars = document.querySelectorAll(".bar");
+    visualizer.innerHTML = "";
 
-function animateVisualizer() {
-    requestAnimationFrame(animateVisualizer);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    for (let index = 0; index < bars.length; index++) {
-        const bar = bars[index];
-
-        const value = dataArray[index] || 0;
-
-        const h = Math.max(4, (value / 255) * 40);
-
-        bar.style.height = h + "px";
-    }
-}
-
-// chạy 1 lần
-animateVisualizer();
-
-/* ========================== START ========================== */
-
-renderPlaylist();
-
-updatePlaying();
-
-audio.volume = 1;
-
-/* ========================== PLAY ========================== */
-
-audio.addEventListener("play", async () => {
-
-    if(audioCtx.state === "suspended"){
-        await audioCtx.resume();
+    for (let i = 0; i < 64; i++) {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        visualizer.appendChild(bar);
     }
 
-    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+    const bars = document.querySelectorAll(".bar");
 
-    document.querySelector(".album-cover").style.animationPlayState = "running";
+    function animateVisualizer() {
+        requestAnimationFrame(animateVisualizer);
 
-    document.querySelector(".visualizer").style.opacity = "1";
-    document.querySelector(".visualizer").style.visibility = "visible";
+        if (!analyser) return;
+
+        analyser.getByteFrequencyData(dataArray);
+
+        for (let i = 0; i < bars.length; i++) {
+            const bar = bars[i];
+            const value = dataArray[i] || 0;
+
+            const h = Math.max(4, (value / 255) * 40);
+
+            bar.style.height = h + "px";
+        }
+    }
+
+    animateVisualizer();
+
+    /* ========================== INIT ========================== */
+
+    renderPlaylist();
+    updatePlaying();
+    audio.volume = 1;
+
+    /* ========================== PLAY ========================== */
+
+    audio.addEventListener("play", async () => {
+
+        if (audioCtx.state === "suspended") {
+            await audioCtx.resume();
+        }
+
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+
+        document.querySelector(".album-cover").style.animationPlayState = "running";
+
+        const v = document.querySelector(".visualizer");
+        v.style.opacity = "1";
+        v.style.visibility = "visible";
+    });
+
+    /* ========================== PAUSE ========================== */
+
+    audio.addEventListener("pause", () => {
+
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+
+        document.querySelector(".album-cover").style.animationPlayState = "paused";
+
+        const v = document.querySelector(".visualizer");
+        v.style.opacity = "0.3";
+        v.style.visibility = "visible"; // KHÔNG ẨN để tránh tưởng mất UI
+    });
 
 });
-
-/* ========================== PAUSE ========================== */
-
-audio.addEventListener("pause", () => {
-
-    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-
-    document.querySelector(".album-cover").style.animationPlayState = "paused";
-
-    document.querySelector(".visualizer").style.opacity = "0";
-    document.querySelector(".visualizer").style.visibility = "hidden";
-
-});
-
    </script> 
    </body> 
    </html>
