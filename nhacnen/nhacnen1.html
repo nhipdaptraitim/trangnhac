@@ -587,6 +587,8 @@ function playSong(i){
     artistEl.textContent = song.artist;
 
     audio.play();
+    document.querySelector(".visualizer").style.opacity = "1";
+    document.querySelector(".visualizer").style.visibility = "visible";
 }
 
 /* ================= PLAY / PAUSE ================= */
