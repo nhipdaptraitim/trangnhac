@@ -620,17 +620,18 @@ function animateVisualizer() {
 
     analyser.getByteFrequencyData(dataArray);
 
-   bars.forEach((bar, index) => {
+   for (let index = 0; index < bars.length; index++) {
+    const bar = bars[index];
 
     const value = dataArray[index] || 0;
 
-     const h = Math.max(8, value * 0.35);
+    // scale chuẩn audio (0–255 → 0–40px)
+    const h = Math.max(4, (value / 255) * 40);
 
     bar.style.height = h + "px";
-
-});
-
 }
+
+
 
 animateVisualizer();
 
