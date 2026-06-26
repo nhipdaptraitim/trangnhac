@@ -540,7 +540,7 @@
 /* ================= STATE ================= */
 let currentSong = 0;
 
-/* ================= AUDIO ================= */
+/* ================= ELEMENTS ================= */
 const audio = document.getElementById("audio");
 const visualizer = document.querySelector(".visualizer");
 
@@ -553,7 +553,7 @@ const volume = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
-/* ================= AUDIO CONTEXT (SAFE INIT) ================= */
+/* ================= AUDIO ENGINE ================= */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioCtx();
 
@@ -562,48 +562,67 @@ analyser.fftSize = 256;
 
 const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-/* CHỐT: chỉ tạo 1 lần */
+/* chỉ tạo 1 lần */
 let source = null;
+
 function initAudioGraph(){
     if(source) return;
-    source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
+
+    try{
+        source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+    }catch(e){
+        console.log("audio graph error:", e);
+    }
 }
 
 /* ================= VISUALIZER ================= */
 const bars = [];
 visualizer.innerHTML = "";
 
-for(let i=0;i<64;i++){
+for(let i = 0; i < 64; i++){
     const bar = document.createElement("div");
     bar.className = "bar";
     visualizer.appendChild(bar);
     bars.push(bar);
 }
 
-/* ================= ANIMATION (KHÔNG CHẾT) ================= */
+/* ================= ANIMATE (FIX CỐT LÕI) ================= */
 function animate(){
     requestAnimationFrame(animate);
 
     analyser.getByteFrequencyData(dataArray);
 
-    let has = false;
-
-    for(let i=0;i<bars.length;i++){
-        const v = dataArray[i] || 0;
-        if(v > 0) has = true;
-
-        bars[i].style.height = Math.max(4,(v/255)*50) + "px";
+    if(audio.paused){
+        for(let b of bars){
+            b.style.height = "4px";
+            b.style.opacity = "0.3";
+        }
+        return;
     }
 
-    if(!has){
-        for(let b of bars) b.style.height = "4px";
+    for(let i = 0; i < bars.length; i++){
+        const v = dataArray[i] || 0;
+        const h = Math.max(4, (v / 255) * 55);
+
+        bars[i].style.height = h + "px";
+        bars[i].style.opacity = "1";
     }
 }
 animate();
 
-/* ================= PLAY ================= */
+/* ================= PLAY ICON SYNC ================= */
+function updatePlayIcon(){
+    playBtn.innerHTML = audio.paused
+        ? '<i class="fa-solid fa-play"></i>'
+        : '<i class="fa-solid fa-pause"></i>';
+}
+
+audio.addEventListener("play", updatePlayIcon);
+audio.addEventListener("pause", updatePlayIcon);
+
+/* ================= PLAY SONG ================= */
 async function playSong(i){
     currentSong = i;
 
@@ -626,7 +645,7 @@ async function playSong(i){
     visualizer.style.visibility = "visible";
 }
 
-/* ================= BUTTON ================= */
+/* ================= PLAY BUTTON ================= */
 playBtn.onclick = async () => {
     initAudioGraph();
 
@@ -639,10 +658,16 @@ playBtn.onclick = async () => {
         return;
     }
 
-    audio.paused ? audio.play() : audio.pause();
+    if(audio.paused){
+        await audio.play();
+    }else{
+        audio.pause();
+    }
+
+    updatePlayIcon();
 };
 
-/* ================= NEXT/PREV ================= */
+/* ================= NEXT / PREV ================= */
 window.nextSong = () => {
     currentSong = (currentSong + 1) % songs.length;
     playSong(currentSong);
@@ -653,7 +678,7 @@ window.prevSong = () => {
     playSong(currentSong);
 };
 
-/* ================= PLAYLIST (FIX MISSING) ================= */
+/* ================= PLAYLIST ================= */
 function renderPlaylist(){
     const el = document.getElementById("songList");
 
@@ -661,6 +686,32 @@ function renderPlaylist(){
         `<div onclick="playSong(${i})">${s.title}</div>`
     ).join("");
 }
+
+/* ================= TIME ================= */
+function formatTime(s){
+    if(isNaN(s)) return "00:00";
+    let m = Math.floor(s/60);
+    let sec = Math.floor(s%60);
+    return m + ":" + String(sec).padStart(2,"0");
+}
+
+audio.addEventListener("loadedmetadata", () => {
+    progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", () => {
+    progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+progress.addEventListener("input", () => {
+    audio.currentTime = progress.value;
+});
+
+volume.addEventListener("input", () => {
+    audio.volume = volume.value / 100;
+});
 
 /* ================= INIT ================= */
 audio.volume = 1;
