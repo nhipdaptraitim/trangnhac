@@ -328,27 +328,26 @@
     align-items:flex-end;
     justify-content:center;
     gap:2px;
+
+    width:100%;   /* QUAN TRỌNG */
+    height:40px;  /* QUAN TRỌNG */
+
     opacity:0;
     margin-top:5px;
     visibility:hidden;
-
     transition:opacity .4s ease;
 }
 
-
-.bar{
-    position: absolute;
+	.bar{
     width:8px;
     height:5px;
-	gap:2px;
-	max-height:35px;
+    max-height:35px;
     border-radius:0px;
     background:linear-gradient(to top,#f8d9e9,#ffd6e9, #fff);
     transition:height .04s linear;
-            box-shadow:
-        0 0 15px rgb(236, 27, 132);
-
+    box-shadow: 0 0 15px rgb(236, 27, 132);
 }
+
 @keyframes equalizer{
 
     0%,100%{
