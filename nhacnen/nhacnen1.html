@@ -572,7 +572,7 @@ function renderPlaylist(){
     const list = document.getElementById("songList");
 
     list.innerHTML = songs.map((s,i)=>
-        `<div onclick="playSong(${i})">🎵 ${s.title}</div>`
+        `<div onclick="playSong(${i})"> ${s.title}</div>`
     ).join("");
 }
 
