@@ -549,36 +549,25 @@ let isShuffle = false;
 let isRepeat = false;
 
 /* ========================== AUDIO VISUALIZER ========================== */
-let ctx;
-let analyser;
-let source;
+let ctx, analyser, source;
 let dataArray;
 let bars = [];
-let vizStarted = false;
+let started = false;
+let sourceCreated = false;
 
 function initVisualizer() {
-    if (vizStarted) return;
-    vizStarted = true;
+    if (started) return;
+    started = true;
 
     ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // ⚠️ QUAN TRỌNG: phải resume (fix Chrome chặn audio)
-    ctx.resume();
-
-    source = ctx.createMediaElementSource(audio);
     analyser = ctx.createAnalyser();
-
     analyser.fftSize = 256;
-    analyser.smoothingTimeConstant = 0.8;
-
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
 
     dataArray = new Uint8Array(analyser.frequencyBinCount);
 
     const visualizer = document.querySelector(".visualizer");
     visualizer.innerHTML = "";
-    bars = [];
 
     for (let i = 0; i < 64; i++) {
         const bar = document.createElement("div");
@@ -587,11 +576,20 @@ function initVisualizer() {
         bars.push(bar);
     }
 
-    animate();
+    draw();
 }
 
-function animate() {
-    requestAnimationFrame(animate);
+function connectAudio() {
+    if (sourceCreated) return;
+    sourceCreated = true;
+
+    source = ctx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+}
+
+function draw() {
+    requestAnimationFrame(draw);
 
     if (!analyser) return;
 
@@ -600,12 +598,9 @@ function animate() {
     for (let i = 0; i < bars.length; i++) {
         let v = dataArray[i];
 
-        // 🔥 boost bass
-        if (i < 8) v *= 2.2;
+        if (i < 8) v *= 2; // bass boost
 
-        let h = Math.max(3, v / 2);
-
-        bars[i].style.height = h + "px";
+        bars[i].style.height = Math.max(3, v / 2) + "px";
         bars[i].style.opacity = v / 255 + 0.3;
     }
 }
