@@ -579,14 +579,6 @@ function initVisualizer() {
     draw();
 }
 
-function connectAudio() {
-    if (sourceCreated) return;
-    sourceCreated = true;
-
-    source = ctx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
-}
 
 function draw() {
     requestAnimationFrame(draw);
@@ -635,8 +627,7 @@ function updatePlaying() {
 
 
 
-
-function playSong(index) {
+        function playSong(index) {
     currentSong = index;
 
     const song = songs[index];
@@ -646,10 +637,14 @@ function playSong(index) {
     coverImage.src = song.cover;
 
     audio.src = encodeURI(song.file);
-    audio.volume = 1;
-    audio.muted = false;
 
-    audio.play().catch(err => console.log(err));
+    audio.play();
+
+    initVisualizer();
+
+    if (ctx && ctx.state === "suspended") {
+        ctx.resume();
+    }
 
     updatePlaying();
 }
@@ -744,11 +739,11 @@ audio.addEventListener("ended", () => {
 renderPlaylist();
 audio.volume = 1;
 updatePlaying();
-document.addEventListener("click", () => {
-    if (ctx) {
+        document.addEventListener("click", () => {
+    if (ctx && ctx.state === "suspended") {
         ctx.resume();
     }
-}, { once: true });
+});
    </script> 
    </body> 
    </html>
