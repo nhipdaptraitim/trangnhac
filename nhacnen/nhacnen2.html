@@ -1113,7 +1113,7 @@ function drawWave() {
 
         if (i < 20) v *= 1.8; // bass boost
 
-        let y = (v * canvas.height) / 2;
+        let y = canvas.height - (v * canvas.height) / 2;
 
         if (i === 0) {
             canvasCtx.moveTo(x, y);
