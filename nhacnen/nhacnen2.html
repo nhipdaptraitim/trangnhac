@@ -503,7 +503,7 @@
 
  
     ]; 
-/* ========================== ELEMENTS ========================== */
+ /* ========================== ELEMENTS ========================== */
 const audio = document.getElementById("audio");
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
@@ -521,10 +521,11 @@ const visualizer = document.querySelector(".visualizer");
 let currentSong = 0;
 let isShuffle = false;
 let isRepeat = false;
+let started = false;
 
 /* ========================== AUDIO VISUALIZER ========================== */
-let ctx, analyser, source, dataArray, bufferLength;
-let audioCtx;
+let audioCtx, analyser, source;
+let dataArray, bufferLength;
 let canvas, canvasCtx;
 
 function initVisualizer() {
@@ -552,21 +553,20 @@ function initVisualizer() {
     drawWave();
 }
 
-function resizeCanvas(){
+function resizeCanvas() {
     canvas.width = canvas.offsetWidth * 2;
     canvas.height = 120;
 }
 
-function drawWave(){
+function drawWave() {
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
 
     analyser.getByteFrequencyData(dataArray);
 
-    canvasCtx.clearRect(0,0,canvas.width,canvas.height);
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // glow style
     canvasCtx.lineWidth = 3;
     canvasCtx.strokeStyle = "#ff69b4";
     canvasCtx.shadowBlur = 20;
@@ -578,11 +578,9 @@ function drawWave(){
     let x = 0;
 
     for (let i = 0; i < bufferLength; i++) {
+        let v = dataArray[i] / 255;
 
-        let v = dataArray[i] / 255.0;
-
-        // 🔥 bass boost
-        if (i < 20) v *= 1.8;
+        if (i < 20) v *= 1.8; // bass boost
 
         let y = (v * canvas.height) / 2;
 
@@ -626,7 +624,7 @@ function updatePlaying() {
     }
 }
 
-
+/* ========================== PLAY SONG ========================== */
 function playSong(index) {
     currentSong = index;
 
@@ -640,11 +638,12 @@ function playSong(index) {
 
     audio.play();
 
+    initVisualizer();
+
+    // FIX AUDIO CONTEXT RESUME
     if (audioCtx && audioCtx.state === "suspended") {
         audioCtx.resume();
     }
-
-    initVisualizer();
 
     updatePlaying();
 }
@@ -726,6 +725,7 @@ repeatBtn.addEventListener("click", () => {
     repeatBtn.style.color = isRepeat ? "#ff69b4" : "";
 });
 
+/* ========================== END SONG ========================== */
 audio.addEventListener("ended", () => {
     if (isRepeat) {
         audio.currentTime = 0;
@@ -739,11 +739,13 @@ audio.addEventListener("ended", () => {
 renderPlaylist();
 audio.volume = 1;
 updatePlaying();
-        document.addEventListener("click", () => {
-    if (ctx && ctx.state === "suspended") {
-        ctx.resume();
+
+/* ========================== UNLOCK AUDIO (FIX CHROME) ========================== */
+document.addEventListener("click", () => {
+    if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
     }
-});
-   </script> 
+}, { once: true });
+       </script> 
    </body> 
    </html>
