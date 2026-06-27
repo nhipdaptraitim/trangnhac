@@ -315,41 +315,21 @@
     font-size:20px; 
 }
          /* ===== VISUALIZER ===== */ 
- .visualizer{
-
+ .visualizer-wave{
     width:95%;
-
-    height:25px;
-    margin-left:20px;
+    height:60px;
     margin-top:20px;
-
     display:flex;
-    align-items:flex-end;
     justify-content:center;
-
-    gap:2px;
+    align-items:center;
+    filter: drop-shadow(0 0 10px #ff69b4);
 }
 
-.bar{ 
-    width:8px; 
-    height:5px; 
-    border-radius:0px; 
-    background: linear-gradient( to top, #f8d9e9, #ffd6e9, #fff ); 
-    animation: equalizer 1s infinite; animation-play-state: paused; opacity:.15; 
-    box-shadow:
-        0 0 4px #ff69b4,
-        0 0 8px rgba(255,105,180,.5);
-}
-
-@keyframes equalizer{
-
-    0%,100%{
-        height:4px;
-    }
-
-    50%{
-        height:25px;
-    }
+#waveCanvas{
+    width:100%;
+    height:60px;
+    border-radius:10px;
+    filter: blur(0.2px) contrast(1.2);
 }
           /* ===== TAB DƯỚI ===== */ 
           .bottom-nav{ height:75px; display:flex; justify-content:space-between; align-items:center; padding:0 25px; } 
@@ -404,13 +384,7 @@
             <button onclick="nextSong()"> <i class="fa-solid fa-forward-step"></i></button>
             <button id="repeatBtn"> <i class="fa-solid fa-repeat"></i> </button> </div> 
             <div class="lyrics-line"><marquee behavior="alternate"><marquee width="250"><font color="#fff">Chào Mừng Các Bạn Đã Ghé Thăm Websail Nhịp Đập Trái Tim.Vn  *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨* Hoàng Quý Phú *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨*  Chúc Các Bạn Có Phút Nghỉ Ngơi Vui Vẻ Và Hạnh Phúc</font> </marquee></marquee></div> 
-            <div class="visualizer"> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
-            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="visualizer"> <canvas id="waveCanvas"></canvas>
         </div> </div> </div> 
         <!-- NAVIGATION BAR --> 
          <div class="bottom-nav"> 
@@ -549,52 +523,79 @@ let isShuffle = false;
 let isRepeat = false;
 
 /* ========================== AUDIO VISUALIZER ========================== */
+let ctx, analyser, source, dataArray, bufferLength;
+let audioCtx;
+let canvas, canvasCtx;
+
 function initVisualizer() {
     if (started) return;
     started = true;
 
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    analyser = ctx.createAnalyser();
-    analyser.fftSize = 256;
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 512;
 
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
+    bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
 
-    // 🔥 QUAN TRỌNG NHẤT: nối audio vào analyser
-    source = ctx.createMediaElementSource(audio);
+    source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
-    analyser.connect(ctx.destination);
+    analyser.connect(audioCtx.destination);
 
-    const visualizer = document.querySelector(".visualizer");
-    visualizer.innerHTML = "";
+    canvas = document.getElementById("waveCanvas");
+    canvasCtx = canvas.getContext("2d");
 
-    bars = [];
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-    for (let i = 0; i < 64; i++) {
-        const bar = document.createElement("div");
-        bar.className = "bar";
-        visualizer.appendChild(bar);
-        bars.push(bar);
-    }
-
-    draw();
+    drawWave();
 }
 
-function draw() {
-    requestAnimationFrame(draw);
+function resizeCanvas(){
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = 120;
+}
+
+function drawWave(){
+    requestAnimationFrame(drawWave);
 
     if (!analyser) return;
 
     analyser.getByteFrequencyData(dataArray);
 
-    for (let i = 0; i < bars.length; i++) {
-        let v = dataArray[i];
+    canvasCtx.clearRect(0,0,canvas.width,canvas.height);
 
-        if (i < 8) v *= 2; // bass boost
+    // glow style
+    canvasCtx.lineWidth = 3;
+    canvasCtx.strokeStyle = "#ff69b4";
+    canvasCtx.shadowBlur = 20;
+    canvasCtx.shadowColor = "#ff69b4";
 
-        bars[i].style.height = Math.max(3, v / 2) + "px";
-        bars[i].style.opacity = v / 255 + 0.3;
+    canvasCtx.beginPath();
+
+    let sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+
+        let v = dataArray[i] / 255.0;
+
+        // 🔥 bass boost
+        if (i < 20) v *= 1.8;
+
+        let y = (v * canvas.height) / 2;
+
+        if (i === 0) {
+            canvasCtx.moveTo(x, y);
+        } else {
+            canvasCtx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
     }
+
+    canvasCtx.stroke();
 }
 
 /* ========================== FORMAT TIME ========================== */
@@ -626,8 +627,7 @@ function updatePlaying() {
 }
 
 
-
-        function playSong(index) {
+function playSong(index) {
     currentSong = index;
 
     const song = songs[index];
@@ -640,11 +640,11 @@ function updatePlaying() {
 
     audio.play();
 
-    initVisualizer();
-
-    if (ctx && ctx.state === "suspended") {
-        ctx.resume();
+    if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
     }
+
+    initVisualizer();
 
     updatePlaying();
 }
