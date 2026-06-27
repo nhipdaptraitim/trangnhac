@@ -549,12 +549,6 @@ let isShuffle = false;
 let isRepeat = false;
 
 /* ========================== AUDIO VISUALIZER ========================== */
-let ctx, analyser, source;
-let dataArray;
-let bars = [];
-let started = false;
-let sourceCreated = false;
-
 function initVisualizer() {
     if (started) return;
     started = true;
@@ -566,8 +560,15 @@ function initVisualizer() {
 
     dataArray = new Uint8Array(analyser.frequencyBinCount);
 
+    // 🔥 QUAN TRỌNG NHẤT: nối audio vào analyser
+    source = ctx.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+
     const visualizer = document.querySelector(".visualizer");
     visualizer.innerHTML = "";
+
+    bars = [];
 
     for (let i = 0; i < 64; i++) {
         const bar = document.createElement("div");
@@ -578,7 +579,6 @@ function initVisualizer() {
 
     draw();
 }
-
 
 function draw() {
     requestAnimationFrame(draw);
