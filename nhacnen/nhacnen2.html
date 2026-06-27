@@ -461,7 +461,7 @@ function animateBars() {
   }
 
   bars.forEach(b => {
-    const h = Math.random() * 40 + 5;
+    const h = 5 + Math.random() * 40;
     b.style.height = h + "px";
   });
 
@@ -474,6 +474,12 @@ audio.addEventListener("play", () => {
     animateBars();
   }
 });
+
+audio.addEventListener("pause", () => {
+  isAnimating = false;
+});
+
+	
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const coverImage = document.getElementById("coverImage");
