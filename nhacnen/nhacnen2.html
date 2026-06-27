@@ -2,7 +2,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Nhịp Đập Trái Tim</title> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
- 
+
     <style> 
     *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; } 
     body{ min-height:100vh; 
@@ -54,7 +54,6 @@
         border:1px solid #fff;
         margin-bottom:-70px;
         overflow:hidden;
-		position: relative;
        
     } 
         
@@ -154,14 +153,13 @@
 
     padding:30px 40px;
 
-   
+    position:relative;
 } 
       /* ===== ALBUM ===== */ 
       .album-section{display:flex; justify-content:center; align-items:center; position:relative; } 
      .album-cover{
     width:230px;
     height:230px;
-   
 
     position:relative;
 
@@ -212,10 +210,7 @@
       .album-cover img{ width:100%; height:100%; object-fit:cover; } 
      
       /* ===== INFO ===== */ 
-      .player-info{ flex:1;
-	  text-align:center; 
-	  position:relative;
-	  } 
+      .player-info{ flex:1; text-align:center; } 
       #title{
 
     color:#fff;
@@ -239,7 +234,7 @@
     .progress-wrapper{ margin-top:20px; } 
     #progress{ 
         width:78%;
-        margin:15px auto 0;
+        margin:20px auto 0;
         accent-color:#ffd6e9;
         cursor:pointer;
         appearance:none;
@@ -251,7 +246,7 @@
      
        .time-box{ margin-top:8px; 
         width:78%;
-        margin:15px auto 0;
+        margin:20px auto 0;
         display:flex; 
         justify-content:space-between; 
         color:#ffeaf4; }
@@ -273,8 +268,6 @@
     border-radius:50%;
 
     background:transparent;
-    box-shadow:
-        0 0 15px rgb(243, 241, 242);
 
     color:#ffeaf4;
 
@@ -305,14 +298,13 @@
 
     border-radius:50%!important;
 
-    background:rgba(243, 240, 243, 0)!important;
+    background:rgba(255, 254, 255, 0.15)!important;
 
     box-shadow:
-        0 0 15px rgb(243, 241, 242);
+        0 0 15px rgba(241, 169, 205, 0.5);
 
     font-size:30px!important;
 }
-
         /* ===== LYRICS ===== */ 
  .lyrics-line{ 
     margin-top:20px;
@@ -323,29 +315,30 @@
     font-size:20px; 
 }
          /* ===== VISUALIZER ===== */ 
-.visualizer{
+ .visualizer{
+
+    width:95%;
+
+    height:25px;
+    margin-left:20px;
+    margin-top:20px;
+
     display:flex;
     align-items:flex-end;
     justify-content:center;
-    gap:2px;
 
-    width:100%;   /* QUAN TRỌNG */
-    height:45px;  /* QUAN TRỌNG */
-    margin-top:5px;
-    transition:opacity .4s ease;
-	min-height:40px;
-    opacity:1 !important;
-    visibility:visible !important;
+    gap:2px;
 }
 
-	.bar{
-    width:8px;
-    height:5px;
-    max-height:44px;
-    border-radius:0px;
-    background:linear-gradient(to top,#f8d9e9,#ffd6e9, #fff);
-    transition:height .04s linear;
-    box-shadow: 0 0 15px rgb(236, 27, 132);
+.bar{ 
+    width:8px; 
+    height:5px; 
+    border-radius:0px; 
+    background: linear-gradient( to top, #f8d9e9, #ffd6e9, #fff ); 
+    animation: equalizer 1s infinite; animation-play-state: paused; opacity:.15; 
+    box-shadow:
+        0 0 4px #ff69b4,
+        0 0 8px rgba(255,105,180,.5);
 }
 
 @keyframes equalizer{
@@ -382,7 +375,7 @@
         <!-- TOP PLAYLIST --> 
          <div class="playlist-panel"> 
             <div class="playlist-header"> 
-                <i class="fa-solid fa-music"></i> <span>TOP 30</span> </div> 
+                <i class="fa-solid fa-music"></i> <span>Thư Giãn </span> </div> 
                 <div id="songList" class="song-grid"> </div> 
             <div class="player-bottom"></div></div>
                 <!-- ẢNH LÒ XO -->
@@ -410,8 +403,14 @@
             <button id="playBtn" class="play-btn"> <i class="fa-solid fa-play"></i></button> 
             <button onclick="nextSong()"> <i class="fa-solid fa-forward-step"></i></button>
             <button id="repeatBtn"> <i class="fa-solid fa-repeat"></i> </button> </div> 
-            <div class="lyrics-line"><marquee behavior="alternate"><marquee width="250"><font color="#fff">Chào Mừng Các Bạn Đã Ghé Thăm Websail Nhịp Đập Trái Tim.Vn  *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨ ≽^•⩊•^≼  Hoàng Quý Phú  ≽^•⩊•^≼*´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨  Chúc Các Bạn Có Phút Nghỉ Ngơi Vui Vẻ Và Hạnh Phúc</font> </marquee></marquee></div> 
-            <div class="visualizer">
+            <div class="lyrics-line"><marquee behavior="alternate"><marquee width="250"><font color="#fff">Chào Mừng Các Bạn Đã Ghé Thăm Websail Nhịp Đập Trái Tim.Vn  *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨* Hoàng Quý Phú *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨*  Chúc Các Bạn Có Phút Nghỉ Ngơi Vui Vẻ Và Hạnh Phúc</font> </marquee></marquee></div> 
+            <div class="visualizer"> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
+            <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> 
         </div> </div> </div> 
         <!-- NAVIGATION BAR --> 
          <div class="bottom-nav"> 
@@ -423,178 +422,338 @@
             <div class="volume-box"> <i class="fa-solid fa-volume-high"></i> 
                 <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
                  <!-- COUPLE --> 
-                 <audio id="audio"></audio> 
+                  <div class="couple"> <img src=""> </div> <audio id="audio"></audio> 
+    <script> /* ========================== PLAYLIST DATA ========================== */ 
+    const songs =
+     [ 
+    { 
+        title:"Chỉ Cần Em Bên Anh Thôi", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3" }, 
+    { 
+        title:"Có Em",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Có Em.mp3" }, 
+    { 
+        title:"Dấu Mưa Trong Tim",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Dấu Mưa Trong Tim.mp3" }, 
+    { 
+        title:"Hình Như Là Em", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Hình Như Là Em.mp3" }, 
+    { 
+        title:"Kiếp Người Mong Manh", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Kiếp Người Mong Manh.mp3" }, 
+    { 
+        title:"Lạc Mất Nhau", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Lạc Mất Nhau.mp3" }, 
+    { 
+        title:"Một Triệu Lý Do Nhớ Em",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Một-Triệu-Lý-Do-Nhớ-Em.mp3" },
+    { 
+        title:"Người Ở Lại Sau Chia Tay", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Người Ở Lại Sau Chia Tay.mp3" },
+    { 
+        title:"Nhớ Người Không Tên", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Nhớ Người Không Tên.mp3" },
+    { 
+        title:"Vẫn Chờ Em", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Vẫn Chờ Em.mp3" },
+    { 
+        title:"Xin Lỗi Người Em Từng Thương",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Xin Lỗi  Người Em Từng Thương.mp3" },
+    { 
+        title:"Đường Chân Trời",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Đường-Chân-Trời.mp3" }, 
+    { 
+        title:"Nếu Em Muốn Rời Xa",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Nếu Em Muốn Rời Xa.mp3" }, 
+    { 
+        title:"Hạng Phúc Chính Là Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Hạng Phúc Chính Là Em.mp3" }, 
+    { 
+        title:"Dấu-Yêu", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Yêu.mp3" },
+    { 
+        title:"Dấu Chân Tình Buồn",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/h.jpg", 
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Chân-Tình-Buồn.mp3" },
+    {
+        title:"Đau",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/ĐAU.mp3" }, 
+    {
+        title:"Sợ Yêu", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Sợ Yêu.mp3" }, 
+    {
+        title:"Tha Thứ Lỗi Lầm", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Tha Thứ Lỗi Lầm.mp3" }, 
+    {
+        title:"Một Thời Đã Xa", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Một Thời Đã Xa.mp3" },
 
-
-<script>
-
-document.addEventListener("DOMContentLoaded", () => {
-window.loadSong = loadSong;
-window.nextSong = nextSong;
-window.prevSong = prevSong;
-
-/* ================= ELEMENTS ================= */
+ 
+    ]; 
+/* ========================== ELEMENTS ========================== */
 const audio = document.getElementById("audio");
-const visualizer = document.querySelector(".visualizer");
-
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const coverImage = document.getElementById("coverImage");
-
-const playBtn = document.getElementById("playBtn");
-const playIcon = playBtn.querySelector("i");
-
 const progress = document.getElementById("progress");
 const volume = document.getElementById("volume");
-
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
+const playBtn = document.getElementById("playBtn");
+const shuffleBtn = document.getElementById("shuffleBtn");
+const repeatBtn = document.getElementById("repeatBtn");
+const visualizer = document.querySelector(".visualizer");
 
-const songList = document.getElementById("songList");
+/* ========================== STATE ========================== */
+let currentSong = 0;
+let isShuffle = false;
+let isRepeat = false;
 
-/* ================= SONGS ================= */
-const songs = [
-  { title:"Chỉ Cần Em Bên Anh Thôi", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3" },
-  { title:"Có Em", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Có Em.mp3" },
-  { title:"Dấu Mưa Trong Tim", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Dấu Mưa Trong Tim.mp3" },
-  { title:"Hình Như Là Em", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Hình Như Là Em.mp3" },
-  { title:"Kiếp Người Mong Manh", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Kiếp Người Mong Manh.mp3" },
-  { title:"Lạc Mất Nhau", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Lạc Mất Nhau.mp3" },
-  { title:"Một Triệu Lý Do Nhớ Em", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Một-Triệu-Lý-Do-Nhớ-Em.mp3" },
-  { title:"Người Ở Lại Sau Chia Tay", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Người Ở Lại Sau Chia Tay.mp3" },
-  { title:"Nhớ Người Không Tên", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Nhớ Người Không Tên.mp3" },
-  { title:"Vẫn Chờ Em", artist:"Nhạc Chọn Lọc", cover:"ca si/nhạc buồn tâm trạng/phu.jpg", file:"ca si/nhạc buồn tâm trạng/Vẫn Chờ Em.mp3" }
-];
+/* ========================== AUDIO VISUALIZER ========================== */
+let ctx;
+let analyser;
+let source;
+let dataArray;
+let bars = [];
+let vizStarted = false;
 
-let current = 0;
+function initVisualizer() {
+    if (vizStarted) return;
+    vizStarted = true;
 
-/* ================= LOAD SONG ================= */
-function loadSong(i){
-  current = i;
-  const s = songs[i];
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-  audio.src = s.file;
-  titleEl.textContent = s.title;
-  artistEl.textContent = s.artist;
-  coverImage.src = s.cover;
+    // ⚠️ QUAN TRỌNG: phải resume (fix Chrome chặn audio)
+    ctx.resume();
 
-  highlight();
-  updatePlayIcon(true);
-  audio.play().catch(()=>{});
+    source = ctx.createMediaElementSource(audio);
+    analyser = ctx.createAnalyser();
+
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = 0.8;
+
+    source.connect(analyser);
+    analyser.connect(ctx.destination);
+
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    const visualizer = document.querySelector(".visualizer");
+    visualizer.innerHTML = "";
+    bars = [];
+
+    for (let i = 0; i < 64; i++) {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        visualizer.appendChild(bar);
+        bars.push(bar);
+    }
+
+    animate();
 }
 
-/* ================= PLAY / PAUSE ================= */
-playBtn.onclick = () => {
-  if (!audio.src) return loadSong(0);
+function animate() {
+    requestAnimationFrame(animate);
 
-  if (audio.paused) {
-    audio.play();
-    updatePlayIcon(true);
-  } else {
-    audio.pause();
-    updatePlayIcon(false);
-  }
-};
+    if (!analyser) return;
 
-function updatePlayIcon(isPlaying){
-  if(isPlaying){
-    playIcon.classList.remove("fa-play");
-    playIcon.classList.add("fa-pause");
-  } else {
-    playIcon.classList.remove("fa-pause");
-    playIcon.classList.add("fa-play");
-  }
+    analyser.getByteFrequencyData(dataArray);
+
+    for (let i = 0; i < bars.length; i++) {
+        let v = dataArray[i];
+
+        // 🔥 boost bass
+        if (i < 8) v *= 2.2;
+
+        let h = Math.max(3, v / 2);
+
+        bars[i].style.height = h + "px";
+        bars[i].style.opacity = v / 255 + 0.3;
+    }
 }
 
-/* ================= NEXT / PREV ================= */
-window.nextSong = () => loadSong((current + 1) % songs.length);
-window.prevSong = () => loadSong((current - 1 + songs.length) % songs.length);
+/* ========================== FORMAT TIME ========================== */
+function formatTime(seconds) {
+    if (isNaN(seconds)) return "00:00";
+    let m = Math.floor(seconds / 60);
+    let s = Math.floor(seconds % 60);
+    return m + ":" + String(s).padStart(2, "0");
+}
 
-/* ================= AUTO NEXT ================= */
-audio.addEventListener("ended", () => nextSong());
+/* ========================== PLAYLIST ========================== */
+function renderPlaylist() {
+    let html = "";
+    songs.forEach((song, i) => {
+        html += `<a href="#" onclick="playSong(${i});return false;">♪ ${song.title}</a>`;
+    });
+    document.getElementById("songList").innerHTML = html;
+}
 
-/* ================= TIME ================= */
-audio.addEventListener("timeupdate", () => {
-  progress.value = audio.currentTime;
-  currentTimeEl.textContent = formatTime(audio.currentTime);
+/* ========================== ACTIVE SONG ========================== */
+function updatePlaying() {
+    document.querySelectorAll(".song-grid a")
+        .forEach(el => el.classList.remove("playing"));
+
+    const links = document.querySelectorAll(".song-grid a");
+    if (links[currentSong]) {
+        links[currentSong].classList.add("playing");
+    }
+}
+
+
+
+
+function playSong(index) {
+    currentSong = index;
+
+    const song = songs[index];
+
+    titleEl.textContent = song.title;
+    artistEl.textContent = song.artist;
+    coverImage.src = song.cover;
+
+    audio.src = encodeURI(song.file);
+    audio.volume = 1;
+    audio.muted = false;
+
+    audio.play().catch(err => console.log(err));
+
+    updatePlaying();
+}
+
+/* ========================== PLAY / PAUSE ========================== */
+function togglePlay() {
+    if (!audio.src) {
+        playSong(0);
+        return;
+    }
+
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+
+playBtn.addEventListener("click", togglePlay);
+
+/* ========================== NEXT / PREV ========================== */
+function nextSong() {
+    if (isShuffle) {
+        playSong(Math.floor(Math.random() * songs.length));
+        return;
+    }
+
+    currentSong++;
+    if (currentSong >= songs.length) currentSong = 0;
+    playSong(currentSong);
+}
+
+function prevSong() {
+    currentSong--;
+    if (currentSong < 0) currentSong = songs.length - 1;
+    playSong(currentSong);
+}
+
+/* ========================== AUDIO EVENTS ========================== */
+audio.addEventListener("play", () => {
+    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+    document.querySelector(".album-cover").style.animationPlayState = "running";
 });
 
+audio.addEventListener("pause", () => {
+    playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+    document.querySelector(".album-cover").style.animationPlayState = "paused";
+});
+
+/* ========================== TIME ========================== */
 audio.addEventListener("loadedmetadata", () => {
-  progress.max = audio.duration;
-  durationEl.textContent = formatTime(audio.duration);
+    progress.max = audio.duration;
+    durationEl.textContent = formatTime(audio.duration);
 });
 
-progress.oninput = () => audio.currentTime = progress.value;
-volume.oninput = () => audio.volume = volume.value / 100;
+audio.addEventListener("timeupdate", () => {
+    progress.value = audio.currentTime;
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+});
 
-/* ================= FORMAT TIME ================= */
-function formatTime(t){
-  if (!t || isNaN(t)) return "00:00";
-  const m = Math.floor(t/60);
-  const s = Math.floor(t%60);
-  return m + ":" + String(s).padStart(2,"0");
-}
+/* ========================== SEEK ========================== */
+progress.addEventListener("input", () => {
+    audio.currentTime = progress.value;
+});
 
-/* ================= PLAYLIST ================= */
-function render(){
-  if(!songList) return;
+/* ========================== VOLUME ========================== */
+volume.addEventListener("input", () => {
+    audio.volume = volume.value / 100;
+});
 
-  songList.innerHTML = songs.map((s,i)=>
-    `<a id="s-${i}">${s.title}</a>`
-  ).join("");
+/* ========================== SHUFFLE / REPEAT ========================== */
+shuffleBtn.addEventListener("click", () => {
+    isShuffle = !isShuffle;
+    shuffleBtn.style.color = isShuffle ? "#ff69b4" : "";
+});
 
-  songList.querySelectorAll("a").forEach(el=>{
-    el.onclick = () => loadSong(parseInt(el.id.replace("s-","")));
-  });
-}
+repeatBtn.addEventListener("click", () => {
+    isRepeat = !isRepeat;
+    repeatBtn.style.color = isRepeat ? "#ff69b4" : "";
+});
 
-function highlight(){
-  document.querySelectorAll("#songList a")
-    .forEach(a => a.classList.remove("playing"));
+audio.addEventListener("ended", () => {
+    if (isRepeat) {
+        audio.currentTime = 0;
+        audio.play();
+    } else {
+        nextSong();
+    }
+});
 
-  const el = document.getElementById(`s-${current}`);
-  if(el) el.classList.add("playing");
-}
-
-/* ================= VISUALIZER ================= */
-const BAR_COUNT = 48;
-const bars = [];
-
-if (visualizer) {
-  visualizer.innerHTML = "";
-
-  for (let i = 0; i < BAR_COUNT; i++) {
-    const bar = document.createElement("div");
-    bar.className = "bar";
-    visualizer.appendChild(bar);
-    bars.push(bar);
-  }
-}
-
-function animateBars(){
-  if (audio.paused) {
-    bars.forEach(b => b.style.height = "4px");
-    return;
-  }
-
-  bars.forEach(b => {
-    const h = 5 + Math.random() * 40;
-    b.style.height = h + "px";
-  });
-
-  requestAnimationFrame(animateBars);
-}
-
-audio.addEventListener("play", () => animateBars());
-
-/* ================= INIT ================= */
+/* ========================== INIT ========================== */
+renderPlaylist();
 audio.volume = 1;
-render();
-updatePlayIcon(false);
-
-});
-</script>
-
-
-</body> 
+updatePlaying();
+document.addEventListener("click", () => {
+    if (ctx) {
+        ctx.resume();
+    }
+}, { once: true });
+   </script> 
+   </body> 
    </html>
