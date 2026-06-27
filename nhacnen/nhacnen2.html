@@ -437,6 +437,43 @@ document.addEventListener("DOMContentLoaded", () => {
 const audio = document.getElementById("audio");
 const visualizer = document.querySelector(".visualizer");
 
+let isAnimating = false;
+
+const BAR_COUNT = 20;
+const bars = [];
+
+if (visualizer) {
+  visualizer.innerHTML = "";
+
+  for (let i = 0; i < BAR_COUNT; i++) {
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    visualizer.appendChild(bar);
+    bars.push(bar);
+  }
+}
+
+function animateBars() {
+  if (!audio || audio.paused) {
+    isAnimating = false;
+    bars.forEach(b => b.style.height = "4px");
+    return;
+  }
+
+  bars.forEach(b => {
+    const h = Math.random() * 40 + 5;
+    b.style.height = h + "px";
+  });
+
+  requestAnimationFrame(animateBars);
+}
+
+audio.addEventListener("play", () => {
+  if (!isAnimating) {
+    isAnimating = true;
+    animateBars();
+  }
+});
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const coverImage = document.getElementById("coverImage");
@@ -494,15 +531,18 @@ function loadSong(i){
 
 /* ================= PLAY ================= */
 
-	playBtn.onclick = () => {
-  if(!audio.src) return loadSong(0);
+playBtn.onclick = () => {
+  if (!audio.src) return loadSong(0);
 
-  if(audio.paused){
+  if (audio.paused) {
     audio.play();
+
     playIcon.classList.remove("fa-play");
     playIcon.classList.add("fa-pause");
+
   } else {
     audio.pause();
+
     playIcon.classList.remove("fa-pause");
     playIcon.classList.add("fa-play");
   }
