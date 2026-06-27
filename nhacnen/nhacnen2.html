@@ -449,6 +449,7 @@ const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 
 const songList = document.getElementById("songList");
+const playIcon = playBtn.querySelector("i");
 
 /* ================= 20 SONGS ================= */
 const songs = [
@@ -492,14 +493,26 @@ function loadSong(i){
 }
 
 /* ================= PLAY ================= */
-playBtn.onclick = () => {
+
+	playBtn.onclick = () => {
   if(!audio.src) return loadSong(0);
-  audio.paused ? audio.play() : audio.pause();
+
+  if(audio.paused){
+    audio.play();
+    playIcon.classList.remove("fa-play");
+    playIcon.classList.add("fa-pause");
+  } else {
+    audio.pause();
+    playIcon.classList.remove("fa-pause");
+    playIcon.classList.add("fa-play");
+  }
 };
 
 /* ================= NEXT / PREV ================= */
 window.nextSong = () => loadSong((current+1)%songs.length);
 window.prevSong = () => loadSong((current-1+songs.length)%songs.length);
+playIcon.classList.remove("fa-play");
+playIcon.classList.add("fa-pause")
 
 /* ================= AUTO NEXT ================= */
 audio.addEventListener("ended", () => {
@@ -556,7 +569,7 @@ render();
 
 });
 </script>
-</script>
+
 
 </body> 
    </html>
