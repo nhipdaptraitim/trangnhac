@@ -581,6 +581,7 @@ function resizeCanvas() {
 }
 
 function drawWave() {
+
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
@@ -589,28 +590,35 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
+    canvasCtx.beginPath();
     canvasCtx.lineWidth = 3;
     canvasCtx.strokeStyle = "#ffd6e9";
-    canvasCtx.shadowBlur = 20;
-    canvasCtx.shadowColor = "#ffd6e9";
+    canvasCtx.shadowColor = "#ff69b4";
+    canvasCtx.shadowBlur = 15;
 
-    canvasCtx.beginPath();
+    const bars = 120;                  // số điểm vẽ
+    const step = bufferLength / bars;  // chia đều phổ tần
 
-    let sliceWidth = canvas.width / bufferLength;
+    const centerY = canvas.height / 2;
+    const sliceWidth = canvas.width / (bars - 1);
+
     let x = 0;
 
-    for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 255;
+    for (let i = 0; i < bars; i++) {
 
-        if (i < 20) v *= 1.8; // bass boost
+        const index = Math.floor(i * step);
 
-        let y = canvas.height - (v * canvas.height) / 2;
+        let value = dataArray[index] / 255;
 
-        if (i === 0) {
+        // tăng nhẹ bass
+        if (index < 20) value *= 1.4;
+
+        const y = centerY - value * (canvas.height * 0.45);
+
+        if (i === 0)
             canvasCtx.moveTo(x, y);
-        } else {
+        else
             canvasCtx.lineTo(x, y);
-        }
 
         x += sliceWidth;
     }
