@@ -574,10 +574,16 @@ function drawWave() {
     canvasCtx.shadowBlur = 20;
     canvasCtx.shadowColor = "#ffd6e9";
 
-    canvasCtx.beginPath();
+  canvasCtx.beginPath();
 
-    let sliceWidth = canvas.width / bufferLength;
-    let x = 0;
+// Chiều rộng sóng (60% chiều ngang canvas)
+const waveWidth = canvas.width * 0.8;
+
+// Căn giữa
+const startX = (canvas.width - waveWidth) / 2;
+
+const sliceWidth = waveWidth / bufferLength;
+let x = startX;
 
     for (let i = 0; i < bufferLength; i++) {
         let v = dataArray[i] / 255;
