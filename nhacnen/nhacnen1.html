@@ -597,11 +597,14 @@ function drawWave() {
 
     const bars = 120;                  // số điểm vẽ
     const step = bufferLength / bars;  // chia đều phổ tần
-
     const centerY = canvas.height / 2;
-    const sliceWidth = canvas.width / (bars - 1);
 
-    let x = 0;
+    const waveWidth = canvas.width * 0.7;   // chỉnh 0.7 theo ý
+    const startX = (canvas.width - waveWidth) / 2;
+
+    const sliceWidth = waveWidth / (bars - 1);
+
+let x = startX;
 
     for (let i = 0; i < bars; i++) {
 
