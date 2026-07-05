@@ -562,7 +562,7 @@ function resizeCanvas() {
     canvas.height = 120;
 }
 
-function drawWave() {
+        function drawWave() {
 
     requestAnimationFrame(drawWave);
 
@@ -572,54 +572,54 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = 54;               // số cột
-    const barWidth = 17;           // độ rộng mỗi cột
-    const gap = 7;                 // khoảng cách
+    const bars = 48;          // số cột
+    const gap = 2;            // khoảng cách giữa block
+    const blockSize = 4;      // kích thước mỗi ô vuông
 
-    const totalWidth = bars * (barWidth + gap);
-    const startX = (canvas.width - totalWidth) / 2;
+    const columnWidth = canvas.width / bars;
+    const centerY = canvas.height / 2;
 
-    let x = startX;
+    canvasCtx.shadowColor = "#ff69b4";
+    canvasCtx.shadowBlur = 10;
+    canvasCtx.fillStyle = "#ff69b4";
 
     for (let i = 0; i < bars; i++) {
 
-        const value = dataArray[i];
+        let value = dataArray[i] / 255;
 
-        const barHeight = (value / 255) * canvas.height * 0.9;
+        // tăng bass cho đẹp
+        if (i < 10) value *= 1.6;
 
-        // Gradient trắng → hồng
-        const gradient = canvasCtx.createLinearGradient(
-            0,
-            canvas.height,
-            0,
-            canvas.height - barHeight
-        );
+        let blocks = Math.floor(value * (canvas.height / (blockSize * 2)));
 
-        gradient.addColorStop(0, "#fad7e8");
-        gradient.addColorStop(1, "#fae3ee");
+        let x = i * columnWidth;
 
-        canvasCtx.fillStyle = gradient;
+        // ===== VẼ STACK BLOCK =====
+        for (let b = 0; b < blocks; b++) {
 
-        canvasCtx.shadowColor = "#fae3ee";
-        canvasCtx.shadowBlur = 18;
+            let yTop = centerY - b * (blockSize + gap);
+            let yBottom = centerY + b * (blockSize + gap);
 
-        // Bo tròn đầu cột
-        canvasCtx.beginPath();
+            canvasCtx.fillRect(
+                x + columnWidth / 2 - blockSize / 2,
+                yTop,
+                blockSize,
+                blockSize
+            );
 
-       canvasCtx.roundRect(
-    x,
-    canvas.height - barHeight,
-    barWidth,
-    barHeight,
-    barWidth * 0.25
-);
-
-        canvasCtx.fill();
-
-        x += barWidth + gap;
+            canvasCtx.fillRect(
+                x + columnWidth / 2 - blockSize / 2,
+                yBottom,
+                blockSize,
+                blockSize
+            );
+        }
     }
-
 }
+
+
+
+
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
     if (isNaN(seconds)) return "00:00";
