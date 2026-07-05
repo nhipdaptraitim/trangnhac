@@ -348,7 +348,79 @@
           background:#fff; /* màu nền thanh */ }
          /* ===== COUPLE ===== */ 
          .couple{ position:absolute; right:20px; bottom:20px; z-index:1; } 
-         .couple img{ height:340px; }</style> 
+         .couple img{ height:340px; }
+        /* ================= MOBILE ================= */
+
+@media (max-width: 768px){
+
+.main-wrapper{
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    padding:10px;
+}
+
+.playlist-panel{
+    height:auto;
+    margin-bottom:0;
+}
+
+.song-grid{
+    grid-template-columns:repeat(2,1fr);
+    height:180px;
+}
+
+.spiral-wrapper{
+    display:none;
+}
+
+.player-panel{
+    flex-direction:column;
+    height:auto;
+    padding:20px 10px;
+}
+
+.album-cover{
+    width:180px;
+    height:180px;
+}
+
+#title{
+    font-size:24px;
+}
+
+#artist{
+    font-size:16px;
+}
+
+.controls{
+    gap:8px;
+}
+
+.controls button{
+    width:50px;
+    height:50px;
+}
+
+.play-btn{
+    width:70px!important;
+    height:70px!important;
+}
+
+.bottom-nav{
+    padding:0 10px;
+}
+
+.volume-box input{
+    width:90px;
+}
+
+.couple{
+    display:none;
+}
+
+}
+    </style> 
 </head>
     <body>
         <div class="background-effects"> <div class="moon"></div> 
