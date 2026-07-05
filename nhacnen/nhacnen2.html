@@ -582,30 +582,30 @@ function resizeCanvas() {
 }
 
 function drawWave() {
+
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
 
-    analyser.getByteFrequencyData(dataArray);
+    // 🔥 QUAN TRỌNG: waveform thật
+    analyser.getByteTimeDomainData(dataArray);
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+
     canvasCtx.lineWidth = 3;
-    canvasCtx.strokeStyle = "#ffd6e9";
-    canvasCtx.shadowBlur = 20;
-    canvasCtx.shadowColor = "#ffd6e9";
+    canvasCtx.strokeStyle = "#ff69b4";
+    canvasCtx.shadowColor = "#ff69b4";
+    canvasCtx.shadowBlur = 15;
 
     canvasCtx.beginPath();
 
-    let sliceWidth = canvas.width / bufferLength;
-    let x = 0;
-
     for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 255;
 
-        if (i < 20) v *= 1.8; // bass boost
-
-        let y = canvas.height - (v * canvas.height) / 2;
+        let v = dataArray[i] / 128.0; // 0–2
+        let y = (v * canvas.height) / 2;
 
         if (i === 0) {
             canvasCtx.moveTo(x, y);
@@ -616,6 +616,7 @@ function drawWave() {
         x += sliceWidth;
     }
 
+    canvasCtx.lineTo(canvas.width, canvas.height / 2);
     canvasCtx.stroke();
 }
 
