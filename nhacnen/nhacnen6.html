@@ -320,7 +320,7 @@
          /* ===== VISUALIZER ===== */ 
  .visualizer-wave{
     width:85%;
-    height:60px;
+    height:80px;
     margin-top:20px;
     display:flex;
     justify-content:center;
@@ -330,7 +330,7 @@
 
 #waveCanvas{
     width:100%;
-    height:60px;
+    height:80px;
     border-radius:10px;
     filter: blur(0.2px) contrast(1.2);
 }
@@ -573,53 +573,94 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = 64;               // số cột
-    const barWidth = 17;           // độ rộng mỗi cột
-    const gap = 7;                 // khoảng cách
+    // ===== Glow =====
+    canvasCtx.shadowColor = "#ff69b4";
+    canvasCtx.shadowBlur = 20;
 
-    const totalWidth = bars * (barWidth + gap);
-    const startX = (canvas.width - totalWidth) / 2;
+    const bars = 48;              // số cột
+    const gap = 6;                // khoảng cách
+    const waveWidth = canvas.width * 0.82;
 
-    let x = startX;
+    const totalGap = gap * (bars - 1);
+    const barWidth = (waveWidth - totalGap) / bars;
+
+    let x = (canvas.width - waveWidth) / 2;
+
+    const middle = bars / 2;
 
     for (let i = 0; i < bars; i++) {
 
-        const value = dataArray[i];
+        const index = Math.floor(i * bufferLength / bars);
 
-        const barHeight = (value / 255) * canvas.height * 0.9;
+        let value = dataArray[index] / 255;
 
-        // Gradient trắng → hồng
+        // Bass mạnh hơn
+        if (index < 15) value *= 1.6;
+
+        // Hai bên thấp - giữa cao
+        const distance = Math.abs(i - middle);
+
+        const scale = 1 - distance / middle;
+
+        const factor = 0.35 + scale * 0.65;
+
+        let barHeight = value * canvas.height * 0.9 * factor;
+
+        if (barHeight < 4) barHeight = 4;
+
+        // ===== Gradient trắng -> hồng =====
         const gradient = canvasCtx.createLinearGradient(
-            0,
+            x,
             canvas.height,
-            0,
+            x,
             canvas.height - barHeight
         );
 
-        gradient.addColorStop(0, "#ffeaf4");
-        gradient.addColorStop(1, "#fad0e4");
+        gradient.addColorStop(0, "#ffffff");
+        gradient.addColorStop(0.45, "#ffd6e9");
+        gradient.addColorStop(1, "#ff69b4");
 
         canvasCtx.fillStyle = gradient;
 
-        canvasCtx.shadowColor = "#fad0e4";
-        canvasCtx.shadowBlur = 18;
-
-        // Bo tròn đầu cột
+        // ===== Cột trên =====
         canvasCtx.beginPath();
 
-       canvasCtx.roundRect(
-    x,
-    canvas.height - barHeight,
-    barWidth,
-    barHeight,
-    barWidth * 0.25
-);
+        canvasCtx.roundRect(
+            x,
+            canvas.height / 2 - barHeight,
+            barWidth,
+            barHeight,
+            8
+        );
+
+        canvasCtx.fill();
+
+        // ===== Cột dưới đối xứng =====
+        canvasCtx.beginPath();
+
+        canvasCtx.roundRect(
+            x,
+            canvas.height / 2,
+            barWidth,
+            barHeight,
+            8
+        );
 
         canvasCtx.fill();
 
         x += barWidth + gap;
     }
 
+    // ===== Đường giữa phát sáng =====
+    canvasCtx.shadowBlur = 25;
+
+    canvasCtx.strokeStyle = "#ffd6e9";
+    canvasCtx.lineWidth = 2;
+
+    canvasCtx.beginPath();
+    canvasCtx.moveTo((canvas.width - waveWidth) / 2, canvas.height / 2);
+    canvasCtx.lineTo((canvas.width + waveWidth) / 2, canvas.height / 2);
+    canvasCtx.stroke();
 }
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
