@@ -563,6 +563,8 @@ function resizeCanvas() {
     canvas.height = 120;
 }
 
+let smoothArray = new Array(48).fill(0);
+
 function drawWave() {
 
     requestAnimationFrame(drawWave);
@@ -573,12 +575,8 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // ===== Glow =====
-    canvasCtx.shadowColor = "#ff69b4";
-    canvasCtx.shadowBlur = 20;
-
-    const bars = 48;              // số cột
-    const gap = 6;                // khoảng cách
+    const bars = 48;
+    const gap = 6;
     const waveWidth = canvas.width * 0.82;
 
     const totalGap = gap * (bars - 1);
@@ -586,29 +584,38 @@ function drawWave() {
 
     let x = (canvas.width - waveWidth) / 2;
 
-    const middle = bars / 2;
+    const middle = (bars - 1) / 2;
+
+    let energy = 0;
 
     for (let i = 0; i < bars; i++) {
 
         const index = Math.floor(i * bufferLength / bars);
-
         let value = dataArray[index] / 255;
 
-        // Bass mạnh hơn
         if (index < 15) value *= 1.6;
 
-        // Hai bên thấp - giữa cao
+        energy += value;
+
+        // wave giữa cao hơn
         const distance = Math.abs(i - middle);
-
         const scale = 1 - distance / middle;
-
         const factor = 0.35 + scale * 0.65;
 
-        let barHeight = value * canvas.height * 0.9 * factor;
+        let targetHeight = value * canvas.height * 0.85 * factor;
 
-        if (barHeight < 4) barHeight = 4;
+        if (targetHeight < 4) targetHeight = 4;
 
-        // ===== Gradient trắng -> hồng =====
+        // easing mượt
+        smoothArray[i] += (targetHeight - smoothArray[i]) * 0.18;
+
+        const barHeight = smoothArray[i];
+
+        // glow theo nhạc
+        canvasCtx.shadowColor = `rgba(255,105,180,${0.25 + energy / bars})`;
+        canvasCtx.shadowBlur = 10 + energy * 25;
+
+        // gradient
         const gradient = canvasCtx.createLinearGradient(
             x,
             canvas.height,
@@ -617,42 +624,25 @@ function drawWave() {
         );
 
         gradient.addColorStop(0, "#ffffff");
-        gradient.addColorStop(0.45, "#fad7e8");
-        gradient.addColorStop(1, "#fad7e8");
+        gradient.addColorStop(0.4, "#ffd1e6");
+        gradient.addColorStop(1, "#ff69b4");
 
         canvasCtx.fillStyle = gradient;
 
-        // ===== Cột trên =====
-        canvasCtx.beginPath();
+        // ===== VẼ CỘT TRÊN (chỉ bo ngoài) =====
+        drawTopBar(x, canvas.height / 2 - barHeight, barWidth, barHeight, 3);
 
-        canvasCtx.roundRect(
-            x,
-            canvas.height / 2 - barHeight,
-            barWidth,
-            barHeight,
-            2
-        );
-
-        canvasCtx.fill();
-
-        // ===== Cột dưới đối xứng =====
-        canvasCtx.beginPath();
-
-        canvasCtx.roundRect(
-            x,
-            canvas.height / 2,
-            barWidth,
-            barHeight,
-            2
-        );
-
-        canvasCtx.fill();
+        // ===== VẼ CỘT DƯỚI (chỉ bo ngoài) =====
+        drawBottomBar(x, canvas.height / 2, barWidth, barHeight, 3);
 
         x += barWidth + gap;
     }
 
-    // ===== Đường giữa phát sáng =====
-    canvasCtx.shadowBlur = 25;
+    // ===== NEON LINE GIỮA =====
+    const avgEnergy = energy / bars;
+
+    canvasCtx.shadowColor = "#ff69b4";
+    canvasCtx.shadowBlur = 25 + avgEnergy * 40;
 
     canvasCtx.strokeStyle = "#ffd6e9";
     canvasCtx.lineWidth = 2;
@@ -661,6 +651,31 @@ function drawWave() {
     canvasCtx.moveTo((canvas.width - waveWidth) / 2, canvas.height / 2);
     canvasCtx.lineTo((canvas.width + waveWidth) / 2, canvas.height / 2);
     canvasCtx.stroke();
+}
+
+// ===== chỉ bo góc ngoài =====
+function drawTopBar(x, y, w, h, r) {
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(x, y + h);
+    canvasCtx.lineTo(x, y + r);
+    canvasCtx.quadraticCurveTo(x, y, x + r, y);
+    canvasCtx.lineTo(x + w - r, y);
+    canvasCtx.quadraticCurveTo(x + w, y, x + w, y + r);
+    canvasCtx.lineTo(x + w, y + h);
+    canvasCtx.closePath();
+    canvasCtx.fill();
+}
+
+function drawBottomBar(x, y, w, h, r) {
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(x, y);
+    canvasCtx.lineTo(x, y + h - r);
+    canvasCtx.quadraticCurveTo(x, y + h, x + r, y + h);
+    canvasCtx.lineTo(x + w - r, y + h);
+    canvasCtx.quadraticCurveTo(x + w, y + h, x + w, y + h - r);
+    canvasCtx.lineTo(x + w, y);
+    canvasCtx.closePath();
+    canvasCtx.fill();
 }
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
