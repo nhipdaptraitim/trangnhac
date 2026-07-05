@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html> <html lang="vi"> <head> <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Nhịp Đập Trái Tim</title> 
@@ -17,6 +19,7 @@
         -webkit-user-select: none;
      }
 
+        
      /* ===== MAIN ===== */ 
      .main-wrapper{
 
@@ -212,7 +215,7 @@
       /* ===== INFO ===== */ 
       .player-info{ flex:1; text-align:center; } 
       #title{
-    margin:20px auto 0;
+
     color:#fff;
 
     font-size:34px;
@@ -226,7 +229,7 @@
 
     color:#fff;
 
-   margin:20px auto 0;
+    margin-top:12px;
 
     font-size:18px;
 }
@@ -246,7 +249,7 @@
      
        .time-box{ margin-top:8px; 
         width:78%;
-        margin:10px auto 0;
+        margin:20px auto 0;
         display:flex; 
         justify-content:space-between; 
         color:#ffeaf4; }
@@ -316,13 +319,13 @@
 }
          /* ===== VISUALIZER ===== */ 
  .visualizer-wave{
-    width:95%;
+    width:80%;
     height:60px;
     margin-top:20px;
     display:flex;
     justify-content:center;
     align-items:center;
-    filter: drop-shadow(0 0 10px #ff69b4);
+    filter: drop-shadow(0 0 10px #fae3ee);
 }
 
 #waveCanvas{
@@ -348,188 +351,7 @@
           background:#fff; /* màu nền thanh */ }
          /* ===== COUPLE ===== */ 
          .couple{ position:absolute; right:20px; bottom:20px; z-index:1; } 
-         .couple img{ height:340px; }
-        /* ================= MOBILE ================= */
-
-@media screen and (max-width:768px){
-
-body{
-    overflow-y:auto;
-    overflow-x:hidden;
-    align-items:flex-start;
-    padding:10px;
-}
-
-/* MAIN */
-
-.main-wrapper{
-
-    width:100%;
-    min-width:0;
-    max-width:100%;
-
-    gap:12px;
-}
-
-/* PLAYLIST */
-
-.playlist-panel{
-
-    height:auto;
-    margin-bottom:0;
-    padding:12px;
-}
-
-.playlist-header{
-
-    font-size:20px;
-}
-
-.song-grid{
-
-    grid-template-columns:repeat(2,1fr);
-    height:180px;
-    gap:4px;
-}
-
-/* Ẩn lò xo */
-
-.spiral-wrapper{
-
-    display:none;
-}
-
-/* PLAYER */
-
-.player-panel{
-
-    flex-direction:column;
-
-    justify-content:flex-start;
-
-    height:auto;
-
-    padding:20px 15px;
-
-    gap:20px;
-}
-
-/* ALBUM */
-
-.album-cover{
-
-    width:180px;
-    height:180px;
-}
-
-/* TITLE */
-
-#title{
-
-    font-size:24px;
-}
-
-#artist{
-
-    font-size:16px;
-}
-
-/* PROGRESS */
-
-#progress{
-
-    width:100%;
-}
-
-.time-box{
-
-    width:100%;
-}
-
-/* BUTTON */
-
-.controls{
-
-    gap:10px;
-}
-
-.controls button{
-
-    width:50px;
-    height:50px;
-    font-size:18px;
-}
-
-.play-btn{
-
-    width:70px !important;
-    height:70px !important;
-}
-
-/* LYRIC */
-
-.lyrics-line{
-
-    width:100%;
-    font-size:16px;
-}
-
-/* VISUALIZER */
-
-.visualizer-wave{
-
-    width:100%;
-    height:50px;
-}
-
-#waveCanvas{
-
-    height:50px;
-}
-
-/* NAV */
-
-.bottom-nav{
-
-    height:auto;
-
-    padding:12px;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
-    justify-content:center;
-}
-
-.volume-box{
-
-    width:100%;
-    justify-content:center;
-}
-
-#volume{
-
-    width:150px;
-}
-
-/* AVATAR */
-
-.center-avatar{
-
-    width:45px;
-    height:45px;
-}
-
-/* COUPLE */
-
-.couple{
-
-    display:none;
-}
-
-}
-    </style> 
+         .couple img{ height:340px; }</style> 
 </head>
     <body>
         <div class="background-effects"> <div class="moon"></div> 
@@ -742,6 +564,7 @@ function resizeCanvas() {
 }
 
 function drawWave() {
+
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
@@ -750,41 +573,54 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvasCtx.lineWidth = 3;
-    canvasCtx.strokeStyle = "#ffd6e9";
-    canvasCtx.shadowBlur = 20;
-    canvasCtx.shadowColor = "#ffd6e9";
+    const bars = 54;               // số cột
+    const barWidth = 17;           // độ rộng mỗi cột
+    const gap = 7;                 // khoảng cách
 
-  canvasCtx.beginPath();
+    const totalWidth = bars * (barWidth + gap);
+    const startX = (canvas.width - totalWidth) / 2;
 
-// Chiều rộng sóng (60% chiều ngang canvas)
-const waveWidth = canvas.width * 0.8;
+    let x = startX;
 
-// Căn giữa
-const startX = (canvas.width - waveWidth) / 2;
+    for (let i = 0; i < bars; i++) {
 
-const sliceWidth = waveWidth / bufferLength;
-let x = startX;
+        const value = dataArray[i];
 
-    for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 255;
+        const barHeight = (value / 255) * canvas.height * 0.9;
 
-        if (i < 20) v *= 1.8; // bass boost
+        // Gradient trắng → hồng
+        const gradient = canvasCtx.createLinearGradient(
+            0,
+            canvas.height,
+            0,
+            canvas.height - barHeight
+        );
 
-        let y = canvas.height - (v * canvas.height) / 2;
+        gradient.addColorStop(0, "#fad7e8");
+        gradient.addColorStop(1, "#fae3ee");
 
-        if (i === 0) {
-            canvasCtx.moveTo(x, y);
-        } else {
-            canvasCtx.lineTo(x, y);
-        }
+        canvasCtx.fillStyle = gradient;
 
-        x += sliceWidth;
+        canvasCtx.shadowColor = "#fae3ee";
+        canvasCtx.shadowBlur = 18;
+
+        // Bo tròn đầu cột
+        canvasCtx.beginPath();
+
+       canvasCtx.roundRect(
+    x,
+    canvas.height - barHeight,
+    barWidth,
+    barHeight,
+    barWidth * 0.25
+);
+
+        canvasCtx.fill();
+
+        x += barWidth + gap;
     }
 
-    canvasCtx.stroke();
 }
-
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
     if (isNaN(seconds)) return "00:00";
