@@ -606,13 +606,13 @@ function drawWave() {
         // Bo tròn đầu cột
         canvasCtx.beginPath();
 
-        canvasCtx.roundRect(
-            x,
-            canvas.height - barHeight,
-            barWidth,
-            barHeight,
-            8
-        );
+       canvasCtx.roundRect(
+    x,
+    canvas.height - barHeight,
+    barWidth,
+    barHeight,
+    barWidth * 0.25
+);
 
         canvasCtx.fill();
 
