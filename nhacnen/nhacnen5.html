@@ -562,6 +562,7 @@ function resizeCanvas() {
 }
 
 function drawWave() {
+
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
@@ -570,41 +571,54 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvasCtx.lineWidth = 3;
-    canvasCtx.strokeStyle = "#ffd6e9";
-    canvasCtx.shadowBlur = 20;
-    canvasCtx.shadowColor = "#ffd6e9";
+    const bars = 64;               // số cột
+    const barWidth = 10;           // độ rộng mỗi cột
+    const gap = 4;                 // khoảng cách
 
-  canvasCtx.beginPath();
+    const totalWidth = bars * (barWidth + gap);
+    const startX = (canvas.width - totalWidth) / 2;
 
-// Chiều rộng sóng (60% chiều ngang canvas)
-const waveWidth = canvas.width * 0.8;
+    let x = startX;
 
-// Căn giữa
-const startX = (canvas.width - waveWidth) / 2;
+    for (let i = 0; i < bars; i++) {
 
-const sliceWidth = waveWidth / bufferLength;
-let x = startX;
+        const value = dataArray[i];
 
-    for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 255;
+        const barHeight = (value / 255) * canvas.height * 0.9;
 
-        if (i < 20) v *= 1.8; // bass boost
+        // Gradient trắng → hồng
+        const gradient = canvasCtx.createLinearGradient(
+            0,
+            canvas.height,
+            0,
+            canvas.height - barHeight
+        );
 
-        let y = canvas.height - (v * canvas.height) / 2;
+        gradient.addColorStop(0, "#ffffff");
+        gradient.addColorStop(1, "#ff69b4");
 
-        if (i === 0) {
-            canvasCtx.moveTo(x, y);
-        } else {
-            canvasCtx.lineTo(x, y);
-        }
+        canvasCtx.fillStyle = gradient;
 
-        x += sliceWidth;
+        canvasCtx.shadowColor = "#ff69b4";
+        canvasCtx.shadowBlur = 18;
+
+        // Bo tròn đầu cột
+        canvasCtx.beginPath();
+
+        canvasCtx.roundRect(
+            x,
+            canvas.height - barHeight,
+            barWidth,
+            barHeight,
+            8
+        );
+
+        canvasCtx.fill();
+
+        x += barWidth + gap;
     }
 
-    canvasCtx.stroke();
 }
-
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
     if (isNaN(seconds)) return "00:00";
