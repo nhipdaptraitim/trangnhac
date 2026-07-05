@@ -761,7 +761,7 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = 35;
+    const bars = 34;
 
     const gap = 5;      // ngang
     const vGap = 3;     // dọc (LED trong cột)
@@ -774,9 +774,9 @@ function drawWave() {
 
     const baseY = canvas.height;
 
-    canvasCtx.shadowColor = "#fad2e7";
+    canvasCtx.shadowColor = "#fff";
     canvasCtx.shadowBlur = 12;
-    canvasCtx.fillStyle = "#fad2e7";
+    canvasCtx.fillStyle = "#fff";
 
     for (let i = 0; i < bars; i++) {
 
