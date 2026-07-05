@@ -564,52 +564,49 @@ function resizeCanvas() {
 
 function drawWave() {
 
-    requestAnimationFrame(drawWave);
+    if (!analyser || !dataArray) {
+        requestAnimationFrame(drawWave);
+        return;
+    }
 
-    if (!analyser) return;
+    requestAnimationFrame(drawWave);
 
     analyser.getByteFrequencyData(dataArray);
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
- const bars = 30;
-const gap = 1;
+    const bars = 30;
+    const gap = 1;
 
-const blockWidth = 30;
-const blockHeight = 10;
+    const blockWidth = 30;
+    const blockHeight = 10;
 
-const totalWidth = bars * blockWidth + (bars - 1) * gap;
-const startX = (canvas.width - totalWidth) / 2;
+    const totalWidth = bars * blockWidth + (bars - 1) * gap;
+    const startX = (canvas.width - totalWidth) / 2;
 
-const baseY = canvas.height;
+    const baseY = canvas.height;
 
-canvasCtx.shadowColor = "#ffeaf4";
-canvasCtx.shadowBlur = 12;
-canvasCtx.fillStyle = "#ffeaf4";
+    canvasCtx.shadowColor = "#ffeaf4";
+    canvasCtx.shadowBlur = 12;
+    canvasCtx.fillStyle = "#ffeaf4";
 
-for (let i = 0; i < bars; i++) {
+    for (let i = 0; i < bars; i++) {
 
-    let value = dataArray[i] / 255;
+        let value = dataArray[i] / 255;
+        if (i < 10) value *= 1.5;
 
-    if (i < 10) value *= 1.5;
+        let blocks = Math.floor(value * (canvas.height / (blockHeight + gap)));
 
-    let blocks = Math.floor(value * (canvas.height / (blockHeight + gap)));
+        let x = startX + i * (blockWidth + gap);
 
-    let x = startX + i * (blockWidth + gap);
+        for (let b = 0; b < blocks; b++) {
 
-    for (let b = 0; b < blocks; b++) {
+            let y = baseY - (b + 1) * (blockHeight + gap);
 
-        let y = baseY - (b + 1) * (blockHeight + gap);
-
-        canvasCtx.fillRect(
-            x,
-            y,
-            blockWidth,
-            blockHeight
-        );
+            canvasCtx.fillRect(x, y, blockWidth, blockHeight);
+        }
     }
 }
-
 
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
