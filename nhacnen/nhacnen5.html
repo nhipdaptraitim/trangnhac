@@ -562,7 +562,7 @@ function resizeCanvas() {
     canvas.height = 120;
 }
 
-        function drawWave() {
+function drawWave() {
 
     requestAnimationFrame(drawWave);
 
@@ -572,52 +572,45 @@ function resizeCanvas() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = 48;          // số cột
-    const gap = 2;            // khoảng cách giữa block
-    const blockSize = 4;      // kích thước mỗi ô vuông
+    const bars = 48;
+    const gap = 2;
+
+    const blockWidth = 8;
+    const blockHeight = 4;
 
     const columnWidth = canvas.width / bars;
-    const centerY = canvas.height / 2;
+
+    const baseY = canvas.height; // 🔥 đáy canvas
 
     canvasCtx.shadowColor = "#ff69b4";
-    canvasCtx.shadowBlur = 10;
+    canvasCtx.shadowBlur = 12;
     canvasCtx.fillStyle = "#ff69b4";
 
     for (let i = 0; i < bars; i++) {
 
         let value = dataArray[i] / 255;
 
-        // tăng bass cho đẹp
-        if (i < 10) value *= 1.6;
+        // bass boost
+        if (i < 10) value *= 1.5;
 
-        let blocks = Math.floor(value * (canvas.height / (blockSize * 2)));
+        let blocks = Math.floor(value * (canvas.height / (blockHeight + gap)));
 
         let x = i * columnWidth;
 
-        // ===== VẼ STACK BLOCK =====
+        // ===== STACK TỪ DƯỚI LÊN =====
         for (let b = 0; b < blocks; b++) {
 
-            let yTop = centerY - b * (blockSize + gap);
-            let yBottom = centerY + b * (blockSize + gap);
+            let y = baseY - (b + 1) * (blockHeight + gap);
 
             canvasCtx.fillRect(
-                x + columnWidth / 2 - blockSize / 2,
-                yTop,
-                blockSize,
-                blockSize
-            );
-
-            canvasCtx.fillRect(
-                x + columnWidth / 2 - blockSize / 2,
-                yBottom,
-                blockSize,
-                blockSize
+                x + columnWidth / 2 - blockWidth / 2,
+                y,
+                blockWidth,
+                blockHeight
             );
         }
     }
 }
-
-
 
 
 /* ========================== FORMAT TIME ========================== */
