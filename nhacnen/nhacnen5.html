@@ -576,7 +576,9 @@ function drawWave() {
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
     const bars = 40;
-    const gap = 3;
+
+    const gap = 3;      // ngang
+    const vGap = 1;     // dọc (LED trong cột)
 
     const blockWidth = 30;
     const blockHeight = 10;
@@ -595,13 +597,13 @@ function drawWave() {
         let value = dataArray[i] / 255;
         if (i < 10) value *= 1.5;
 
-        let blocks = Math.floor(value * (canvas.height / (blockHeight + gap)));
+        let blocks = Math.floor(value * (canvas.height / (blockHeight + vGap)));
 
         let x = startX + i * (blockWidth + gap);
 
         for (let b = 0; b < blocks; b++) {
 
-            let y = baseY - (b + 1) * (blockHeight + gap);
+            let y = baseY - (b + 1) * (blockHeight + vGap);
 
             canvasCtx.fillRect(x, y, blockWidth, blockHeight);
         }
