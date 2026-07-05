@@ -777,8 +777,9 @@ function drawWave() {
 
     const baseY = canvas.height;
 
-    canvasCtx.shadowColor = "#fff";
-    canvasCtx.shadowBlur = 12;
+    // không hiệu ứng glow
+    canvasCtx.shadowColor = "transparent";
+    canvasCtx.shadowBlur = 0;
     canvasCtx.fillStyle = "#fff";
 
     for (let i = 0; i < bars; i++) {
