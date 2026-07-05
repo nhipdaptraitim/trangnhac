@@ -351,7 +351,188 @@
           background:#fff; /* màu nền thanh */ }
          /* ===== COUPLE ===== */ 
          .couple{ position:absolute; right:20px; bottom:20px; z-index:1; } 
-         .couple img{ height:340px; }</style> 
+         .couple img{ height:340px; }
+        @media screen and (max-width:768px){
+
+body{
+    overflow-y:auto;
+    overflow-x:hidden;
+    align-items:flex-start;
+    padding:10px;
+}
+
+/* MAIN */
+
+.main-wrapper{
+
+    width:100%;
+    min-width:0;
+    max-width:100%;
+
+    gap:12px;
+}
+
+/* PLAYLIST */
+
+.playlist-panel{
+
+    height:auto;
+    margin-bottom:0;
+    padding:12px;
+}
+
+.playlist-header{
+
+    font-size:20px;
+}
+
+.song-grid{
+
+    grid-template-columns:repeat(2,1fr);
+    height:180px;
+    gap:4px;
+}
+
+/* Ẩn lò xo */
+
+.spiral-wrapper{
+
+    display:none;
+}
+
+/* PLAYER */
+
+.player-panel{
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    height:auto;
+
+    padding:20px 15px;
+
+    gap:20px;
+}
+
+/* ALBUM */
+
+.album-cover{
+
+    width:180px;
+    height:180px;
+}
+
+/* TITLE */
+
+#title{
+
+    font-size:24px;
+}
+
+#artist{
+
+    font-size:16px;
+}
+
+/* PROGRESS */
+
+#progress{
+
+    width:100%;
+}
+
+.time-box{
+
+    width:100%;
+}
+
+/* BUTTON */
+
+.controls{
+
+    gap:10px;
+}
+
+.controls button{
+
+    width:50px;
+    height:50px;
+    font-size:18px;
+}
+
+.play-btn{
+
+    width:70px !important;
+    height:70px !important;
+}
+
+/* LYRIC */
+
+.lyrics-line{
+
+    width:100%;
+    font-size:16px;
+}
+
+/* VISUALIZER */
+
+.visualizer-wave{
+
+    width:100%;
+    height:50px;
+}
+
+#waveCanvas{
+
+    height:50px;
+}
+
+/* NAV */
+
+.bottom-nav{
+
+    height:auto;
+
+    padding:12px;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+}
+
+.volume-box{
+
+    width:100%;
+    justify-content:center;
+}
+
+#volume{
+
+    width:150px;
+}
+
+/* AVATAR */
+
+.center-avatar{
+
+    width:45px;
+    height:45px;
+}
+
+/* COUPLE */
+
+.couple{
+
+    display:none;
+}
+
+}
+   
+    
+    </style> 
 </head>
     <body>
         <div class="background-effects"> <div class="moon"></div> 
