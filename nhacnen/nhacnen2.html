@@ -18,8 +18,8 @@
         user-select: none;
         -webkit-user-select: none;
      }
+ 
 
-        
      /* ===== MAIN ===== */ 
      .main-wrapper{
 
@@ -50,7 +50,7 @@
 }
       /* ===== PLAYLIST ===== */ 
       .playlist-panel{
-        height:230px;
+        height:220px;
         padding:10px;
         background:none !important;
         backdrop-filter:none !important;
@@ -319,13 +319,13 @@
 }
          /* ===== VISUALIZER ===== */ 
  .visualizer-wave{
-    width:80%;
+    width:95%;
     height:60px;
     margin-top:20px;
     display:flex;
     justify-content:center;
     align-items:center;
-    filter: drop-shadow(0 0 10px #fae3ee);
+    filter: drop-shadow(0 0 10px #ff69b4);
 }
 
 #waveCanvas{
@@ -511,6 +511,22 @@
     ]; 
  /* ========================== ELEMENTS ========================== */
 const audio = document.getElementById("audio");
+audio.addEventListener("play", () => {
+    console.log("PLAY");
+});
+
+audio.addEventListener("canplay", () => {
+    console.log("CAN PLAY");
+});
+
+audio.addEventListener("loadedmetadata", () => {
+    console.log("Duration:", audio.duration);
+});
+
+audio.addEventListener("error", () => {
+    console.log("Error code:", audio.error?.code);
+    console.log("Src:", audio.currentSrc);
+});
 const titleEl = document.getElementById("title");
 const artistEl = document.getElementById("artist");
 const coverImage = document.getElementById("coverImage");
@@ -523,6 +539,7 @@ const shuffleBtn = document.getElementById("shuffleBtn");
 const repeatBtn = document.getElementById("repeatBtn");
 const visualizer = document.querySelector(".visualizer");
 
+
 /* ========================== STATE ========================== */
 let currentSong = 0;
 let isShuffle = false;
@@ -533,7 +550,8 @@ let isRepeat = false;
 let audioCtx, analyser, source;
 let dataArray, bufferLength;
 let canvas, canvasCtx;
-    
+
+  
 function initVisualizer() {
     if (started) return;
     started = true;
@@ -564,7 +582,6 @@ function resizeCanvas() {
 }
 
 function drawWave() {
-
     requestAnimationFrame(drawWave);
 
     if (!analyser) return;
@@ -573,54 +590,35 @@ function drawWave() {
 
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const bars = 54;               // số cột
-    const barWidth = 17;           // độ rộng mỗi cột
-    const gap = 7;                 // khoảng cách
+    canvasCtx.lineWidth = 3;
+    canvasCtx.strokeStyle = "#ffd6e9";
+    canvasCtx.shadowBlur = 20;
+    canvasCtx.shadowColor = "#ffd6e9";
 
-    const totalWidth = bars * (barWidth + gap);
-    const startX = (canvas.width - totalWidth) / 2;
+    canvasCtx.beginPath();
 
-    let x = startX;
+    let sliceWidth = canvas.width / bufferLength;
+    let x = 0;
 
-    for (let i = 0; i < bars; i++) {
+    for (let i = 0; i < bufferLength; i++) {
+        let v = dataArray[i] / 255;
 
-        const value = dataArray[i];
+        if (i < 20) v *= 1.8; // bass boost
 
-        const barHeight = (value / 255) * canvas.height * 0.9;
+        let y = canvas.height - (v * canvas.height) / 2;
 
-        // Gradient trắng → hồng
-        const gradient = canvasCtx.createLinearGradient(
-            0,
-            canvas.height,
-            0,
-            canvas.height - barHeight
-        );
+        if (i === 0) {
+            canvasCtx.moveTo(x, y);
+        } else {
+            canvasCtx.lineTo(x, y);
+        }
 
-        gradient.addColorStop(0, "#fad7e8");
-        gradient.addColorStop(1, "#fae3ee");
-
-        canvasCtx.fillStyle = gradient;
-
-        canvasCtx.shadowColor = "#fae3ee";
-        canvasCtx.shadowBlur = 18;
-
-        // Bo tròn đầu cột
-        canvasCtx.beginPath();
-
-       canvasCtx.roundRect(
-    x,
-    canvas.height - barHeight,
-    barWidth,
-    barHeight,
-    barWidth * 0.25
-);
-
-        canvasCtx.fill();
-
-        x += barWidth + gap;
+        x += sliceWidth;
     }
 
+    canvasCtx.stroke();
 }
+
 /* ========================== FORMAT TIME ========================== */
 function formatTime(seconds) {
     if (isNaN(seconds)) return "00:00";
@@ -659,9 +657,6 @@ function playSong(index) {
     artistEl.textContent = song.artist;
     coverImage.src = song.cover;
 
-    audio.src = encodeURI(song.file);
-
-    audio.play();
 
     initVisualizer();
 
