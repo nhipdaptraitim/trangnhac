@@ -233,7 +233,7 @@
     font-size:18px;
 }
        /* ===== PROGRESS ===== */ 
-    .progress-wrapper{ margin-top:20px; } 
+    .progress-wrapper{ margin-top:5px; } 
     #progress{ 
         width:78%;
         margin:20px auto 0;
@@ -561,6 +561,8 @@ body{
     <div class="player-info"> 
         <h1 id="title"> Chưa phát nhạc </h1> 
         <h2 id="artist"> --- </h2>
+        <div class="visualizer"> <canvas id="waveCanvas"></canvas>
+        </div> 
          <div class="progress-wrapper"> 
         <input type="range" id="progress" value="0"> 
     </div> <div class="time-box"> <span id="currentTime"> 00:00 </span> 
@@ -573,8 +575,7 @@ body{
             <button onclick="nextSong()"> <i class="fa-solid fa-forward-step"></i></button>
             <button id="repeatBtn"> <i class="fa-solid fa-repeat"></i> </button> </div> 
             <div class="lyrics-line"><marquee behavior="alternate"><marquee width="250"><font color="#fff">Chào Mừng Các Bạn Đã Ghé Thăm Websail Nhịp Đập Trái Tim.Vn  *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨* Hoàng Quý Phú *´¨•.¸¸✿❀.•´¨*•.¸¸✿❀.•*´¨*  Chúc Các Bạn Có Phút Nghỉ Ngơi Vui Vẻ Và Hạnh Phúc</font> </marquee></marquee></div> 
-            <div class="visualizer"> <canvas id="waveCanvas"></canvas>
-        </div> </div> </div> 
+           </div> </div> 
         <!-- NAVIGATION BAR --> 
          <div class="bottom-nav"> 
             <button> <i class="fa-solid fa-house"></i> </button> 
