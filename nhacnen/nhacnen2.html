@@ -555,8 +555,9 @@ let canvas, canvasCtx;
 function initVisualizer() {
     if (started) return;
     started = true;
-
+    if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 512;
 
@@ -566,6 +567,7 @@ function initVisualizer() {
     source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
     analyser.connect(audioCtx.destination);
+}
 
     canvas = document.getElementById("waveCanvas");
     canvasCtx = canvas.getContext("2d");
@@ -658,10 +660,13 @@ function playSong(index) {
     artistEl.textContent = song.artist;
     coverImage.src = song.cover;
 
+    // 🔥 QUAN TRỌNG NHẤT
+    audio.src = song.file;
+    audio.load();
+    audio.play();
 
     initVisualizer();
 
-    // FIX AUDIO CONTEXT RESUME
     if (audioCtx && audioCtx.state === "suspended") {
         audioCtx.resume();
     }
