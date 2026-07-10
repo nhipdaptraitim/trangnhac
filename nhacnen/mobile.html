@@ -584,7 +584,6 @@ body{
     color:#fff !important;
 
     }
-
 .song-list{
 
     flex:1;
@@ -599,9 +598,20 @@ body{
 
     overflow-x:hidden;
 
-    min-height:0;      /* Quan trọng */
+    min-height:0;
 
     padding-right:4px;
+
+    /* Ẩn thanh cuộn */
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+
+}
+
+/* Chrome / Safari / Android */
+.song-list::-webkit-scrollbar{
+
+    display:none;
 
 }
 
