@@ -1457,18 +1457,12 @@ function playSong(index) {
 
     loadSong(index);
 
-    initVisualizer();
+    if (!started) {
+        initVisualizer();
+    }
 
-    if (
-
-        audioCtx &&
-
-        audioCtx.state === "suspended"
-
-    ) {
-
+    if (audioCtx && audioCtx.state === "suspended") {
         audioCtx.resume();
-
     }
 
     audio.play();
