@@ -1488,18 +1488,24 @@ updatePlaying();
 /*==========================
         PLAY / PAUSE
 ==========================*/
-
 function togglePlay() {
 
     if (!audio.src) {
 
         playSong(0);
-
         return;
 
     }
 
     if (audio.paused) {
+
+        if (!started) {
+            initVisualizer();
+        }
+
+        if (audioCtx && audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
 
         audio.play();
 
@@ -1510,16 +1516,6 @@ function togglePlay() {
     }
 
 }
-
-playBtn.addEventListener(
-
-    "click",
-
-    togglePlay
-
-);
-
-
 /*==========================
         NEXT SONG
 ==========================*/
