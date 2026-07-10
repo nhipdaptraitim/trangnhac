@@ -6,6 +6,7 @@
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><style> 
+<link rel="manifest" href="manifest.json">
     /* =====================================================
    NHỊP ĐẬP TRÁI TIM - MOBILE PLAYER
    PHẦN 1
@@ -1225,6 +1226,18 @@ i{
 ==========================*/
 
 const audio = document.getElementById("audio");
+audio.setAttribute("playsinline", "");
+audio.setAttribute("webkit-playsinline", "");
+   
+    audio.addEventListener("pause",()=>{
+
+    if ("mediaSession" in navigator){
+
+        navigator.mediaSession.playbackState = "paused";
+
+    }
+
+});
 
 const titleEl = document.getElementById("title");
 
@@ -1650,10 +1663,21 @@ function playSong(index) {
         audioCtx.resume();
     }
 
-    audio.play().catch(err=>{
+ audio.play()
+.then(()=>{
+
+    if ("mediaSession" in navigator){
+
+        navigator.mediaSession.playbackState = "playing";
+
+    }
+
+})
+.catch(err=>{
+
     console.log(err);
+
 });
-}
 
 
 /*==========================
@@ -1881,6 +1905,8 @@ audio.addEventListener(
             .style.animationPlayState =
 
             "paused";
+        
+         }
 
     }
 
