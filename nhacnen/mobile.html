@@ -880,30 +880,33 @@ i{
    LIST LEFT - PLAYER RIGHT
 ================================ */
 
+/* =====================================================
+        MOBILE LANDSCAPE
+        LIST LEFT - PLAYER RIGHT
+===================================================== */
+
 @media screen and (orientation:landscape) and (max-height:600px){
 
-      .app{
-.app{
+    .app{
 
-    width:100vw;
-    min-height:100dvh;
-    height:100dvh;
+        width:100vw;
+        min-height:100dvh;
+        height:100dvh;
 
-    display:grid;
+        display:grid;
 
-    grid-template-columns:35% 65%;
+        grid-template-columns:35% 65%;
 
-    grid-template-rows:60px 1fr;
+        grid-template-rows:auto 1fr;
 
-    gap:15px;
+        gap:15px;
 
-    padding:15px;
+        padding:15px;
 
-    box-sizing:border-box;
-    
-    background:url("phu.png") center/cover no-repeat;
+        box-sizing:border-box;
 
-    
+        background:url("phu.png") center/cover no-repeat;
+
     }
 
 
@@ -919,16 +922,12 @@ i{
     /* LIST BÊN TRÁI */
 
     .playlist-panel{
-        
-        width:100%;
 
         grid-column:1;
 
         grid-row:2;
 
-        height:auto;
-
-         min-height:0;
+        height:calc(100dvh - 90px);
 
         margin:0;
 
@@ -937,53 +936,29 @@ i{
 
     /* PLAYER BÊN PHẢI */
 
-    .album-section{
+    .player-box{
 
         grid-column:2;
 
         grid-row:2;
 
-        text-align:center;
+        height:calc(100dvh - 90px);
+
+        display:flex;
+
+        flex-direction:column;
+
+        justify-content:center;
+
+        align-items:center;
 
     }
 
 
     .album-cover{
 
-        width:160px;
-        height:160px;
-
-        margin:auto;
-
-    }
-
-
-    .player-info{
-
-        grid-column:2;
-
-        text-align:center;
-
-    }
-
-
-    .visualizer-wave{
-
-        grid-column:2;
-
-    }
-
-
-    .progress-wrapper{
-
-        grid-column:2;
-
-    }
-
-
-    .controls{
-
-        grid-column:2;
+        width:180px;
+        height:180px;
 
     }
 
