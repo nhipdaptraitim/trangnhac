@@ -1651,8 +1651,9 @@ function playSong(index) {
         audioCtx.resume();
     }
 
-    audio.play();
-
+    audio.play().catch(err=>{
+    console.log(err);
+});
 }
 
 
@@ -2123,6 +2124,25 @@ console.log(
 
         if (audioCtx && audioCtx.state === "suspended") {
             audioCtx.resume();
+        }
+
+    }
+
+});
+    document.addEventListener("visibilitychange",()=>{
+
+    if(!document.hidden){
+
+        if(audioCtx && audioCtx.state === "suspended"){
+
+            audioCtx.resume();
+
+        }
+
+        if(!audio.paused){
+
+            audio.play();
+
         }
 
     }
