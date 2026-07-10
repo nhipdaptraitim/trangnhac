@@ -1,0 +1,1950 @@
+    
+    <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"><style> 
+    /* =====================================================
+   NHỊP ĐẬP TRÁI TIM - MOBILE PLAYER
+   PHẦN 1
+   Reset + Background + Layout + Header + Album
+===================================================== */
+/* ==========================
+   BODY
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+}
+body{
+
+    margin:0;
+
+    font-family:"Segoe UI",sans-serif;
+
+    color:#fff;
+
+    overflow-x:hidden;
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.15)),
+    url("hinhnen.png") center center / cover no-repeat;
+
+    background-color:#000;
+
+    position:relative;
+
+}
+
+/* ===== Container ===== */
+
+.app{
+
+    width:100%;
+
+    max-width:430px;
+
+    min-height:100vh;
+
+    margin:auto;
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    position:relative;
+
+}
+/* ===== Glass Card ===== */
+
+.card{
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:blur(16px);
+
+    border-radius:28px;
+
+    box-shadow:
+
+        0 10px 40px rgba(0,0,0,.35),
+
+        0 0 25px rgba(255,105,180,.12);
+}
+
+/* =====================================================
+                        HEADER
+===================================================== */
+
+.top-bar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:10px;
+}
+
+.top-bar h1{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    letter-spacing:1px;
+
+    text-shadow:0 0 12px rgba(255,255,255,.25);
+}
+
+.top-bar button{
+
+    width:44px;
+
+    height:44px;
+
+    border:1px solid #fff ;;
+
+    border-radius:50%;
+
+    background:transparent;
+
+    color:#ffeaf4;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.top-bar button:hover{
+
+    background:rgba(255,255,255,.18);
+
+    transform:scale(1.05);
+}
+
+.top-bar button:active{
+
+    transform:scale(.95);
+}
+
+/* =====================================================
+                    ALBUM SECTION
+===================================================== */
+
+.album-section{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-top:5px;
+
+    margin-bottom:10px;
+}
+
+/* ===== Album ===== */
+
+.album-cover{
+
+    width:240px;
+
+    height:240px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    border:3px solid rgba(255,255,255,.95);
+
+    background:#fff;
+
+    position:relative;
+
+    animation:spin 25s linear infinite;
+
+    animation-play-state:paused;
+
+    box-shadow:
+
+        0 0 25px rgba(255,105,180,.55),
+
+        0 0 60px rgba(255,105,180,.20);
+}
+
+/* ===== Tâm đĩa ===== */
+
+.album-cover::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    border:2px solid #ff69b4;
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%,-50%);
+}
+
+/* ===== Ảnh ===== */
+
+.album-cover img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+}
+
+/* ===== Vòng sáng ===== */
+
+.album-cover::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-10px;
+
+    border-radius:50%;
+
+    border:2px solid rgba(255,255,255,.15);
+
+    pointer-events:none;
+}
+
+/* ===== Hiệu ứng quay ===== */
+
+@keyframes spin{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+/* =====================================================
+                    PLAYER INFO
+===================================================== */
+
+.player-info{
+
+    text-align:center;
+
+    margin-bottom:10px;
+}
+
+#title{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    line-height:1.4;
+
+    letter-spacing:.5px;
+
+    text-shadow:0 0 10px rgba(255,255,255,.25);
+}
+
+#artist{
+
+    margin-top:8px;
+
+    font-size:17px;
+
+    color:#ffd6ea;
+
+    font-weight:500;
+
+    opacity:.9;
+}
+
+/* =====================================================
+                    VISUALIZER
+===================================================== */
+
+.visualizer-wave{
+
+    width:100%;
+
+    height:70px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:10px 0;
+
+    overflow:hidden;
+}
+
+#waveCanvas{
+
+    width:100%;
+
+    height:70px;
+
+    border-radius:15px;
+
+    filter:
+
+        drop-shadow(0 0 12px rgba(255,105,180,.65))
+
+        contrast(1.15);
+}
+
+/* =====================================================
+                    PROGRESS
+===================================================== */
+
+.progress-wrapper{
+
+    margin-top:5px;
+}
+
+#progress{
+
+    width:100%;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    height:6px;
+
+    border-radius:20px;
+
+    background:rgba(255, 255, 255, 0.932);
+
+    cursor:pointer;
+
+    outline:none;
+}
+
+/* Chrome */
+
+#progress::-webkit-slider-thumb{
+
+    -webkit-appearance:none;
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    border:3px solid #ff69b4;
+
+    box-shadow:0 0 12px rgba(255,105,180,.8);
+
+    cursor:pointer;
+}
+
+/* Firefox */
+
+#progress::-moz-range-thumb{
+
+    width:18px;
+
+    height:18px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    box-shadow:0 0 12px rgba(255,105,180,.8);
+
+    cursor:pointer;
+}
+
+/* =====================================================
+                    TIME
+===================================================== */
+
+.time-box{
+
+    margin-top:5px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:14px;
+
+    color:#ffeaf4;
+
+    opacity:.95;
+}
+
+/* =====================================================
+                    CONTROLS
+===================================================== */
+
+.controls{
+
+    margin-top:10px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.controls button{
+
+    width:56px;
+
+    height:56px;
+
+    border:1px solid #fff ;
+
+    border-radius:50%;
+
+    background:rgba(255, 255, 255, 0);
+
+    color:#fff;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:
+
+        0 0 12px rgba(247, 155, 199, 0);
+}
+
+.controls button:hover{
+
+    transform:translateY(-2px);
+
+    background:rgba(255, 255, 255, 0);
+
+    box-shadow:
+
+        0 0 18px rgba(255,105,180,.35);
+}
+
+.controls button:active{
+
+    transform:scale(.92);
+}
+
+/* ===== Nút Play ===== */
+
+.play-btn{
+    order:1px solid #fff ;
+    width:80px !important;
+
+    height:80px !important;
+
+    font-size:30px !important;
+
+    background:linear-gradient(135deg,#ff69b4,#ff8fc2);
+
+    color:#fff;
+
+    box-shadow:
+
+        0 0 25px rgba(255,105,180,.55);
+}
+
+.play-btn:hover{
+
+    transform:scale(1.06);
+
+    box-shadow:
+
+        0 0 35px rgba(252, 169, 211, 0.8);
+}
+
+/* ===== Shuffle & Repeat bật ===== */
+
+.controls button.active{
+
+    color:#ffc2e1;
+
+    background:rgba(255,255,255,.20);
+
+    box-shadow:
+
+        0 0 20px rgba(255,105,180,.55);
+}
+
+/* ===========================
+        PLAYLIST MOBILE
+=========================== */
+
+.playlist-panel{
+
+    width:100%;
+    height:330px;
+
+    margin-top:20px;
+    padding:10px;
+
+    background:none;
+
+    border:1px solid #fff;
+
+    border-radius:10px;
+
+    box-shadow:0 0 10px #f4e8ee,
+               0 0 25px rgba(242,224,233,.7);
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+/* Header */
+
+.playlist-header{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    margin-bottom:15px;
+
+}
+
+/* Danh sách */
+.song-list a:focus,
+.song-list a:active,
+.song-list a:visited{
+
+    color:#fff !important;
+
+    }
+
+.song-list{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    min-height:0;      /* Quan trọng */
+
+    padding-right:4px;
+
+}
+
+
+
+.song-list a{
+
+    display:flex;
+    align-items:center;
+
+    width:100%;
+
+    padding:2px 4px;
+
+    color:#fff !important;
+
+    text-decoration:none !important;
+
+    background:rgba(255,255,255,.06);
+
+    border-radius:8px;
+
+}
+
+/* Scrollbar */
+
+.song-list::-webkit-scrollbar{
+
+    width:5px;
+
+}
+
+.song-list::-webkit-scrollbar-thumb{
+
+    background:#ffd6e9;
+
+    border-radius:10px;
+
+}
+
+.song-list::-webkit-scrollbar-track{
+
+    background:rgba(255,255,255,.05);
+
+}
+
+/* Bài hát */
+
+
+.song-list a{
+
+    display:flex;
+
+    align-items:center;
+
+    width:100%;
+
+    min-width:0;
+
+    box-sizing:border-box;
+
+    flex-shrink:1;
+
+}
+.song-list::-webkit-scrollbar{
+    width:5px;
+    height:0;
+}
+
+.song-list::-webkit-scrollbar:horizontal{
+    display:none;
+}
+
+/* Hover */
+
+.song-list a:hover{
+
+    background:rgba(255,105,180,.18);
+
+    transform:translateX(5px);
+
+}
+
+/* Đang phát */
+
+.song-list a.playing{
+
+    border:1px solid #fff;
+
+    box-shadow: 0 0 10px #f4e8ee, 0 0 25px rgba(245, 235, 240, 0.7); 
+}
+
+/* ===== Icon nhạc ===== */
+
+.song-list a::before{
+
+    content:"♪";
+
+    color:#ff9fcf00;
+
+    font-size:18px;
+
+}
+
+/* =====================================================
+                    AUDIO
+===================================================== */
+
+audio{
+
+    display:none;
+
+}
+
+/* =====================================================
+                    LOADING
+===================================================== */
+
+.loading{
+
+    opacity:.5;
+
+    pointer-events:none;
+
+}
+
+/* =====================================================
+                    FADE
+===================================================== */
+
+.fade-in{
+
+    animation:fadeIn .35s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* =====================================================
+                    BUTTON EFFECT
+===================================================== */
+
+button{
+
+    transition:
+
+        background .25s,
+
+        transform .25s,
+
+        box-shadow .25s;
+
+}
+
+button:active{
+
+    transform:scale(.92);
+
+}
+
+/* =====================================================
+                    TEXT
+===================================================== */
+
+::selection{
+
+    background:#ff69b4;
+
+    color:#fff;
+
+}
+
+/* =====================================================
+                    ICON
+===================================================== */
+
+i{
+
+    pointer-events:none;
+
+}
+
+/* =====================================================
+                    SAFE AREA
+===================================================== */
+
+.app{
+
+    padding-bottom:calc(25px + env(safe-area-inset-bottom));
+
+}
+
+/* =====================================================
+                    SMALL PHONE
+===================================================== */
+
+@media (max-width:390px){
+
+    .album-cover{
+
+        width:210px;
+
+        height:210px;
+
+    }
+
+    #title{
+
+        font-size:24px;
+
+    }
+
+    .controls button{
+
+        width:50px;
+
+        height:50px;
+
+    }
+
+    .play-btn{
+
+        width:72px !important;
+
+        height:72px !important;
+
+    }
+
+}
+
+/* =====================================================
+                    BIG PHONE
+===================================================== */
+
+@media (min-width:430px){
+
+    .app{
+
+        max-width:430px;
+
+    }
+
+}
+
+/* =====================================================
+                    END
+===================================================== */
+</style>
+</head>
+<body>
+
+    
+<div class="app">
+
+    <!-- Header -->
+    <header class="top-bar">
+        <button id="menuBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <h1>Nhịp Đập Trái Tim</h1>
+
+        <button id="loveBtn">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+    </header>
+
+    <!-- Album -->
+    <section class="album-section">
+
+        <div class="album-cover">
+            <img id="coverImage" src="ca si/nhạc buồn tâm trạng/phu.jpg">
+        </div>
+
+    </section>
+
+    <!-- Player Info -->
+    <section class="player-info">
+
+        <h2 id="title">Chưa phát nhạc</h2>
+
+        <p id="artist">---</p>
+
+    </section>
+
+    <!-- Visualizer -->
+
+    <section class="visualizer-wave">
+
+        <canvas id="waveCanvas"></canvas>
+
+    </section>
+
+    <!-- Progress -->
+
+    <section class="progress-wrapper">
+
+        <input type="range" id="progress">
+
+        <div class="time-box">
+
+            <span id="currentTime">00:00</span>
+
+            <span id="duration">00:00</span>
+
+        </div>
+
+    </section>
+
+    <!-- Controls -->
+
+    <section class="controls">
+
+        <button id="shuffleBtn">
+            <i class="fa-solid fa-shuffle"></i>
+        </button>
+
+        <button id="prevBtn">
+            <i class="fa-solid fa-backward-step"></i>
+        </button>
+
+        <button id="playBtn" class="play-btn">
+            <i class="fa-solid fa-play"></i>
+        </button>
+
+        <button id="nextBtn">
+            <i class="fa-solid fa-forward-step"></i>
+        </button>
+
+        <button id="repeatBtn">
+            <i class="fa-solid fa-repeat"></i>
+        </button>
+
+    </section>
+
+    <!-- Playlist -->
+
+    <section class="playlist-panel">
+
+        <div class="playlist-header">
+
+            <i class="fa-solid fa-music"></i>
+
+            <span>Danh sách phát</span>
+
+        </div>
+
+        <div id="songList" class="song-list"></div>
+
+    </section>
+
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+    /*====================================================
+        NHỊP ĐẬP TRÁI TIM - MOBILE PLAYER
+        SCRIPT.JS - PHẦN 1
+====================================================*/
+
+/*==========================
+    PLAYLIST
+==========================*/
+    const songs =
+     [ 
+    { 
+        title:"Chỉ Cần Em Bên Anh Thôi", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Chỉ Cần Em Bên Anh Thôi.mp3" }, 
+    { 
+        title:"Có Em",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Có Em.mp3" }, 
+    { 
+        title:"Dấu Mưa Trong Tim",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Dấu Mưa Trong Tim.mp3" }, 
+    { 
+        title:"Hình Như Là Em", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Hình Như Là Em.mp3" }, 
+    { 
+        title:"Kiếp Người Mong Manh", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Kiếp Người Mong Manh.mp3" }, 
+    { 
+        title:"Lạc Mất Nhau", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Lạc Mất Nhau.mp3" }, 
+    { 
+        title:"Một Triệu Lý Do Nhớ Em",
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Một-Triệu-Lý-Do-Nhớ-Em.mp3" },
+    { 
+        title:"Người Ở Lại Sau Chia Tay", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Người Ở Lại Sau Chia Tay.mp3" },
+    { 
+        title:"Nhớ Người Không Tên", 
+        artist:"Nhạc Chọn Lọc", 
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Nhớ Người Không Tên.mp3" },
+    { 
+        title:"Vẫn Chờ Em", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Vẫn Chờ Em.mp3" },
+    { 
+        title:"Xin Lỗi Người Em Từng Thương",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Xin Lỗi  Người Em Từng Thương.mp3" },
+    { 
+        title:"Đường Chân Trời",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Đường-Chân-Trời.mp3" }, 
+    { 
+        title:"Nếu Em Muốn Rời Xa",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Nếu Em Muốn Rời Xa.mp3" }, 
+    { 
+        title:"Hạng Phúc Chính Là Em",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Hạng Phúc Chính Là Em.mp3" }, 
+    { 
+        title:"Dấu-Yêu", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Yêu.mp3" },
+    { 
+        title:"Dấu Chân Tình Buồn",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/h.jpg", 
+        file:"ca si/nhạc buồn tâm trạng/Dấu-Chân-Tình-Buồn.mp3" },
+    {
+        title:"Đau",
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/ĐAU.mp3" }, 
+    {
+        title:"Sợ Yêu", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Sợ Yêu.mp3" }, 
+    {
+        title:"Tha Thứ Lỗi Lầm", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Tha Thứ Lỗi Lầm.mp3" }, 
+    {
+        title:"Một Thời Đã Xa", 
+        artist:"Nhạc Chọn Lọc",
+        cover:"ca si/nhạc buồn tâm trạng/phu.jpg",
+        file:"ca si/nhạc buồn tâm trạng/Một Thời Đã Xa.mp3" },
+
+ 
+    ]; 
+
+
+/*==========================
+        ELEMENTS
+==========================*/
+
+const audio = document.getElementById("audio");
+
+const titleEl = document.getElementById("title");
+
+const artistEl = document.getElementById("artist");
+
+const coverImage = document.getElementById("coverImage");
+
+const progress = document.getElementById("progress");
+
+const currentTimeEl = document.getElementById("currentTime");
+
+const durationEl = document.getElementById("duration");
+
+const playBtn = document.getElementById("playBtn");
+
+const shuffleBtn = document.getElementById("shuffleBtn");
+
+const repeatBtn = document.getElementById("repeatBtn");
+
+const songList = document.getElementById("songList");
+
+
+/*==========================
+        STATE
+==========================*/
+
+let currentSong = 0;
+
+let isShuffle = false;
+
+let isRepeat = false;
+
+let started = false;
+
+
+/*==========================
+    AUDIO VISUALIZER
+==========================*/
+
+let audioCtx;
+
+let analyser;
+
+let source;
+
+let dataArray;
+
+let bufferLength;
+
+let canvas;
+
+let canvasCtx;
+
+
+/*==========================
+    CANVAS
+==========================*/
+
+canvas = document.getElementById("waveCanvas");
+
+canvasCtx = canvas.getContext("2d");
+
+
+/*==========================
+    INIT CANVAS
+==========================*/
+
+function resizeCanvas() {
+
+    canvas.width = canvas.offsetWidth * 2;
+
+    canvas.height = 120;
+
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+/*====================================================
+        SCRIPT.JS - PHẦN 2
+        Visualizer + Time
+====================================================*/
+
+
+/*==========================
+    INIT VISUALIZER
+==========================*/
+
+function initVisualizer() {
+
+    if (started) return;
+
+    started = true;
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    analyser = audioCtx.createAnalyser();
+
+    analyser.fftSize = 512;
+
+    bufferLength = analyser.frequencyBinCount;
+
+    dataArray = new Uint8Array(bufferLength);
+
+    source = audioCtx.createMediaElementSource(audio);
+
+    source.connect(analyser);
+
+    analyser.connect(audioCtx.destination);
+
+    resizeCanvas();
+
+    window.addEventListener("resize", resizeCanvas);
+
+    drawWave();
+
+}
+
+
+/*==========================
+        DRAW WAVE
+==========================*/
+
+function drawWave() {
+
+    requestAnimationFrame(drawWave);
+
+    if (!analyser) return;
+
+    analyser.getByteFrequencyData(dataArray);
+
+    canvasCtx.clearRect(
+
+        0,
+
+        0,
+
+        canvas.width,
+
+        canvas.height
+
+    );
+
+    canvasCtx.lineWidth = 3;
+
+    canvasCtx.strokeStyle = "#ffd6e9";
+
+    canvasCtx.shadowBlur = 20;
+
+    canvasCtx.shadowColor = "#ff69b4";
+
+    canvasCtx.beginPath();
+
+    const waveWidth = canvas.width * 0.80;
+
+    const startX =
+
+        (canvas.width - waveWidth) / 2;
+
+    const sliceWidth =
+
+        waveWidth / bufferLength;
+
+    let x = startX;
+
+    for (let i = 0; i < bufferLength; i++) {
+
+        let value = dataArray[i] / 255;
+
+        if (i < 20) {
+
+            value *= 1.8;
+
+        }
+
+        const y =
+
+            canvas.height -
+
+            (value * canvas.height) / 2;
+
+        if (i === 0) {
+
+            canvasCtx.moveTo(x, y);
+
+        } else {
+
+            canvasCtx.lineTo(x, y);
+
+        }
+
+        x += sliceWidth;
+
+    }
+
+    canvasCtx.stroke();
+
+}
+
+
+/*==========================
+        FORMAT TIME
+==========================*/
+
+function formatTime(seconds) {
+
+    if (isNaN(seconds)) {
+
+        return "00:00";
+
+    }
+
+    const minutes =
+
+        Math.floor(seconds / 60);
+
+    const secs =
+
+        Math.floor(seconds % 60);
+
+    return (
+
+        minutes +
+
+        ":" +
+
+        String(secs).padStart(2, "0")
+
+    );
+
+}
+
+
+/*==========================
+    UNLOCK AUDIO CONTEXT
+==========================*/
+
+document.addEventListener(
+
+    "click",
+
+    () => {
+
+        if (
+
+            audioCtx &&
+
+            audioCtx.state === "suspended"
+
+        ) {
+
+            audioCtx.resume();
+
+        }
+
+    },
+
+    {
+
+        once: true
+
+    }
+
+);
+/*====================================================
+        SCRIPT.JS - PHẦN 3
+        Playlist + Play Song
+====================================================*/
+
+
+/*==========================
+        PLAYLIST
+==========================*/
+
+function renderPlaylist() {
+
+    let html = "";
+
+    songs.forEach((song, index) => {
+
+        html += `
+            <a href="#"
+
+               onclick="playSong(${index});return false;">
+
+                ${song.title}
+
+            </a>
+        `;
+
+    });
+
+    songList.innerHTML = html;
+
+}
+
+
+/*==========================
+    ACTIVE PLAYLIST
+==========================*/
+
+function updatePlaying() {
+
+    document
+
+        .querySelectorAll(".song-list a")
+
+        .forEach(item => {
+
+            item.classList.remove("playing");
+
+        });
+
+    const items =
+
+        document.querySelectorAll(".song-list a");
+
+    if (items[currentSong]) {
+
+        items[currentSong]
+
+            .classList.add("playing");
+
+    }
+
+}
+
+
+/*==========================
+        LOAD SONG
+==========================*/
+
+function loadSong(index) {
+
+    currentSong = index;
+
+    const song = songs[index];
+
+    titleEl.textContent = song.title;
+
+    artistEl.textContent = song.artist;
+
+    coverImage.src = song.cover;
+
+    audio.src = encodeURI(song.file);
+
+    progress.value = 0;
+
+    currentTimeEl.textContent = "00:00";
+
+    durationEl.textContent = "00:00";
+
+    updatePlaying();
+
+}
+
+
+/*==========================
+        PLAY SONG
+==========================*/
+
+function playSong(index) {
+
+    loadSong(index);
+
+    initVisualizer();
+
+    if (
+
+        audioCtx &&
+
+        audioCtx.state === "suspended"
+
+    ) {
+
+        audioCtx.resume();
+
+    }
+
+    audio.play();
+
+}
+
+
+/*==========================
+        AUTO LOAD
+==========================*/
+
+loadSong(0);
+
+renderPlaylist();
+
+updatePlaying();
+/*====================================================
+        SCRIPT.JS - PHẦN 4
+        Player Controls
+====================================================*/
+
+
+/*==========================
+        PLAY / PAUSE
+==========================*/
+
+function togglePlay() {
+
+    if (!audio.src) {
+
+        playSong(0);
+
+        return;
+
+    }
+
+    if (audio.paused) {
+
+        audio.play();
+
+    } else {
+
+        audio.pause();
+
+    }
+
+}
+
+playBtn.addEventListener(
+
+    "click",
+
+    togglePlay
+
+);
+
+
+/*==========================
+        NEXT SONG
+==========================*/
+
+function nextSong() {
+
+    if (isShuffle) {
+
+        const random = Math.floor(
+
+            Math.random() * songs.length
+
+        );
+
+        playSong(random);
+
+        return;
+
+    }
+
+    currentSong++;
+
+    if (currentSong >= songs.length) {
+
+        currentSong = 0;
+
+    }
+
+    playSong(currentSong);
+
+}
+
+
+/*==========================
+        PREVIOUS SONG
+==========================*/
+
+function prevSong() {
+
+    currentSong--;
+
+    if (currentSong < 0) {
+
+        currentSong = songs.length - 1;
+
+    }
+
+    playSong(currentSong);
+
+}
+
+
+/*==========================
+        SHUFFLE
+==========================*/
+
+shuffleBtn.addEventListener(
+
+    "click",
+
+    () => {
+
+        isShuffle = !isShuffle;
+
+        shuffleBtn.classList.toggle(
+
+            "active",
+
+            isShuffle
+
+        );
+
+    }
+
+);
+
+
+/*==========================
+        REPEAT
+==========================*/
+
+repeatBtn.addEventListener(
+
+    "click",
+
+    () => {
+
+        isRepeat = !isRepeat;
+
+        repeatBtn.classList.toggle(
+
+            "active",
+
+            isRepeat
+
+        );
+
+    }
+
+);
+
+
+/*==========================
+        BUTTON EVENTS
+==========================*/
+
+document
+
+    .getElementById("prevBtn")
+
+    .addEventListener(
+
+        "click",
+
+        prevSong
+
+    );
+
+document
+
+    .getElementById("nextBtn")
+
+    .addEventListener(
+
+        "click",
+
+        nextSong
+
+    );
+
+
+/*==========================
+        PLAY EVENT
+==========================*/
+
+audio.addEventListener(
+
+    "play",
+
+    () => {
+
+        playBtn.innerHTML =
+
+            '<i class="fa-solid fa-pause"></i>';
+
+        document
+
+            .querySelector(".album-cover")
+
+            .style.animationPlayState =
+
+            "running";
+
+    }
+
+);
+
+
+/*==========================
+        PAUSE EVENT
+==========================*/
+
+audio.addEventListener(
+
+    "pause",
+
+    () => {
+
+        playBtn.innerHTML =
+
+            '<i class="fa-solid fa-play"></i>';
+
+        document
+
+            .querySelector(".album-cover")
+
+            .style.animationPlayState =
+
+            "paused";
+
+    }
+
+);
+
+
+/*==========================
+        END SONG
+==========================*/
+
+audio.addEventListener(
+
+    "ended",
+
+    () => {
+
+        if (isRepeat) {
+
+            audio.currentTime = 0;
+
+            audio.play();
+
+            return;
+
+        }
+
+        nextSong();
+
+    }
+
+);
+/*====================================================
+        SCRIPT.JS - PHẦN 5
+        Time + Progress + Init
+====================================================*/
+
+
+/*==========================
+    LOADED METADATA
+==========================*/
+
+audio.addEventListener(
+
+    "loadedmetadata",
+
+    () => {
+
+        progress.max = audio.duration;
+
+        durationEl.textContent =
+
+            formatTime(audio.duration);
+
+    }
+
+);
+
+
+/*==========================
+        TIME UPDATE
+==========================*/
+
+audio.addEventListener(
+
+    "timeupdate",
+
+    () => {
+
+        progress.value =
+
+            audio.currentTime;
+
+        currentTimeEl.textContent =
+
+            formatTime(audio.currentTime);
+
+    }
+
+);
+
+
+/*==========================
+        SEEK
+==========================*/
+
+progress.addEventListener(
+
+    "input",
+
+    () => {
+
+        audio.currentTime =
+
+            progress.value;
+
+    }
+
+);
+
+
+/*==========================
+    AUTO NEXT WHEN ERROR
+==========================*/
+
+audio.addEventListener(
+
+    "error",
+
+    () => {
+
+        console.log(
+
+            "Không phát được:",
+
+            audio.src
+
+        );
+
+    }
+
+);
+
+
+/*==========================
+        INIT PLAYER
+==========================*/
+
+audio.volume = 1;
+
+renderPlaylist();
+
+loadSong(0);
+
+updatePlaying();
+
+
+/*==========================
+    KEYBOARD SUPPORT
+==========================*/
+
+document.addEventListener(
+
+    "keydown",
+
+    (e) => {
+
+        switch (e.code) {
+
+            case "Space":
+
+                e.preventDefault();
+
+                togglePlay();
+
+                break;
+
+            case "ArrowRight":
+
+                nextSong();
+
+                break;
+
+            case "ArrowLeft":
+
+                prevSong();
+
+                break;
+
+        }
+
+    }
+
+);
+
+
+/*==========================
+    AUTO RESUME AUDIO
+==========================*/
+
+document.addEventListener(
+
+    "touchstart",
+
+    () => {
+
+        if (
+
+            audioCtx &&
+
+            audioCtx.state ===
+
+            "suspended"
+
+        ) {
+
+            audioCtx.resume();
+
+        }
+
+    },
+
+    {
+
+        once: true
+
+    }
+
+);
+
+
+/*==========================
+        WINDOW RESIZE
+==========================*/
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        resizeCanvas();
+
+    }
+
+);
+
+
+/*==========================
+        READY
+==========================*/
+
+console.log(
+
+    "Nhịp Đập Trái Tim Mobile Ready"
+
+);
+</script>
+
+</body>
