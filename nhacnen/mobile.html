@@ -1573,6 +1573,62 @@ function loadSong(index) {
     durationEl.textContent = "00:00";
 
     updatePlaying();
+    updateMediaSession()
+
+}
+    function updateMediaSession(){
+
+    if ("mediaSession" in navigator){
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+
+            title: songs[currentSong].title,
+
+            artist: songs[currentSong].artist,
+
+            artwork:[
+                {
+                    src:songs[currentSong].cover,
+                    sizes:"512x512",
+                    type:"image/png"
+                }
+            ]
+
+        });
+
+
+        navigator.mediaSession.setActionHandler(
+            "play",
+            ()=>{
+                audio.play();
+            }
+        );
+
+
+        navigator.mediaSession.setActionHandler(
+            "pause",
+            ()=>{
+                audio.pause();
+            }
+        );
+
+
+        navigator.mediaSession.setActionHandler(
+            "nexttrack",
+            ()=>{
+                nextSong();
+            }
+        );
+
+
+        navigator.mediaSession.setActionHandler(
+            "previoustrack",
+            ()=>{
+                prevSong();
+            }
+        );
+
+    }
 
 }
 
@@ -2059,6 +2115,17 @@ console.log(
     "Nhịp Đập Trái Tim Mobile Ready"
 
 );
+    document.addEventListener("visibilitychange", () => {
+
+    if (document.visibilityState === "visible") {
+
+        if (audioCtx && audioCtx.state === "suspended") {
+            audioCtx.resume();
+        }
+
+    }
+
+});
 </script>
 
 </body>
