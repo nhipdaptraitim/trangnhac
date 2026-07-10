@@ -1331,7 +1331,9 @@ function initVisualizer() {
     source = audioCtx.createMediaElementSource(audio);
 
     source.connect(analyser);
-
+    
+    source.connect(audioCtx.destination); 
+    
     analyser.connect(audioCtx.destination);
 
     resizeCanvas();
