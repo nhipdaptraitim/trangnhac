@@ -1331,9 +1331,7 @@ function initVisualizer() {
     source = audioCtx.createMediaElementSource(audio);
 
     source.connect(analyser);
-    
-    source.connect(audioCtx.destination); 
-    
+     
     analyser.connect(audioCtx.destination);
 
     resizeCanvas();
@@ -2117,33 +2115,15 @@ console.log(
 
     "Nhịp Đập Trái Tim Mobile Ready"
 
-);
-    document.addEventListener("visibilitychange", () => {
+/*==========================
+    MOBILE BACKGROUND AUDIO
+==========================*/
 
-    if (document.visibilityState === "visible") {
+document.addEventListener("visibilitychange", () => {
 
-        if (audioCtx && audioCtx.state === "suspended") {
-            audioCtx.resume();
-        }
+    if (audioCtx && audioCtx.state === "suspended") {
 
-    }
-
-});
-    document.addEventListener("visibilitychange",()=>{
-
-    if(!document.hidden){
-
-        if(audioCtx && audioCtx.state === "suspended"){
-
-            audioCtx.resume();
-
-        }
-
-        if(!audio.paused){
-
-            audio.play();
-
-        }
+        audioCtx.resume();
 
     }
 
