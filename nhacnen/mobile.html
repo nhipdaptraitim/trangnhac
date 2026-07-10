@@ -882,23 +882,26 @@ i{
 
 @media screen and (orientation:landscape) and (max-height:600px){
 
-    .app{
+      .app{
 
-        width:100%;
+        width:100vw;
         min-height:100dvh;
+
+        max-width:none;
 
         display:grid;
 
-        grid-template-columns:35% 65%;
+        grid-template-columns:35vw 65vw;
 
-        grid-template-rows:auto 1fr;
+        gap:15px;
 
-        gap:10px;
+        padding:15px;
 
-        padding:12px;
+        box-sizing:border-box;
 
         background:url("phu.png") center/cover no-repeat;
 
+    
     }
 
 
@@ -914,6 +917,8 @@ i{
     /* LIST BÊN TRÁI */
 
     .playlist-panel{
+        
+        width:100%;
 
         grid-column:1;
 
@@ -941,8 +946,8 @@ i{
 
     .album-cover{
 
-        width:160px;
-        height:160px;
+        width:180px;
+        height:180px;
 
         margin:auto;
 
