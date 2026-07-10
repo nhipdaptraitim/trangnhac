@@ -883,25 +883,25 @@ i{
 @media screen and (orientation:landscape) and (max-height:600px){
 
       .app{
+.app{
 
-        width:100vw;
-        min-height:100dvh;
+    width:100vw;
+    min-height:100dvh;
+    height:100dvh;
 
-        max-width:none;
+    display:grid;
 
-        display:grid;
+    grid-template-columns:35% 65%;
 
-        grid-template-columns:35%65%;
-          
-        grid-template-rows:60px 1fr;
+    grid-template-rows:60px 1fr;
 
-        gap:15px;
+    gap:15px;
 
-        padding:15px;
+    padding:15px;
 
-        box-sizing:border-box;
-
-        background:url("phu.png") center/cover no-repeat;
+    box-sizing:border-box;
+    
+    background:url("phu.png") center/cover no-repeat;
 
     
     }
@@ -926,7 +926,9 @@ i{
 
         grid-row:2;
 
-        height:calc(100dvh - 90px);
+        height:auto;
+
+         min-height:0;
 
         margin:0;
 
