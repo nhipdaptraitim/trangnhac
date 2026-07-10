@@ -1098,10 +1098,10 @@ i{
 
 </div>
 <audio
-    id="audio"
-    preload="auto"
-    playsinline
-    controlslist="nodownload noplaybackrate"
+id="audio"
+preload="auto"
+playsinline
+webkit-playsinline
 ></audio>
 
 <script>
@@ -2146,11 +2146,21 @@ console.log(
     MOBILE BACKGROUND AUDIO
 ==========================*/
 
-document.addEventListener("visibilitychange", () => {
+document.addEventListener("visibilitychange", async ()=>{
 
-    if (audioCtx && audioCtx.state === "suspended") {
+    if(document.visibilityState === "visible"){
 
-        audioCtx.resume();
+        if(audioCtx && audioCtx.state === "suspended"){
+
+            await audioCtx.resume();
+
+        }
+
+        if(audio && !audio.paused){
+
+            audio.play().catch(()=>{});
+
+        }
 
     }
 
