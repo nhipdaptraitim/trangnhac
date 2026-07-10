@@ -1228,17 +1228,6 @@ webkit-playsinline
 const audio = document.getElementById("audio");
 audio.setAttribute("playsinline", "");
 audio.setAttribute("webkit-playsinline", "");
-   
-    audio.addEventListener("pause",()=>{
-
-    if ("mediaSession" in navigator){
-
-        navigator.mediaSession.playbackState = "paused";
-
-    }
-
-});
-
 const titleEl = document.getElementById("title");
 
 const artistEl = document.getElementById("artist");
@@ -1860,57 +1849,53 @@ document
 /*==========================
         PLAY EVENT
 ==========================*/
-
 audio.addEventListener(
+"play",
+()=>{
 
-    "play",
 
-    () => {
+if("mediaSession" in navigator){
 
-        playBtn.innerHTML =
+navigator.mediaSession.playbackState="playing";
 
-            '<i class="fa-solid fa-pause"></i>';
+}
 
-        document
 
-            .querySelector(".album-cover")
+playBtn.innerHTML =
+'<i class="fa-solid fa-pause"></i>';
 
-            .style.animationPlayState =
 
-            "running";
+document
+.querySelector(".album-cover")
+.style.animationPlayState="running";
 
-    }
 
-);
-
+});
 
 /*==========================
         PAUSE EVENT
 ==========================*/
 
 audio.addEventListener(
+"pause",
+()=>{
 
-    "pause",
+    playBtn.innerHTML =
+    '<i class="fa-solid fa-play"></i>';
 
-    () => {
+    document
+    .querySelector(".album-cover")
+    .style.animationPlayState =
+    "paused";
 
-        playBtn.innerHTML =
 
-            '<i class="fa-solid fa-play"></i>';
+    if ("mediaSession" in navigator){
 
-        document
-
-            .querySelector(".album-cover")
-
-            .style.animationPlayState =
-
-            "paused";
-        
-         
+        navigator.mediaSession.playbackState = "paused";
 
     }
 
-);
+});
 
 
 /*==========================
