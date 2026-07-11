@@ -882,15 +882,15 @@ i{
         LIST LEFT - PLAYER RIGHT
 ===================================================== */
 
-@media screen and (orientation:landscape) and (max-height:600px){
+@@media screen and (orientation:landscape) and (max-height:800px){
 
     html,body{
 
         width:100%;
-        height:80%;
-
+        height:100%;
         margin:0;
         padding:0;
+        overflow:hidden;
 
     }
 
@@ -901,9 +901,9 @@ i{
 
         max-width:none;
 
-          height:80dvh;
-        
-        margin:0;
+        height:100dvh;
+
+        min-height:0;
 
         padding:15px;
 
@@ -913,18 +913,14 @@ i{
 
         grid-template-columns:35% 65%;
 
-        grid-template-rows:50px 1fr;
+        grid-template-rows:50px 80dvh;
 
-        gap:15px;
-
+        gap:10px;
 
     }
-.playlist-panel,
-.player-box{
-    height:100%;
-}
 
-    /* HEADER */
+
+    /* Header */
 
     .top-bar{
 
@@ -934,6 +930,34 @@ i{
 
     }
 
+
+    /* LIST trái */
+
+    .playlist-panel{
+
+        grid-column:1;
+
+        grid-row:2;
+
+        height:600px;
+
+        margin:0;
+
+    }
+      .song-list{
+
+        height:600px;
+
+        overflow-y:auto;
+
+    }
+
+
+}
+.playlist-panel,
+.player-box{
+    height:100%;
+}
 
     /* LIST TRÁI */
 
@@ -969,7 +993,7 @@ i{
 
         grid-row:2;
 
-        height:80%;
+        height:600px;
 
         display:flex;
 
@@ -1067,6 +1091,7 @@ i{
     </header>
 
     <!-- Album -->
+    <div class="player-probox">
     <div class="player-box">
     <section class="album-section">
 
@@ -1153,7 +1178,7 @@ i{
     </section>
 
 </div>
-    
+    </div>
 <audio
 id="audio"
 preload="auto"
