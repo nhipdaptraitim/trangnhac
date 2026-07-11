@@ -882,7 +882,7 @@ i{
 ===================================================== */
 
 @media screen and (orientation:landscape) and (max-height:600px){
-    
+
     html,body{
 
         width:100%;
@@ -890,8 +890,10 @@ i{
 
         margin:0;
         padding:0;
-        
+
     }
+
+
     .app{
 
         width:100vw;
@@ -912,81 +914,51 @@ i{
 
         grid-template-columns:35% 65%;
 
+        grid-template-rows:50px 1fr;
+
         gap:15px;
+
         background:url("phu.png") center/cover no-repeat;
 
     }
 
-}
-
 
     /* HEADER */
 
-        .top-bar{
+    .top-bar{
 
-        grid-column:1 / 3; 
-        
+        grid-column:1 / 3;
+
         grid-row:1;
 
     }
 
 
-    /* LIST BÊN TRÁI */
+    /* LIST TRÁI */
 
-       .playlist-panel{
+    .playlist-panel{
 
         grid-column:1;
 
         grid-row:2;
 
-        height:calc(100dvh - 90px);
+        height:100%;
 
         margin:0;
 
     }
-    /* =========================
-   LIST BÊN TRÁI
-========================= */
-
-.playlist-panel{
-
-    width:100%;
-
-    height:100%;
-
-    padding:10px;
-
-    box-sizing:border-box;
-
-}
 
 
-/* Tiêu đề Danh sách phát */
+    .song-list{
 
-.playlist-header{
+        height:100%;
 
-    font-size:20px;
+        overflow-y:auto;
 
-    justify-content:center;
-
-    margin-bottom:10px;
-
-}
+    }
 
 
-/* Danh sách bài hát */
-
-.song-list{
-
-    height:100%;
-
-    overflow-y:auto;
-
-}
-
-
-
-    /* PLAYER BÊN PHẢI */
+    /* PLAYER PHẢI */
 
     .player-box{
 
@@ -994,7 +966,7 @@ i{
 
         grid-row:2;
 
-        height:calc(100dvh - 90px);
+        height:100%;
 
         display:flex;
 
@@ -1004,35 +976,23 @@ i{
 
         align-items:center;
 
+        gap:5px;
+
     }
 
 
     .album-cover{
 
         width:180px;
+
         height:180px;
 
     }
 
-}
-    
-    /* chỉnh đĩa nhạc */
-
-    .album-cover{
-
-        width:200px;
-        height:200px;
-
-    }
-
-
-    /* chỉnh tên bài */
 
     .player-info h2{
 
         font-size:22px;
-
-        margin:10px 0 5px;
 
     }
 
@@ -1042,16 +1002,15 @@ i{
         font-size:14px;
 
     }
-    
-    /* giữ sóng */
+
 
     .visualizer-wave{
-
-        display:block;
 
         width:90%;
 
         height:50px;
+
+        display:flex;
 
     }
 
@@ -1065,14 +1024,6 @@ i{
     }
 
 
-}
-
-
-   
-
-
-    /* chỉnh thanh chạy */
-
     .progress-wrapper{
 
         width:90%;
@@ -1080,11 +1031,11 @@ i{
     }
 
 
-    /* chỉnh nút */
-
     .controls{
 
-        margin-top:15px;
+        width:90%;
+
+        justify-content:center;
 
         gap:15px;
 
