@@ -30,25 +30,7 @@ document.addEventListener("keydown", function(e) {
     }
 });
 </script>
-    <script>
-const pages = [
-    "nhacnen.html",
-    "nhacnen5.html",
-    "nhacnen8.html",
-    
-   
-];
 
-let last = localStorage.getItem("lastPage");
-
-let available = pages.filter(page => page !== last);
-
-let next = available[Math.floor(Math.random() * available.length)];
-
-localStorage.setItem("lastPage", next);
-
-location.replace(next);
-</script>
     <style> 
     *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; } 
     body{ min-height:100vh; 
