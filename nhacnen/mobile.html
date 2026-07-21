@@ -1438,14 +1438,15 @@ window.addEventListener("resize", resizeCanvas);
 /*==========================
     INIT VISUALIZER
 ==========================*/
-
-function initVisualizer() {
+async function initVisualizer() {
 
     if (started) return;
 
     started = true;
 
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    await audioCtx.resume();
 
     analyser = audioCtx.createAnalyser();
 
@@ -1458,15 +1459,12 @@ function initVisualizer() {
     source = audioCtx.createMediaElementSource(audio);
 
     source.connect(analyser);
-     
+
     analyser.connect(audioCtx.destination);
 
     resizeCanvas();
 
-    window.addEventListener("resize", resizeCanvas);
-
     drawWave();
-
 }
 
 
