@@ -1154,7 +1154,8 @@ id="audio"
 preload="auto"
 playsinline
 webkit-playsinline
-></audio>
+crossorigin="anonymous">
+</audio>
 
 <script>
     /*====================================================
@@ -1348,6 +1349,7 @@ webkit-playsinline
 ==========================*/
 
 const audio = document.getElementById("audio");
+audio.crossOrigin = "anonymous";
 audio.setAttribute("playsinline", "");
 audio.setAttribute("webkit-playsinline", "");
 const titleEl = document.getElementById("title");
@@ -1689,7 +1691,9 @@ function loadSong(index) {
 
     coverImage.src = song.cover;
 
-    audio.src = encodeURI(song.file);
+    audio.src = song.file;
+    audio.load();
+    
 
     progress.value = 0;
 
