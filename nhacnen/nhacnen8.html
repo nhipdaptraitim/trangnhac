@@ -582,7 +582,7 @@ body{
             <div class="volume-box"> <i class="fa-solid fa-volume-high"></i> 
                 <input type="range" id="volume" min="0" max="100" value="100"> </div> </div> </div>
                  <!-- COUPLE --> 
-                  <div class="couple"> <img src=""> </div> <audio id="audio"></audio> 
+                  <div class="couple"> <img src=""> </div> <audio id="audio" crossorigin="anonymous"></audio> 
     <script>
              /* ========================== PLAYLIST DATA ========================== */ 
     const songs =
@@ -896,6 +896,8 @@ function playSong(index) {
     artistEl.textContent = song.artist;
     coverImage.src = song.cover;
 
+    
+    audio.crossOrigin = "anonymous";   // thêm dòng này
     audio.src = encodeURI(song.file);
 
     audio.play();
